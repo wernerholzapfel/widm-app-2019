@@ -1,0 +1,7 @@
+{
+  "name": "widm-app-2019",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}
