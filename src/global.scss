@@ -10,3 +10,10 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
+.scroll-content{
+  background: url("https://wieisdemol.avrotros.nl/typo3conf/ext/widm_resources/Resources/Public/GFX/bg-mobile.jpg") no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+
+}
