@@ -11,13 +11,7 @@ import {PoulesComponent} from './poules.component';
     imports: [
         CommonModule,
         FormsModule,
-        IonicModule,
-        RouterModule.forChild([
-            {
-                path: '',
-                component: PoulesComponent
-            }
-        ])
+        IonicModule
     ],
     exports: [PoulesComponent]
 })

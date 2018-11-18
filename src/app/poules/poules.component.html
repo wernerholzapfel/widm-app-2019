@@ -1,5 +1,42 @@
-<ion-content color="dark">
-<p>
-  poules works!
-</p>
-</ion-content>
+<ion-card color="dark">
+    <ion-card-header>
+        <ion-card-title>Poules</ion-card-title>
+        <ion-buttons slot="end">
+            <ion-button>
+                <ion-icon name="add"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <hr style="background-color: #25B973">
+    </ion-card-header>
+    <ion-card-content>
+        <ng-container *ngIf="!activePoule">
+            <ion-item *ngFor="let poule of poules$ | async" color="dark" class="activated"
+                      (click)="selectPoule(poule)">
+                <ion-icon name="logo-buffer" slot="start"></ion-icon>
+                <ion-label>{{poule.poule_name}}</ion-label>
+                <ion-icon name="eye" slot="end" color="tertiary"></ion-icon>
+            </ion-item>
+        </ng-container>
+
+        <ng-container *ngIf="activePoule">
+            <ion-item color="medium" (click)="activePoule = undefined">
+                <ion-icon name="logo-buffer" slot="start"></ion-icon>
+                <ion-label>{{activePoule.poule_name}}</ion-label>
+                <ion-icon name="close" slot="end"></ion-icon>
+            </ion-item>
+            <ion-item *ngFor="let deelnemer of activePoule.deelnemers">
+                <ion-label text-wrap>
+                    <ion-text color="tertiary">
+                        <h3>{{deelnemer.positie}} {{deelnemer.display_name}} ({{deelnemer.totaalpunten}})</h3>
+                    </ion-text>
+                    <ion-text>
+                    <p>Testpunten <span slot="end">{{deelnemer.testpunten}}</span></p>
+                    <p>Molpunten {{deelnemer.molpunten}}</p>
+                    <p>Winnaarpunten {{deelnemer.winnaarpunten}}</p>
+                    <p>Afvallerpunten {{deelnemer.afvallerpunten}}</p>
+                    </ion-text>
+                </ion-label>
+            </ion-item>
+        </ng-container>
+    </ion-card-content>
+</ion-card>

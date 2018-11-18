@@ -1,27 +1,7 @@
 <ion-content color="light" padding *ngIf="(authService.user$ | async)">
     <ion-slides pager [options]="slideOpts">
         <ion-slide>
-            <ion-card color="dark">
-                <ion-card-header>
-                    <ion-card-title>Poules</ion-card-title>
-                    <ion-buttons slot="end">
-                        <ion-button>
-                            <ion-icon name="add"></ion-icon>
-                        </ion-button>
-                    </ion-buttons>
-                    <hr style="background-color: #25B973">
-                </ion-card-header>
-                <ion-card-content>
-                    <ion-item color="medium" href="#" class="activated">
-                        <ion-icon name="logo-buffer" slot="start"></ion-icon>
-                        <ion-label>Vrienden</ion-label>
-                    </ion-item>
-                    <ion-item color="medium" href="#" class="activated">
-                        <ion-icon name="logo-buffer" slot="start"></ion-icon>
-                        <ion-label>Fam Holzapfel</ion-label>
-                    </ion-item>
-                </ion-card-content>
-            </ion-card>
+           <app-poules></app-poules>
         </ion-slide>
         <ion-slide>
             <ion-card color="dark">

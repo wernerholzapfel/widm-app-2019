@@ -15,6 +15,14 @@ import {AngularFireModule} from '@angular/fire';
 import {environment} from '../environments/environment';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {TokenInterceptor} from './services/authentication/token.interceptor';
+import {ActiesEffects} from './store/acties/acties.effects';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import {StoreModule} from '@ngrx/store';
+import {reducers} from './store/store';
+import {ActiesService} from './services/api/acties.service';
+import {EffectsModule} from '@ngrx/effects';
+import {PoulesEffects} from './store/poules/poules.effects';
+import {PoulesService} from './services/api/poules.service';
 
 @NgModule({
     declarations: [AppComponent],
@@ -24,11 +32,17 @@ import {TokenInterceptor} from './services/authentication/token.interceptor';
         AppRoutingModule,
         BrowserAnimationsModule,
         HomePageModule,
-        AngularFireModule.initializeApp(environment.firebase, 'angular-auth-firebase'),],
+        AngularFireModule.initializeApp(environment.firebase, 'angular-auth-firebase'),
+        StoreModule.forRoot(reducers),
+        StoreDevtoolsModule.instrument(),
+        // StoreRouterConnectingModule,
+        EffectsModule.forRoot([ActiesEffects, PoulesEffects])],
     providers: [
         StatusBar,
         SplashScreen,
         NativePageTransitions,
+        ActiesService,
+        PoulesService,
         {provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
         {
             provide: HTTP_INTERCEPTORS,

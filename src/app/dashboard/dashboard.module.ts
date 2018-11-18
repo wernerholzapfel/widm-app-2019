@@ -8,6 +8,7 @@ import {RouterModule} from '@angular/router';
 import {LoginComponentModule} from '../login/login.module';
 import {AuthService} from '../services/authentication/auth.service';
 import {AngularFireAuthModule} from '@angular/fire/auth';
+import {PoulesPageModule} from '../poules/poules.module';
 
 @NgModule({
     declarations: [DashboardComponent],
@@ -17,6 +18,7 @@ import {AngularFireAuthModule} from '@angular/fire/auth';
         IonicModule,
         AngularFireAuthModule,
         LoginComponentModule,
+        PoulesPageModule,
         RouterModule.forChild([
             {
                 path: '',

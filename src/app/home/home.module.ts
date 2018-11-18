@@ -7,11 +7,8 @@ import {RouterModule} from '@angular/router';
 import {HomePage} from './home.page';
 import {PersonalHeaderModule} from '../personal-header/personal-header.module';
 import {DashboardModule} from '../dashboard/dashboard.module';
-import {VoorspelComponent} from '../voorspel/voorspel.component';
 import {VoorspelPageModule} from '../voorspel/voorspel.module';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AvatarModule} from 'ngx-avatar';
-import {LoginComponentModule} from '../login/login.module';
 import {AuthService} from '../services/authentication/auth.service';
 
 @NgModule({

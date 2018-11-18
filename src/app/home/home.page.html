@@ -3,7 +3,7 @@
         <ion-buttons slot="start">
             <ion-back-button></ion-back-button>
         </ion-buttons>
-        <ion-title>Werner Holzapfel</ion-title>
+        <ion-title *ngIf="(deelnemer$ | async) as deelnemer">{{deelnemer.display_name}}</ion-title>
         <ion-buttons slot="end">
             <ion-button *ngIf="!(authService.user$ | async)" (click)="goToLogin()">
                 <ion-icon name="log-in"></ion-icon>
@@ -42,34 +42,9 @@
 <ion-content>
     <ion-router-outlet></ion-router-outlet>
 </ion-content>
-<!--<ion-footer *ngIf="router.url !== '/home/dashboard'">-->
 <ion-tabs color="dark" *ngIf="router.url !== '/home/dashboard'">
     <ion-tab (ionSelect)="goToDashboard()" label="Dashboard" icon="home"></ion-tab>
     <ion-tab label="Poules" icon="logo-buffer"></ion-tab>
     <ion-tab label="Mijn mol" icon="finger-print"></ion-tab>
     <ion-tab label="Test" icon="clock"></ion-tab>
 </ion-tabs>
-
-<!--<div style="background-color: #222428">-->
-<!--<ion-grid>-->
-<!--<ion-row>-->
-<!--<ion-col>-->
-<!--<ion-segment color="secondary">-->
-<!--<ion-segment-button (click)="goToDashboard()" checked value="home">-->
-<!--<ion-icon name="home"></ion-icon>-->
-<!--</ion-segment-button>-->
-<!--<ion-segment-button (click)="goToPoule()" value="stand">-->
-<!--<ion-icon name="logo-buffer"></ion-icon>-->
-<!--</ion-segment-button>-->
-<!--<ion-segment-button (click)="goToVoorspelling()" value="voorspelling">-->
-<!--<ion-icon name="finger-print"></ion-icon>-->
-<!--</ion-segment-button>-->
-<!--<ion-segment-button (click)="goToTest()" value="vragen">-->
-<!--<ion-icon name="clock"></ion-icon>-->
-<!--</ion-segment-button>-->
-<!--</ion-segment>-->
-<!--</ion-col>-->
-<!--</ion-row>-->
-<!--</ion-grid>-->
-<!--</div>-->
-<!--</ion-footer>-->

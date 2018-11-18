@@ -2,6 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {NativePageTransitions, NativeTransitionOptions} from '@ionic-native/native-page-transitions/ngx';
 import {navigation} from '../constants/navigation.constants';
 import {NavController} from '@ionic/angular';
+import {IAppState} from '../store/store';
+import {select, Store} from '@ngrx/store';
+import {getDeelnemerScore} from '../store/poules/poules.reducer';
+import {Observable} from 'rxjs';
 
 @Component({
     selector: 'app-personal-header',
@@ -9,6 +13,7 @@ import {NavController} from '@ionic/angular';
     styleUrls: ['./personal-header.component.scss']
 })
 export class PersonalHeaderComponent implements OnInit {
+    deelnemer$: Observable<any>;
 
     options: NativeTransitionOptions = {
         direction: 'down',
@@ -20,7 +25,7 @@ export class PersonalHeaderComponent implements OnInit {
         fixedPixelsBottom: 0
     };
 
-    constructor(private navCtrl: NavController, private nativePageTransitions: NativePageTransitions) {
+    constructor(private navCtrl: NavController, private nativePageTransitions: NativePageTransitions, private store: Store<IAppState>) {
     }
 
     goToVoorspelling() {
@@ -29,6 +34,7 @@ export class PersonalHeaderComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.deelnemer$ = this.store.pipe(select(getDeelnemerScore));
     }
 
 }
