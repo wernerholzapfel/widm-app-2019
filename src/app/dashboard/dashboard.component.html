@@ -1,10 +1,10 @@
 <ion-content color="light" padding *ngIf="(authService.user$ | async)">
     <ion-slides pager [options]="slideOpts">
         <ion-slide>
-           <app-poules></app-poules>
+           <app-poules class="slide-container"></app-poules>
         </ion-slide>
         <ion-slide>
-            <ion-card color="dark">
+                <ion-card class="slide-container" color="dark">
                 <ion-card-header>
                     <ion-card-title>Test</ion-card-title>
                     <hr style="background-color: #25B973">
@@ -23,7 +23,7 @@
             </ion-card>
         </ion-slide>
         <ion-slide>
-            <ion-card color="dark">
+            <ion-card class="slide-container" color="dark">
                 <ion-card-header>
                     <ion-card-title>Voorspel</ion-card-title>
                     <hr style="background-color: #25B973">

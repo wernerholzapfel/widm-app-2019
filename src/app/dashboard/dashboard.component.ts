@@ -13,6 +13,8 @@ export class DashboardComponent implements OnInit {
     voorspellingBekend = false;
     slideOpts = {
         autoplay: false,
+        slidesPerView: 1.1,
+        spaceBetween: 10,
         effect: 'flip'
     };
     constructor(private navCtrl: NavController, public authService: AuthService) {

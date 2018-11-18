@@ -1,15 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {NavController} from '@ionic/angular';
+import {navigation} from '../constants/navigation.constants';
 
 @Component({
-  selector: 'app-voorspel',
-  templateUrl: './voorspel.component.html',
-  styleUrls: ['./voorspel.component.scss']
+    selector: 'app-voorspel',
+    templateUrl: './voorspel.component.html',
+    styleUrls: ['./voorspel.component.scss']
 })
 export class VoorspelComponent implements OnInit {
 
-  constructor() { }
+    constructor(private navCtrl: NavController) {
+    }
 
-  ngOnInit() {
-  }
+    ngOnInit() {
+    }
 
+    goToPoules() {
+        this.navCtrl.navigateForward(`${navigation.poules}`);
+    }
 }

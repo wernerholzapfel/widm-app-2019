@@ -1,13 +1,18 @@
 <ion-card color="dark">
-    <ion-card-header>
-        <ion-card-title>Poules</ion-card-title>
+    <ion-item color="dark">
+        <ion-label><h1>
+            Poules
+        </h1></ion-label>
         <ion-buttons slot="end">
-            <ion-button>
-                <ion-icon name="add"></ion-icon>
+            <ion-button *ngIf="router.url.includes('dashboard')" (click)="expandView()">
+                <ion-icon name="expand"></ion-icon>
+            </ion-button>
+            <ion-button *ngIf="!router.url.includes('dashboard')" (click)="closeView()">
+                <ion-icon name="close"></ion-icon>
             </ion-button>
         </ion-buttons>
-        <hr style="background-color: #25B973">
-    </ion-card-header>
+    </ion-item>
+    <hr style="background-color: #25B973">
     <ion-card-content>
         <ng-container *ngIf="!activePoule">
             <ion-item *ngFor="let poule of poules$ | async" color="dark" class="activated"
@@ -25,15 +30,19 @@
                 <ion-icon name="close" slot="end"></ion-icon>
             </ion-item>
             <ion-item *ngFor="let deelnemer of activePoule.deelnemers">
+                <ion-avatar slot="start">
+                    <ngx-avatar size="40" bgColor="#000" borderColor="#25B973" fgColor="#25B973"
+                                [value]="deelnemer.positie"></ngx-avatar>
+                </ion-avatar>
                 <ion-label text-wrap>
                     <ion-text color="tertiary">
-                        <h3>{{deelnemer.positie}} {{deelnemer.display_name}} ({{deelnemer.totaalpunten}})</h3>
+                        <h3>{{deelnemer.display_name}} ({{deelnemer.totaalpunten}})</h3>
                     </ion-text>
                     <ion-text>
-                    <p>Testpunten <span slot="end">{{deelnemer.testpunten}}</span></p>
-                    <p>Molpunten {{deelnemer.molpunten}}</p>
-                    <p>Winnaarpunten {{deelnemer.winnaarpunten}}</p>
-                    <p>Afvallerpunten {{deelnemer.afvallerpunten}}</p>
+                        <p class="subtitle_score">Test {{deelnemer.testpunten}} -
+                            Mol {{deelnemer.molpunten}} -
+                            Winnaar {{deelnemer.winnaarpunten}} -
+                            Afvaller {{deelnemer.afvallerpunten}}
                     </ion-text>
                 </ion-label>
             </ion-item>

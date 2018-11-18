@@ -3,10 +3,12 @@ import {RouterModule, Routes} from '@angular/router';
 import {navigation} from './constants/navigation.constants';
 import {HomePage} from './home/home.page';
 import {LoginComponent} from './login/login.component';
+import {PoulesComponent} from './poules/poules.component';
 
 const routes: Routes = [
     {path: '', redirectTo: 'home', pathMatch: 'full'},
     {path: navigation.login, component: LoginComponent},
+    {path: navigation.poules, component: PoulesComponent},
     {
         path: navigation.home, component: HomePage,
         children: [

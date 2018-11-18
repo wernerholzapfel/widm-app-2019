@@ -5,6 +5,7 @@ import {FormsModule} from '@angular/forms';
 
 import {RouterModule} from '@angular/router';
 import {VoorspelComponent} from './voorspel.component';
+import {PersonalHeaderModule} from '../personal-header/personal-header.module';
 
 @NgModule({
     declarations: [VoorspelComponent],
@@ -12,6 +13,7 @@ import {VoorspelComponent} from './voorspel.component';
         CommonModule,
         FormsModule,
         IonicModule,
+        PersonalHeaderModule,
         RouterModule.forChild([
             {
                 path: '',

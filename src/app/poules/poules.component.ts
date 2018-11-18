@@ -4,7 +4,9 @@ import {IAppState} from '../store/store';
 import {getPoules} from '../store/poules/poules.reducer';
 import {Observable} from 'rxjs';
 import {IPoule} from '../interface/IPoules';
-import {map} from 'rxjs/operators';
+import {navigation} from '../constants/navigation.constants';
+import {NavController} from '@ionic/angular';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'app-poules',
@@ -17,7 +19,7 @@ export class PoulesComponent implements OnInit {
     activePoule: IPoule;
     poules: IPoule[];
 
-    constructor(private store: Store<IAppState>) {
+    constructor(private store: Store<IAppState>, private navCtrl: NavController, public router: Router) {
     }
 
     ngOnInit() {
@@ -26,5 +28,13 @@ export class PoulesComponent implements OnInit {
 
     selectPoule(poule: IPoule) {
         this.activePoule = poule;
+    }
+
+    expandView() {
+        this.navCtrl.navigateForward(`${navigation.poules}`, false);
+    }
+
+    closeView() {
+        this.navCtrl.navigateRoot(`/${navigation.home}/${navigation.dashboard}`, false);
     }
 }

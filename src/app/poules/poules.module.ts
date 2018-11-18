@@ -5,13 +5,15 @@ import {FormsModule} from '@angular/forms';
 
 import {RouterModule} from '@angular/router';
 import {PoulesComponent} from './poules.component';
+import {AvatarModule} from 'ngx-avatar';
 
 @NgModule({
     declarations: [PoulesComponent],
     imports: [
         CommonModule,
         FormsModule,
-        IonicModule
+        IonicModule,
+        AvatarModule
     ],
     exports: [PoulesComponent]
 })

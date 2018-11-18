@@ -1,3 +1,73 @@
-<ion-content padding color="dark">
-    Voorspellen maar!
+<app-personal-header></app-personal-header>
+<ion-content>
+    <ion-content class="grid-full">
+        <ion-row>
+            <ion-col class="cell-1 full">
+                <ion-card color="dark">
+                    <ion-card-header>
+                        <ion-card-subtitle>
+                            De Molloot 2019
+                        </ion-card-subtitle>
+                        <hr style="background-color: #25B973">
+                    </ion-card-header>
+                    <ion-card-content>
+                        Vergeet niet om deze week je voorspellingen op te slaan, dit kan nog tot vrijdag 20:34h
+                    </ion-card-content>
+                </ion-card>
+            </ion-col>
+            <ion-col class="cell-2">
+                <ion-card color="dark">
+                    <ion-card-header>
+                        <ion-card-subtitle>
+                            Test
+                        </ion-card-subtitle>
+                        <hr style="background-color: #25B973">
+                    </ion-card-header>
+                    <ion-card-content>
+                        <ion-icon name="clock" style="font-size: 48px;"></ion-icon>
+                    </ion-card-content>
+                </ion-card>
+            </ion-col>
+            <ion-col class="cell-3">
+                <ion-card color="dark" href="#" (click)="goToPoules()" tappable>
+                    <ion-card-header>
+                        <ion-card-subtitle>
+                            Poule
+                        </ion-card-subtitle>
+                        <hr style="background-color: #25B973">
+                    </ion-card-header>
+                    <ion-card-content>
+                        <ion-icon name="logo-buffer" style="font-size: 48px;" (click)="goToPoules()"></ion-icon>
+                    </ion-card-content>
+                </ion-card>
+            </ion-col>
+            <ion-col class="cell-4">
+                <ion-card color="dark">
+                    <ion-card-header>
+                        <ion-card-subtitle>
+                            Voorspellen
+                        </ion-card-subtitle>
+                        <hr style="background-color: #25B973">
+                    </ion-card-header>
+                    <ion-card-content>
+                        <ion-icon name="finger-print" style="font-size: 48px;"></ion-icon>
+                    </ion-card-content>
+                </ion-card>
+            </ion-col>
+            <ion-col class="cell-5">
+                <ion-card color="dark">
+                    <ion-card-header>
+                        <ion-card-subtitle>
+                            Disclaimer
+                        </ion-card-subtitle>
+                        <hr style="background-color: #25B973">
+                    </ion-card-header>
+                    <ion-card-content>
+                        <ion-icon name="information-circle-outline" style="font-size: 48px;"></ion-icon>
+                    </ion-card-content>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+
+    </ion-content>
 </ion-content>
