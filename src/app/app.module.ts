@@ -23,15 +23,27 @@ import {ActiesService} from './services/api/acties.service';
 import {EffectsModule} from '@ngrx/effects';
 import {PoulesEffects} from './store/poules/poules.effects';
 import {PoulesService} from './services/api/poules.service';
+import {AuthService} from './services/authentication/auth.service';
+import { DisclaimerComponent } from './disclaimer/disclaimer.component';
+import { TestComponent } from './test/test.component';
+import {PoulesPageModule} from './poules/poules.module';
+import {DisclaimerModule} from './disclaimer/disclaimer.module';
+import {TestModule} from './test/test.module';
+import {PouleModule} from './poules/poule/poule.module';
+import {UiService} from './services/app/ui.service';
 
 @NgModule({
     declarations: [AppComponent],
     entryComponents: [],
-    imports: [BrowserModule,
+    imports: [
+        BrowserModule,
         IonicModule.forRoot(),
         AppRoutingModule,
         BrowserAnimationsModule,
         HomePageModule,
+        PoulesPageModule,
+        DisclaimerModule,
+        TestModule,
         AngularFireModule.initializeApp(environment.firebase, 'angular-auth-firebase'),
         StoreModule.forRoot(reducers),
         StoreDevtoolsModule.instrument(),
@@ -43,6 +55,8 @@ import {PoulesService} from './services/api/poules.service';
         NativePageTransitions,
         ActiesService,
         PoulesService,
+        AuthService,
+        UiService,
         {provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
         {
             provide: HTTP_INTERCEPTORS,

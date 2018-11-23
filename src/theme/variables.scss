@@ -5,6 +5,7 @@
 /** Ionic CSS Variables **/
 :root {
   $background-color: #222428;
+  $green: #25B973;
 
   /** primary **/
   --ion-color-primary: #3880ff;
@@ -28,8 +29,8 @@
   --ion-color-tertiary-rgb: 112,68,255;
   --ion-color-tertiary-contrast: #ffffff;
   --ion-color-tertiary-contrast-rgb: 255,255,255;
-  --ion-color-tertiary-shade: #633ce0;
-  --ion-color-tertiary-tint: #7e57ff;
+  --ion-color-success-shade: #0ec254;
+  --ion-color-success-tint: #28e070;
 
   /** success **/
   --ion-color-success: #10dc60;

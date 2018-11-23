@@ -43,9 +43,7 @@ export class AuthService {
     }
 
     logout() {
-        this._firebaseAuth.auth.signOut()
-            .then((res) =>
-                this.navCtrl.navigateForward(`${navigation.login}`, false));
+        this._firebaseAuth.auth.signOut();
     }
 
     getToken(): Promise<any> {

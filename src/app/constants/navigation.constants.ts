@@ -1,7 +1,9 @@
 export const navigation = {
     home: 'home',
-    voorspel: 'voorspel',
+    voorspellen: 'voorspellen',
     dashboard: 'dashboard',
     poules: 'poules',
-    login: 'login'
+    login: 'login',
+    test: 'test',
+    disclaimer: 'disclaimer',
 };

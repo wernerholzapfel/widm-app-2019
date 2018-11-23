@@ -1,76 +1,72 @@
-<div class="ion-elevation-z8">
-    <ion-toolbar color="primary">Inloggen</ion-toolbar>
-    <ion-card>
+<ion-card color="dark">
+    <ion-item color="dark" class="ion-item-header">
+        <ion-header>
+            <ion-label>
+                <h1>Login</h1>
+            </ion-label>
+        </ion-header>
+    </ion-item>
+    <ion-card-content>
         <div *ngIf="!(authService.user$ | async)">
-            <div label="inloggen" *ngIf="!wachtwoordvergeten">
-                <form class="login-form">
-                    <div class="full-width">
-                        <input placeholder="Email" name="inlogEmail" [(ngModel)]="user.email">
-                    </div>
-                    <div class="full-width">
-                        <input type="password" autocomplete="password" name="inlogPassword" placeholder="Password"
-                               [(ngModel)]="user.password">
-                    </div>
-                    <div class="form-group">
-                        <div>
-                            <ion-button expand="block" (click)="signInWithEmail()"
-                                        [disabled]="!user.email || !user.password">
-                                Inloggen
-                            </ion-button>
-                            <div class="clickable_div" (click)="activateResetPassword(true)">Wachtwoord vergeten</div>
-                        </div>
-                    </div>
-                </form>
+            <form (ngSubmit)="signInWithEmail()" #loginForm="ngForm">
+                <ion-item>
+                    <ion-input required type="email" placeholder="Emailadres" name="email" ngModel></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-input required type="password" placeholder="Wachtwoord" name="password" ngModel></ion-input>
+                </ion-item>
+                <ion-button  fill="outline" [disabled]="!loginForm.valid" color="tertiary" expand="block" type="submit">
+                    Inloggen
+                </ion-button>
+            </form>
+            <div class="clickable_div" (click)="activateResetPassword(true)">Wachtwoord vergeten</div>
+        </div>
+    </ion-card-content>
+</ion-card>
+
+<ion-card color="dark" *ngIf="!wachtwoordvergeten">
+    <ion-header>
+        <ion-item color="dark" class="ion-item-header">
+            <ion-label>
+                <h1>Inschrijven</h1>
+            </ion-label>
+        </ion-item>
+    </ion-header>
+
+    <ion-card-content>
+        <form (ngSubmit)="signUpRegular()" #signupForm="ngForm">
+            <ion-item>
+                <ion-input required type="email" placeholder="Emailadres" name="email" ngModel></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-input required type="text" placeholder="Naam" name="displayName" ngModel></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-input required type="password" placeholder="Wachtwoord" name="password" ngModel></ion-input>
+            </ion-item>
+            <ion-button [disabled]="!signupForm.valid" color="tertiary" expand="block" type="submit">
+                Inschrijven
+            </ion-button>
+        </form>
+    </ion-card-content>
+</ion-card>
+
+<ion-card *ngIf="wachtwoordvergeten" label="wachtwoord vergeten">
+    <form class="login-form">
+        <div class="full-width">
+            <input ionInput placeholder="Email" name="inlogEmail" [(ngModel)]="user.email">
+        </div>
+        <div class="form-group">
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <button ion-raised-button color="primary" (click)="sendPasswordResetEmail()"
+                        [disabled]="!user.email">
+                    Reset wachtwoord
+                </button>
+                <div class="clickable_div" (click)="activateResetPassword(false)">Login</div>
             </div>
         </div>
-    </ion-card>
-
-    <ion-card *ngIf="!wachtwoordvergeten">
-
-        <form [formGroup]="userForm" class="login-form">
-            <div class="full-width">
-                <input type="text" placeholder="Naam" formControlName="displayNameFormControl"
-                       [(ngModel)]="user.displayName">
-            </div>
-            <div class="full-width">
-                <input placeholder="Email" formControlName="emailFormControl"
-                       [(ngModel)]="user.email">
-            </div>
-            <div class="full-width">
-                <input type="password" ionInput autocomplete="password" placeholder="Password"
-                       formControlName="passwordFormControl"
-                       [(ngModel)]="user.password">
-                <!--<ion-hint>Het wachtwoord moet minimaal 8 tekens lang zijn</ion-hint>-->
-            </div>
-            <div class="full-width">
-                <input type="text" ionInput placeholder="Teamnaam" formControlName="displayTeamNameFormControl"
-                       [(ngModel)]="user.teamName">
-            </div>
-            <div class="form-group">
-                <ion-button ion-raised-button color="primary" (click)="signUpRegular()" [disabled]="userForm.invalid">
-                    Inschrijven
-                </ion-button>
-            </div>
-        </form>
-    </ion-card>
-
-    <ion-card *ngIf="wachtwoordvergeten" label="wachtwoord vergeten">
-        <form class="login-form">
-            <div class="full-width">
-                <input ionInput placeholder="Email" name="inlogEmail" [(ngModel)]="user.email">
-            </div>
-            <div class="form-group">
-                <div fxLayout="row" fxLayoutAlign="start center">
-                    <button ion-raised-button color="primary" (click)="sendPasswordResetEmail()"
-                            [disabled]="!user.email">
-                        Reset wachtwoord
-                    </button>
-                    <div class="clickable_div" (click)="activateResetPassword(false)">Login</div>
-                </div>
-            </div>
-        </form>
-    </ion-card>
-</div>
+    </form>
+</ion-card>
 <button color="primary" *ngIf="(authService.user$ | async)" (click)="logout()">Logout
     {{(authService.user$ | async)?.displayName }}
 </button>

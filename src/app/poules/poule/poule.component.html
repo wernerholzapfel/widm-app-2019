@@ -1,0 +1,35 @@
+<ion-row>
+    <ion-col class="cell-1 full">
+        <ion-card color="dark">
+            <ion-card-header>
+                <ion-card-title>
+                    {{activePoule ? activePoule.poule_name : 'loading'}}
+                    <ion-icon *ngIf="isPouleAdmin" class="icon-in-title" color="light" name="person-add"></ion-icon>
+                </ion-card-title>
+                <hr style="background-color: #25B973">
+                <ion-searchbar color="light"></ion-searchbar>
+            </ion-card-header>
+            <ng-container *ngIf="activePoule">
+                <ion-card-content>
+                    <ion-item [color]="deelnemer.id !== deelnemerId ? 'light' : 'tertiary'" *ngFor="let deelnemer of activePoule.deelnemers">
+                        <ion-avatar slot="start">
+                            <ngx-avatar size="40" bgColor="#000" borderColor="#25B973" fgColor="#25B973"
+                                        [value]="deelnemer.positie"></ngx-avatar>
+                        </ion-avatar>
+                        <ion-label text-wrap>
+                            <ion-text [color]="deelnemer.id !== deelnemerId ? 'tertiary' : 'dark'">
+                                <h3>{{deelnemer.display_name}} ({{deelnemer.totaalpunten}})</h3>
+                            </ion-text>
+                            <ion-text>
+                                <p class="subtitle">Test {{deelnemer.testpunten}} -
+                                    Mol {{deelnemer.molpunten}} -
+                                    Winnaar {{deelnemer.winnaarpunten}} -
+                                    Afvaller {{deelnemer.afvallerpunten}}
+                            </ion-text>
+                        </ion-label>
+                    </ion-item>
+                </ion-card-content>
+            </ng-container>
+        </ion-card>
+    </ion-col>
+</ion-row>

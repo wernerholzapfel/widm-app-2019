@@ -24,7 +24,18 @@ export class DashboardComponent implements OnInit {
 
     }
 
-    goToPoules() {
-        this.navCtrl.navigateForward(`${navigation.home}/${navigation.poules}`, false);
+    goToTest() {
+        this.navCtrl.navigateForward(`${navigation.test}`);
     }
+    goToDisclaimer() {
+        this.navCtrl.navigateForward(`${navigation.disclaimer}`);
+    }
+    goToVoorspellen() {
+        this.navCtrl.navigateForward(`${navigation.voorspellen}`);
+    }
+    goToPoules() {
+        this.navCtrl.navigateForward(`${navigation.poules}`);
+    }
+
+
 }

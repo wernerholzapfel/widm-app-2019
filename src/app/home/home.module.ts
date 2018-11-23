@@ -9,7 +9,6 @@ import {PersonalHeaderModule} from '../personal-header/personal-header.module';
 import {DashboardModule} from '../dashboard/dashboard.module';
 import {VoorspelPageModule} from '../voorspel/voorspel.module';
 import {AvatarModule} from 'ngx-avatar';
-import {AuthService} from '../services/authentication/auth.service';
 
 @NgModule({
     declarations: [HomePage],
@@ -28,7 +27,7 @@ import {AuthService} from '../services/authentication/auth.service';
             }
         ])
     ],
-    providers: [AuthService]
+    providers: []
 })
 export class HomePageModule {
 }

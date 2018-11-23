@@ -6,7 +6,6 @@ import {FormsModule} from '@angular/forms';
 import {DashboardComponent} from './dashboard.component';
 import {RouterModule} from '@angular/router';
 import {LoginComponentModule} from '../login/login.module';
-import {AuthService} from '../services/authentication/auth.service';
 import {AngularFireAuthModule} from '@angular/fire/auth';
 import {PoulesPageModule} from '../poules/poules.module';
 
@@ -26,7 +25,7 @@ import {PoulesPageModule} from '../poules/poules.module';
             }
         ])
     ],
-    providers: [AuthService],
+    providers: [],
     exports: [DashboardComponent]
 })
 export class DashboardModule {

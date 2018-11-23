@@ -30,7 +30,7 @@ export class PersonalHeaderComponent implements OnInit {
 
     goToVoorspelling() {
         this.nativePageTransitions.slide(this.options);
-        this.navCtrl.navigateForward(`${navigation.home}/${navigation.voorspel}`);
+        this.navCtrl.navigateForward(`${navigation.home}/${navigation.voorspellen}`);
     }
 
     ngOnInit() {

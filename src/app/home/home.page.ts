@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {NavController} from '@ionic/angular';
 import {navigation} from '../constants/navigation.constants';
 import {routerTransition} from '../animation';
-import {Router} from '@angular/router';
 import {AuthService} from '../services/authentication/auth.service';
 import {select, Store} from '@ngrx/store';
 import {getDeelnemerScore} from '../store/poules/poules.reducer';
@@ -18,7 +17,7 @@ import {IAppState} from '../store/store';
 export class HomePage implements OnInit {
     showToolbar = true;
     deelnemer$: Observable<any>;
-    constructor(private navCtrl: NavController, public router: Router, public authService: AuthService, private store: Store<IAppState>) {
+    constructor(private navCtrl: NavController, public authService: AuthService, private store: Store<IAppState>) {
     }
 
     ngOnInit() {
@@ -30,7 +29,7 @@ export class HomePage implements OnInit {
     }
 
     goToVoorspelling() {
-        this.navCtrl.navigateForward(`${navigation.home}/${navigation.voorspel}`, false);
+        this.navCtrl.navigateForward(`${navigation.home}/${navigation.voorspellen}`, false);
     }
 
     goToDashboard() {

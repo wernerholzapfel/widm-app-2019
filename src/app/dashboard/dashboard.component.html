@@ -1,83 +1,72 @@
-<ion-content color="light" padding *ngIf="(authService.user$ | async)">
-    <ion-slides pager [options]="slideOpts">
-        <ion-slide>
-           <app-poules class="slide-container"></app-poules>
-        </ion-slide>
-        <ion-slide>
-                <ion-card class="slide-container" color="dark">
+<ion-content class="grid-full" *ngIf="authService.isLoggedIn()">
+    <ion-row>
+        <ion-col class="cell-1 full">
+            <ion-card color="dark">
                 <ion-card-header>
-                    <ion-card-title>Test</ion-card-title>
+                    <ion-card-subtitle>
+                        De Molloot 2019
+                    </ion-card-subtitle>
                     <hr style="background-color: #25B973">
                 </ion-card-header>
                 <ion-card-content>
-                    Samenvatting van de vorige tests
-                    <ion-item color="medium" href="#" class="activated">
-                        <ion-icon name="clock" slot="start"></ion-icon>
-                        <ion-label>Doe de test</ion-label>
-                    </ion-item>
-                    <ion-item color="medium" href="#" class="activated">
-                        <ion-icon name="clock" slot="start"></ion-icon>
-                        <ion-label>Bekijk vorige tests</ion-label>
-                    </ion-item>
+                    Vergeet niet om deze week je voorspellingen op te slaan, dit kan nog tot vrijdag 20:34h
                 </ion-card-content>
             </ion-card>
-        </ion-slide>
-        <ion-slide>
-            <ion-card class="slide-container" color="dark">
+        </ion-col>
+        <ion-col class="cell-2">
+            <ion-card color="dark" href="#" (click)="goToTest()" tappable>
                 <ion-card-header>
-                    <ion-card-title>Voorspel</ion-card-title>
+                    <ion-card-subtitle>
+                        Test
+                    </ion-card-subtitle>
                     <hr style="background-color: #25B973">
                 </ion-card-header>
                 <ion-card-content>
-      <span *ngIf="!voorspellingBekend">
-      Er is nog geen voorspelling bekend voor aflevering 4
-      </span>
-                    <span *ngIf="voorspellingBekend">
-      Je kan je voorspelling voor aflevering 4 nog wijzigen tot zondag 20:45
-      </span>
-                    <ion-item color="medium" (click)="voorspellingBekend = !voorspellingBekend">
-                        <ion-icon name="finger-print" slot="start"></ion-icon>
-                        <ion-label>Kies je mol</ion-label>
-                    </ion-item>
+                    <ion-icon name="clock" style="font-size: 48px;"></ion-icon>
                 </ion-card-content>
             </ion-card>
-        </ion-slide>
-    </ion-slides>
-
-    <ion-grid *ngIf="false">
-        <ion-row>
-            <ion-col [size]="12">
-                <ion-button size="large" expand="block" fill="outline" color="secondary" (click)="goToPoules()">
-                    <ion-icon slot="start" name="logo-buffer"></ion-icon>
-                    De vriendenpoule
-                </ion-button>
-            </ion-col>
-        </ion-row>
-        <ion-row>
-            <ion-col [size]="12">
-                <ion-button size="large" expand="block" fill="outline" color="secondary">
-                    <ion-icon slot="start" name="clock"></ion-icon>
-                    Test
-                </ion-button>
-            </ion-col>
-        </ion-row>
-        <ion-row>
-            <ion-col [size]="12">
-                <ion-button size="large" expand="block" fill="outline" color="secondary">
-                    <ion-icon slot="start" name="finger-print"></ion-icon>
-                    Voorspelling
-                </ion-button>
-            </ion-col>
-        </ion-row>
-        <ion-row *ngIf="true">
-            <ion-col [size]="12">
-                <ion-chip color="secondary">
-                    <ion-avatar>
-                        <img src="https://wieisdemol.avrotros.nl/typo3conf/ext/widm_resources/Resources/Public/GFX/avatar_jan.jpg">
-                    </ion-avatar>
-                    <ion-label>Is mijn mol</ion-label>
-                </ion-chip>
-            </ion-col>
-        </ion-row>
-    </ion-grid>
+        </ion-col>
+        <ion-col class="cell-3">
+            <ion-card color="dark" href="#" (click)="goToPoules()" tappable>
+                <ion-card-header>
+                    <ion-card-subtitle>
+                        Poules
+                    </ion-card-subtitle>
+                    <hr style="background-color: #25B973">
+                </ion-card-header>
+                <ion-card-content>
+                    <ion-icon name="podium" style="font-size: 48px;" (click)="goToPoules()"></ion-icon>
+                </ion-card-content>
+            </ion-card>
+        </ion-col>
+        <ion-col class="cell-4">
+            <ion-card color="dark" href="#" (click)="goToVoorspellen()" tappable>
+                <ion-card-header>
+                    <ion-card-subtitle>
+                        Voorspellen
+                    </ion-card-subtitle>
+                    <hr style="background-color: #25B973">
+                </ion-card-header>
+                <ion-card-content>
+                    <ion-icon name="finger-print" style="font-size: 48px;"></ion-icon>
+                </ion-card-content>
+            </ion-card>
+        </ion-col>
+        <ion-col class="cell-5">
+            <ion-card color="dark" href="#" (click)="goToDisclaimer()" tappable>
+                <ion-card-header>
+                    <ion-card-subtitle>
+                        Disclaimer
+                    </ion-card-subtitle>
+                    <hr style="background-color: #25B973">
+                </ion-card-header>
+                <ion-card-content>
+                    <ion-icon name="information-circle-outline" style="font-size: 48px;"></ion-icon>
+                </ion-card-content>
+            </ion-card>
+        </ion-col>
+    </ion-row>
+</ion-content>
+<ion-content *ngIf="!authService.isLoggedIn()">
+    <app-login></app-login>
 </ion-content>

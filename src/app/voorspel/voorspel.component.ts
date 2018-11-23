@@ -14,8 +14,4 @@ export class VoorspelComponent implements OnInit {
 
     ngOnInit() {
     }
-
-    goToPoules() {
-        this.navCtrl.navigateForward(`${navigation.poules}`);
-    }
 }

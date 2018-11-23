@@ -1,8 +1,5 @@
 <ion-header>
     <ion-toolbar color="dark">
-        <ion-buttons slot="start">
-            <ion-back-button></ion-back-button>
-        </ion-buttons>
         <ion-title *ngIf="(deelnemer$ | async) as deelnemer">{{deelnemer.display_name}}</ion-title>
         <ion-buttons slot="end">
             <ion-button *ngIf="!(authService.user$ | async)" (click)="goToLogin()">
@@ -13,34 +10,10 @@
             </ion-button>
         </ion-buttons>
     </ion-toolbar>
-    <app-personal-header *ngIf="router.url === '/home/dashboard'"></app-personal-header>
-    <ng-container *ngIf="router.url === '/home/poules'">
-        <ion-toolbar color="dark">
-            <ion-grid>
-                <ion-row>
-                    <ion-col [size]="2" align-self-center>
-                        <ion-row justify-content-center>
-                            <ion-icon name="arrow-back"></ion-icon>
-                        </ion-row>
-                    </ion-col>
-                    <ion-col align-self-center>
-                        <ion-row justify-content-center>
-                            <ngx-avatar size="110" bgColor="#000" borderColor="#25B973" fgColor="#25B973"
-                                        name="Vrienden poule"></ngx-avatar>
-                        </ion-row>
-                    </ion-col>
-                    <ion-col [size]="2" align-self-center>
-                        <ion-row justify-content-center>
-                            <ion-icon name="arrow-forward"></ion-icon>
-                        </ion-row>
-                    </ion-col>
-                </ion-row>
-            </ion-grid>
-        </ion-toolbar>
-    </ng-container>
+    <app-personal-header></app-personal-header>
 </ion-header>
 <ion-content>
-    <ion-router-outlet></ion-router-outlet>
+    <app-dashboard></app-dashboard>
 </ion-content>
 <!--<ion-tabs color="dark" *ngIf="router.url !== '/home/dashboard'">-->
     <!--<ion-tab (ionSelect)="goToDashboard()" label="Dashboard" icon="home"></ion-tab>-->
