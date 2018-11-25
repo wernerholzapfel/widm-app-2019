@@ -7,6 +7,8 @@ import {FetchActiesInProgress} from './store/acties/acties.actions';
 import {IAppState} from './store/store';
 import {Store} from '@ngrx/store';
 import {FetchPoulesInProgress} from './store/poules/poules.actions';
+import {UitnodigingenService} from './uitnodigingen.service';
+import {UiService} from './services/app/ui.service';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +19,9 @@ export class AppComponent implements OnInit {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private store: Store<IAppState>
+    private store: Store<IAppState>,
+    private uitnodigingenService: UitnodigingenService,
+    private uiService: UiService,
   ) {
     this.initializeApp();
   }
@@ -25,6 +29,8 @@ export class AppComponent implements OnInit {
   ngOnInit() {
       this.store.dispatch(new FetchActiesInProgress());
       this.store.dispatch(new FetchPoulesInProgress());
+
+      this.uitnodigingenService.getUitnodigingen().subscribe(response => this.uiService.uitnodigingen$.next(response));
   }
   initializeApp() {
     this.platform.ready().then(() => {

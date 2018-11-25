@@ -1,0 +1,22 @@
+<ion-card color="dark">
+    <ion-item color="dark" class="ion-item-header">
+        <ion-header>
+            <ion-label>
+                <h1>Uitnodigingen</h1>
+            </ion-label>
+        </ion-header>
+    </ion-item>
+    <ion-card-content>
+        <ion-item [color]="light" *ngFor="let uitnodiging of uitnodigingen">
+            <ion-label text-wrap>
+                <ion-text>
+                    <h3>{{uitnodiging.poule.poule_name}}</h3>
+                </ion-text>
+                <ion-text>
+                    <p class="subtitle">{{uitnodiging.poule.admins[0].display_name}}
+                </ion-text>
+            </ion-label>
+            <ion-button (click)="acceptInvite(uitnodiging)" color="tertiary">Join</ion-button>
+        </ion-item>
+    </ion-card-content>
+</ion-card>

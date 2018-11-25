@@ -1,13 +1,15 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {IAppState} from '../store/store';
-import {getDeelnemer, getPoules} from '../store/poules/poules.reducer';
+import {getDeelnemer} from '../store/poules/poules.reducer';
 import {Observable, Subject} from 'rxjs';
 import {IPoule} from '../interface/IPoules';
 import {NavController} from '@ionic/angular';
 import {Router} from '@angular/router';
 import {takeUntil} from 'rxjs/operators';
 import {UiService} from '../services/app/ui.service';
+import {navigation} from '../constants/navigation.constants';
+import {IUitnodigingResponse} from '../uitnodigingen.service';
 
 @Component({
     selector: 'app-poules',
@@ -24,12 +26,17 @@ export class PoulesComponent implements OnInit, OnDestroy {
     activePouleIndex: number;
     numberOfPoules: number;
     poule_name: string;
+    uitnodigingen: IUitnodigingResponse[];
 
     constructor(private store: Store<IAppState>, private navCtrl: NavController, public router: Router, private uiService: UiService) {
     }
 
     ngOnInit() {
         this.deelnemer$ = this.store.pipe(select(getDeelnemer));
+
+        this.uiService.uitnodigingen$.pipe(takeUntil(this.unsubscribe)).subscribe(response => {
+            this.uitnodigingen = response;
+        });
 
         this.deelnemer$.pipe(takeUntil(this.unsubscribe))
             .subscribe(deelnemer => {
@@ -51,6 +58,14 @@ export class PoulesComponent implements OnInit, OnDestroy {
         this.uiService.activePoule$.next(this.poules[this.activePouleIndex]);
         this.positie = this.poules[this.activePouleIndex].deelnemers.find(d => d.id === this.deelnemerId).positie;
         this.poule_name = this.poules[this.activePouleIndex].poule_name;
+    }
+
+    goToAddPoule() {
+        this.navCtrl.navigateForward(`${navigation.poules}/${navigation.addpoule}`);
+    }
+
+    goToAcceptInvite() {
+        this.navCtrl.navigateForward(`${navigation.poules}/${navigation.acceptinvite}`);
     }
 
     ngOnDestroy() {

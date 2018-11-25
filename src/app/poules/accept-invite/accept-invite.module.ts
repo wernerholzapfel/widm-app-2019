@@ -1,18 +1,17 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {AdddeelnemerComponent} from './adddeelnemer.component';
+import {AcceptInviteComponent} from './accept-invite.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {IonicModule} from '@ionic/angular';
 
 @NgModule({
-    declarations: [AdddeelnemerComponent],
+    declarations: [AcceptInviteComponent],
     imports: [
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
-        IonicModule
-    ],
-    exports: [AdddeelnemerComponent]
+        IonicModule],
+    exports: [AcceptInviteComponent]
 })
-export class AdddeelnemerModule {
+export class AcceptInviteModule {
 }

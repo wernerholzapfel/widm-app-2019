@@ -4,7 +4,7 @@
             <ion-card-header>
                 <ion-card-title>
                     {{activePoule ? activePoule.poule_name : 'loading'}}
-                    <ion-icon *ngIf="isPouleAdmin" class="icon-in-title" color="light" name="person-add"></ion-icon>
+                        <ion-icon *ngIf="isPouleAdmin" class="icon-in-title" color="light" name="person-add" (click)="goToAddDeelnemer()"></ion-icon>
                 </ion-card-title>
                 <hr style="background-color: #25B973">
                 <ion-searchbar color="light"></ion-searchbar>

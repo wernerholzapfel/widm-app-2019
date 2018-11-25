@@ -6,4 +6,8 @@ export const navigation = {
     login: 'login',
     test: 'test',
     disclaimer: 'disclaimer',
+    poule: 'poule',
+    addpoule: 'addpoule',
+    acceptinvite: 'acceptinvite',
+    adddeelnemer: 'adddeelnemer',
 };

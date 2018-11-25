@@ -1,3 +1,19 @@
-<p>
-  adddeelnemer works!
-</p>
+<ion-card color="dark">
+  <ion-item color="dark" class="ion-item-header">
+    <ion-header>
+      <ion-label>
+        <h1>Voeg deelnemers toe</h1>
+      </ion-label>
+    </ion-header>
+  </ion-item>
+  <ion-card-content>
+    <form (ngSubmit)="addDeelnemer()" #form="ngForm">
+      <ion-item>
+        <ion-input required type="email" placeholder="email-adres" name="email" ngModel></ion-input>
+      </ion-item>
+      <ion-button  fill="outline" [disabled]="!form.valid" color="tertiary" expand="block" type="submit">
+        Voeg toe
+      </ion-button>
+    </form>
+  </ion-card-content>
+</ion-card>

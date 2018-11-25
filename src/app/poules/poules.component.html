@@ -3,18 +3,23 @@
         <ion-back-button></ion-back-button>
     </ion-buttons>
     <ion-buttons slot="end">
-        <ion-button>
+        <ion-button *ngIf="uitnodigingen?.length > 0" color="warning" (click)="goToAcceptInvite()">
+            <ion-icon name="mail-unread"></ion-icon>
+        </ion-button>
+        <ion-button (click)="goToAddPoule()">
             <ion-icon name="add"></ion-icon>
         </ion-button>
     </ion-buttons>
-    <ion-title>{{positie}}e van de {{poule_name}}</ion-title>
+    <ion-title>{{poule_name}}</ion-title>
 </ion-toolbar>
 <ion-toolbar color="dark">
     <ion-grid>
         <ion-row>
             <ion-col [size]="2" align-self-center>
                 <ion-row justify-content-center>
-                    <ion-icon class="large-icon" *ngIf="activePouleIndex > 0" name="arrow-back"
+                    <ion-icon class="large-icon"
+                              *ngIf="activePouleIndex > 0 && router.url !== '/poules/adddeelnemer'"
+                              name="arrow-back"
                               (click)="activatePoule(activePouleIndex - 1)"></ion-icon>
                 </ion-row>
             </ion-col>
@@ -25,7 +30,8 @@
             </ion-col>
             <ion-col [size]="2" align-self-center>
                 <ion-row justify-content-center>
-                    <ion-icon class="large-icon" *ngIf="activePouleIndex + 1 < numberOfPoules"
+                    <ion-icon class="large-icon"
+                              *ngIf="activePouleIndex + 1 < numberOfPoules && router.url !== '/poules/adddeelnemer'"
                               (click)="activatePoule(activePouleIndex + 1)"
                               name="arrow-forward"></ion-icon>
                 </ion-row>

@@ -1,3 +1,19 @@
-<p>
-  addpoules works!
-</p>
+<ion-card color="dark">
+  <ion-item color="dark" class="ion-item-header">
+    <ion-header>
+      <ion-label>
+        <h1>Start Je eigen poule</h1>
+      </ion-label>
+    </ion-header>
+  </ion-item>
+  <ion-card-content>
+      <form (ngSubmit)="createPoule()" #createPouleForm="ngForm">
+        <ion-item>
+          <ion-input required type="text" placeholder="Naam van de poule" name="name" ngModel></ion-input>
+        </ion-item>
+        <ion-button  fill="outline" [disabled]="!createPouleForm.valid" color="tertiary" expand="block" type="submit">
+          Maak poule
+        </ion-button>
+      </form>
+  </ion-card-content>
+</ion-card>

@@ -34,7 +34,7 @@ export class DashboardComponent implements OnInit {
         this.navCtrl.navigateForward(`${navigation.voorspellen}`);
     }
     goToPoules() {
-        this.navCtrl.navigateForward(`${navigation.poules}`);
+        this.navCtrl.navigateForward(`${navigation.poules}/${navigation.poule}`);
     }
 
 

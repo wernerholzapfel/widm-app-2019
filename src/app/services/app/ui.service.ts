@@ -1,10 +1,13 @@
 import {Injectable} from '@angular/core';
-import {ReplaySubject, Subject} from 'rxjs';
+import {BehaviorSubject} from 'rxjs';
+import {ToastController} from '@ionic/angular';
 
 @Injectable()
 export class UiService {
 
-    activePoule$: Subject<any> = new Subject();
-    deelnemerId$: Subject<any> = new Subject();
+    constructor() {}
+    activePoule$: BehaviorSubject<any> = new BehaviorSubject(null);
+    deelnemerId$: BehaviorSubject<any> = new BehaviorSubject(null);
+    uitnodigingen$: BehaviorSubject<any> = new BehaviorSubject([]);
 
 }
