@@ -5,7 +5,7 @@ import {HomePage} from './home/home.page';
 import {LoginComponent} from './login/login.component';
 import {DisclaimerComponent} from './disclaimer/disclaimer.component';
 import {TestComponent} from './test/test.component';
-import {VoorspelComponent} from './voorspel/voorspel.component';
+import {VoorspellenComponent} from './voorspellen/voorspellen.component';
 
 const routes: Routes = [
     {path: '', redirectTo: navigation.home, pathMatch: 'full'},
@@ -13,7 +13,7 @@ const routes: Routes = [
     {path: navigation.poules, loadChildren: './poules/poules.module#PoulesPageModule'},
     {path: navigation.disclaimer, component: DisclaimerComponent},
     {path: navigation.test, component: TestComponent},
-    {path: navigation.voorspellen, component: VoorspelComponent},
+    {path: navigation.voorspellen, component: VoorspellenComponent},
     {path: navigation.home, component: HomePage},
     {path: '**', redirectTo: navigation.home}];
 

@@ -7,8 +7,8 @@ import {RouterModule} from '@angular/router';
 import {HomePage} from './home.page';
 import {PersonalHeaderModule} from '../personal-header/personal-header.module';
 import {DashboardModule} from '../dashboard/dashboard.module';
-import {VoorspelPageModule} from '../voorspel/voorspel.module';
 import {AvatarModule} from 'ngx-avatar';
+import {VoorspellenPageModule} from '../voorspellen/voorspellen.module';
 
 @NgModule({
     declarations: [HomePage],
@@ -18,7 +18,7 @@ import {AvatarModule} from 'ngx-avatar';
         IonicModule,
         PersonalHeaderModule,
         DashboardModule,
-        VoorspelPageModule,
+        VoorspellenPageModule,
         AvatarModule,
         RouterModule.forChild([
             {

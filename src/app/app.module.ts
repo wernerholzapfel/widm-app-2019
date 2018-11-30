@@ -31,6 +31,7 @@ import {DisclaimerModule} from './disclaimer/disclaimer.module';
 import {TestModule} from './test/test.module';
 import {PouleModule} from './poules/poule/poule.module';
 import {UiService} from './services/app/ui.service';
+import { VoorspellenComponent } from './voorspellen/voorspellen.component';
 
 @NgModule({
     declarations: [AppComponent],

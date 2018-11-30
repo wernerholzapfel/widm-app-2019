@@ -4,11 +4,11 @@ import {IonicModule} from '@ionic/angular';
 import {FormsModule} from '@angular/forms';
 
 import {RouterModule} from '@angular/router';
-import {VoorspelComponent} from './voorspel.component';
 import {PersonalHeaderModule} from '../personal-header/personal-header.module';
+import {VoorspellenComponent} from './voorspellen.component';
 
 @NgModule({
-    declarations: [VoorspelComponent],
+    declarations: [VoorspellenComponent],
     imports: [
         CommonModule,
         FormsModule,
@@ -17,11 +17,11 @@ import {PersonalHeaderModule} from '../personal-header/personal-header.module';
         RouterModule.forChild([
             {
                 path: '',
-                component: VoorspelComponent
+                component: VoorspellenComponent
             }
         ])
     ],
-    exports: [VoorspelComponent]
+    exports: [VoorspellenComponent]
 })
-export class VoorspelPageModule {
+export class VoorspellenPageModule {
 }
