@@ -14,11 +14,11 @@ export function actiesReducer(state: IActies, action) {
     case FETCH_ACTIES_FAILURE:
       return {...state};
     case UPDATE_ACTIES_SUCCESS:
-      return {...action.payload};
+        return {...action.payload};
     case UPDATE_ACTIES_FAILURE:
-      return {...state};
+        return {...state};
     default:
-      return {...state};
+        return state;
   }
 }
 
