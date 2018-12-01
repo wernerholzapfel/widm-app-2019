@@ -44,7 +44,7 @@ export class HomePage implements OnInit {
     }
 
     goToLogin() {
-        this.navCtrl.navigateForward(`${navigation.login}`, false);
+        this.navCtrl.navigateForward(`${navigation.home}`, false);
     }
 
 

@@ -1,4 +1,4 @@
-<ion-content class="grid-full" *ngIf="authService.isLoggedIn()">
+<ion-content class="grid-full" *ngIf="(authService.user$ | async)">
     <ion-row>
         <ion-col class="cell-1 full">
             <ion-card color="dark">
@@ -67,6 +67,10 @@
         </ion-col>
     </ion-row>
 </ion-content>
-<ion-content *ngIf="!authService.isLoggedIn()">
-    <app-login></app-login>
+<ion-content class="grid-full" *ngIf="!(authService.user$ | async)">
+    <ion-row>
+        <ion-col class="cell-1 full">
+            <app-login></app-login>
+        </ion-col>
+    </ion-row>
 </ion-content>

@@ -9,7 +9,6 @@ import {VoorspellenComponent} from './voorspellen/voorspellen.component';
 
 const routes: Routes = [
     {path: '', redirectTo: navigation.home, pathMatch: 'full'},
-    {path: navigation.login, component: LoginComponent},
     {path: navigation.poules, loadChildren: './poules/poules.module#PoulesPageModule'},
     {path: navigation.disclaimer, component: DisclaimerComponent},
     {path: navigation.test, component: TestComponent},

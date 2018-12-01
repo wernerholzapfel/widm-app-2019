@@ -19,6 +19,7 @@ export class LoginComponent implements OnInit {
         displayName: '',
         teamName: '',
     };
+    activeSegment = 'inschrijven';
 
     constructor(public authService: AuthService,
                 private router: Router, public navCtrl: NavController) {
@@ -82,6 +83,11 @@ export class LoginComponent implements OnInit {
 
     activateResetPassword(isTrue: boolean) {
         this.wachtwoordvergeten = isTrue;
+    }
+
+    segmentChanged($event) {
+        console.log($event);
+        this.activeSegment = $event.detail.value;
     }
 }
 

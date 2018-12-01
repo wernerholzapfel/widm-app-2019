@@ -3,7 +3,6 @@ export const navigation = {
     voorspellen: 'voorspellen',
     dashboard: 'dashboard',
     poules: 'poules',
-    login: 'login',
     test: 'test',
     disclaimer: 'disclaimer',
     poule: 'poule',
