@@ -70,6 +70,20 @@
 <ion-content class="grid-full" *ngIf="!(authService.user$ | async)">
     <ion-row>
         <ion-col class="cell-1 full">
+            <ion-card color="dark">
+                <ion-card-header>
+                    <ion-card-subtitle>
+                        De Molloot 2019
+                    </ion-card-subtitle>
+                    <hr style="background-color: #25B973">
+                </ion-card-header>
+                <ion-card-content>
+                    Voor de molloot 2019 is een nieuw account nodig, maak deze hieronder aan. Al een account aangemaakt,
+                    log dan meteen in.
+                </ion-card-content>
+            </ion-card>
+        </ion-col>
+        <ion-col class="cell-2 full">
             <app-login></app-login>
         </ion-col>
     </ion-row>

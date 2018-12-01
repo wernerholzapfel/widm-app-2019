@@ -33,7 +33,7 @@ export class VoorspellenComponent implements OnInit, OnDestroy {
     activeIndex = 0;
     numberOfKandidaten: number;
     huidigeVoorspelling: VoorspellingsBody = {};
-    voorspellingsLijst: { type: string; kandidaat?: IKandidaat }[] = [
+    voorspellingsLijst: { type: string; kandidaat?: IKandidaat , selected?: boolean}[] = [
         {type: 'mol', kandidaat: null},
         {type: 'winnaar', kandidaat: null},
         {type: 'afvaller', kandidaat: null}];
