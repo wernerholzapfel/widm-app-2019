@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {UiService} from '../../services/app/ui.service';
-import {IUitnodigingResponse, UitnodigingenService} from '../../uitnodigingen.service';
+import {IUitnodigingResponse, UitnodigingenService} from '../../services/api/uitnodigingen.service';
 import {takeUntil} from 'rxjs/operators';
 import {Subject} from 'rxjs';
 import {navigation} from '../../constants/navigation.constants';

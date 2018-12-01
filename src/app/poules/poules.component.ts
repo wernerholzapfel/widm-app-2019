@@ -9,7 +9,7 @@ import {Router} from '@angular/router';
 import {takeUntil} from 'rxjs/operators';
 import {UiService} from '../services/app/ui.service';
 import {navigation} from '../constants/navigation.constants';
-import {IUitnodigingResponse} from '../uitnodigingen.service';
+import {IUitnodigingResponse} from '../services/api/uitnodigingen.service';
 
 @Component({
     selector: 'app-poules',

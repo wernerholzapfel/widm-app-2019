@@ -2,7 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {UiService} from '../../services/app/ui.service';
 import {NavController} from '@ionic/angular';
-import {UitnodigingenService} from '../../uitnodigingen.service';
+import {UitnodigingenService} from '../../services/api/uitnodigingen.service';
 
 @Component({
     selector: 'app-adddeelnemer',

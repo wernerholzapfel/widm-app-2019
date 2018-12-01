@@ -4,7 +4,7 @@ import {take, takeUntil} from 'rxjs/operators';
 
 import {AlertController, NavController, ToastController} from '@ionic/angular';
 import {UiService} from '../services/app/ui.service';
-import {TestService} from '../test.service';
+import {TestService} from '../services/api/test.service';
 import {IActies} from '../interface/IActies';
 import {getActies} from '../store/acties/acties.reducer';
 import {IAppState} from '../store/store';
@@ -164,15 +164,8 @@ export class TestComponent implements OnInit, OnDestroy {
     }
 
 
-    async presentToast(message: string) {
-        const toast = await this.toastCtrl.create({
-            message: message,
-            duration: 6000,
-            position: 'middle',
-            showCloseButton: true,
-            closeButtonText: 'OK'
-        });
-        toast.present();
+     presentToast(message: string) {
+        this.uiService.presentToast(message);
     }
 
     showtestschermFunc() {

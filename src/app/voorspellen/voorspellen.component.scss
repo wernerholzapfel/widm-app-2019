@@ -1,0 +1,28 @@
+:host {
+  ion-avatar {
+    height: 100%;
+    width: 100%;
+  }
+  .subtitle {
+    margin-top: -12px;
+  }
+  .is_mol_in_spel {
+    //border: 4px solid #25B973;
+  }
+  ion-card {
+    height: 100%;
+    margin: 0;
+  }
+  ion-icon.large-icon {
+    font-size: 36px;
+  }
+  .icon-avatar,
+  .item-avatar {
+    width: 60px;
+    height: 60px;
+  }
+  .header-avatar {
+    width: 109px;
+    height: 109px;
+  }
+}
