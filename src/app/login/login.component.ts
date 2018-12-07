@@ -76,17 +76,12 @@ export class LoginComponent implements OnInit {
             });
     }
 
-    logout() {
-        this.authService.logout();
-        // this.store.dispatch(new fromParticipantForm.ClearParticipantform());
-    }
 
     activateResetPassword(isTrue: boolean) {
         this.wachtwoordvergeten = isTrue;
     }
 
     segmentChanged($event) {
-        console.log($event);
         this.activeSegment = $event.detail.value;
     }
 }

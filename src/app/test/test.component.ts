@@ -9,6 +9,7 @@ import {IActies} from '../interface/IActies';
 import {getActies} from '../store/acties/acties.reducer';
 import {IAppState} from '../store/store';
 import {select, Store} from '@ngrx/store';
+import {getDeelnemerId} from '../store/poules/poules.reducer';
 
 @Component({
     selector: 'app-test',
@@ -41,6 +42,7 @@ export class TestComponent implements OnInit, OnDestroy {
     acties: IActies;
     deadlineVerstreken: boolean;
     unsubscribe: Subject<void> = new Subject<void>();
+    deelnemerId: string;
 
     constructor(public navCtrl: NavController,
                 public testService: TestService,
@@ -53,7 +55,9 @@ export class TestComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.isLoading = true;
-
+        this.store.pipe(select(getDeelnemerId)).pipe(takeUntil(this.unsubscribe)).subscribe(response => {
+                this.deelnemerId = response;
+        });
         this.store
             .pipe(
                 takeUntil(this.unsubscribe),
@@ -142,7 +146,7 @@ export class TestComponent implements OnInit, OnDestroy {
         const request: any = {
             'aflevering': question.aflevering,
             'vraag': {id: question.id},
-            'deelnemer': {id: this.uiService.deelnemerId$.getValue()},
+            'deelnemer': {id: this.deelnemerId},
             'antwoord': null,
         };
 

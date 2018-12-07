@@ -9,6 +9,7 @@ import {PouleModule} from './poule/poule.module';
 import {AdddeelnemerModule} from './adddeelnemer/adddeelnemer.module';
 import {AddpoulesModule} from './addpoules/addpoules.module';
 import {AcceptInviteModule} from './accept-invite/accept-invite.module';
+import {FooterModule} from '../footer/footer.module';
 
 @NgModule({
     declarations: [PoulesComponent],
@@ -18,6 +19,7 @@ import {AcceptInviteModule} from './accept-invite/accept-invite.module';
         IonicModule,
         AvatarModule,
         PouleModule,
+        FooterModule,
         AdddeelnemerModule,
         AddpoulesModule,
         AcceptInviteModule,

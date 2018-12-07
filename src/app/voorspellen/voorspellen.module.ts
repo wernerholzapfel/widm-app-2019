@@ -7,6 +7,7 @@ import {RouterModule} from '@angular/router';
 import {PersonalHeaderModule} from '../personal-header/personal-header.module';
 import {VoorspellenComponent} from './voorspellen.component';
 import {AvatarModule} from 'ngx-avatar';
+import {FooterModule} from '../footer/footer.module';
 
 @NgModule({
     declarations: [VoorspellenComponent],
@@ -16,6 +17,7 @@ import {AvatarModule} from 'ngx-avatar';
         IonicModule,
         PersonalHeaderModule,
         AvatarModule,
+        FooterModule,
         RouterModule.forChild([
             {
                 path: '',

@@ -4,7 +4,7 @@ import {navigation} from '../constants/navigation.constants';
 import {routerTransition} from '../animation';
 import {AuthService} from '../services/authentication/auth.service';
 import {select, Store} from '@ngrx/store';
-import {getDeelnemerScore} from '../store/poules/poules.reducer';
+import {getDeelnemer, getDeelnemerScore} from '../store/poules/poules.reducer';
 import {Observable} from 'rxjs';
 import {IAppState} from '../store/store';
 
@@ -21,7 +21,7 @@ export class HomePage implements OnInit {
     }
 
     ngOnInit() {
-        this.deelnemer$ = this.store.pipe(select(getDeelnemerScore));
+        this.deelnemer$ = this.store.pipe(select(getDeelnemer));
     }
 
     getState(outlet) {
@@ -42,10 +42,5 @@ export class HomePage implements OnInit {
     goToTest() {
         this.navCtrl.navigateForward(`${navigation.home}/${navigation.poules}`, false);
     }
-
-    goToLogin() {
-        this.navCtrl.navigateForward(`${navigation.home}`, false);
-    }
-
 
 }

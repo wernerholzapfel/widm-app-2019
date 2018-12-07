@@ -32,8 +32,6 @@ export class AcceptInviteComponent implements OnInit, OnDestroy {
         this.uitnodigingenService.acceptInvite({poule: {id: uitnodiging.poule.id}, uitnodigingId: uitnodiging.id}).subscribe(response => {
             this.uiService.uitnodigingen$
                 .next(this.uitnodigingen.filter(item => item.id !== uitnodiging.id));
-
-            // this.uiService.showToast(`uitnodiging voor ${uitnodiging.poule.poule_name} geaccepteerd`);
         });
     }
 

@@ -1,30 +1,24 @@
-<ion-toolbar color="dark">
-    <ion-buttons slot="start">
-        <ion-back-button defaultHref="home"></ion-back-button>
-    </ion-buttons>
-    <ion-buttons slot="end">
-    </ion-buttons>
-    <ion-title>De Test</ion-title>
-</ion-toolbar>
-<ion-toolbar color="dark">
-    <ion-grid>
-        <ion-row>
-            <ion-col [size]="2" align-self-center>
-                <ion-row justify-content-center>
-                </ion-row>
-            </ion-col>
-            <ion-col align-self-center>
-                <ion-row justify-content-center>
-                    <div class="eigen-avatar">{{countdown}}</div>
-                </ion-row>
-            </ion-col>
-            <ion-col [size]="2" align-self-center>
-                <ion-row justify-content-center>
-                </ion-row>
-            </ion-col>
-        </ion-row>
-    </ion-grid>
-</ion-toolbar>
+<ion-header>
+    <ion-toolbar color="dark">
+        <ion-grid class="no-padding">
+            <ion-row>
+                <ion-col [size]="2" align-self-center>
+                    <ion-row justify-content-center>
+                    </ion-row>
+                </ion-col>
+                <ion-col align-self-center>
+                    <ion-row justify-content-center>
+                        <div class="eigen-avatar">{{countdown}}</div>
+                    </ion-row>
+                </ion-col>
+                <ion-col [size]="2" align-self-center>
+                    <ion-row justify-content-center>
+                    </ion-row>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </ion-toolbar>
+</ion-header>
 <ion-content class="test">
     <div *ngIf="isLoading" class="spinner">
         <ion-spinner name="crescent"></ion-spinner>
@@ -62,18 +56,18 @@
         </ion-row>
     </ion-grid>
 
-                    <ion-card color='dark' class="testscherm" *ngIf="showtestscherm">
-                        <ion-card-header class="vragen-header" text-wrap>
-                            {{question?.vraag}}
-                        </ion-card-header>
-                        <ion-card-content>
-                            <ion-button color="tertiary" expand="full" *ngFor="let answer of question?.antwoorden; let i = index;"
-                                        (click)="selectAnswer(answer, question)">
-                                {{i+1}}. {{answer.antwoord}}
-                            </ion-button>
+    <ion-card color='dark' class="testscherm" *ngIf="showtestscherm">
+        <ion-card-header class="vragen-header" text-wrap>
+            {{question?.vraag}}
+        </ion-card-header>
+        <ion-card-content>
+            <ion-button color="tertiary" expand="full" *ngFor="let answer of question?.antwoorden; let i = index;"
+                        (click)="selectAnswer(answer, question)">
+                {{i+1}}. {{answer.antwoord}}
+            </ion-button>
 
-                        </ion-card-content>
-                    </ion-card>
+        </ion-card-content>
+    </ion-card>
 
     <ion-grid *ngIf="showeindscherm">
         <ion-card color='dark'>

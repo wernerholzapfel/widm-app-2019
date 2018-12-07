@@ -1,43 +1,37 @@
-<ion-toolbar color="dark">
-    <ion-buttons slot="start">
-        <ion-back-button defaultHref="home"></ion-back-button>
-    </ion-buttons>
-    <ion-buttons slot="end">
-    </ion-buttons>
-    <ion-title>{{header}}</ion-title>
-</ion-toolbar>
-<ion-toolbar color="dark">
-    <ion-grid>
-        <ion-row>
-            <ion-col [size]="4" align-self-center>
-                <ion-row justify-content-center>
-                    <ion-icon class="large-icon"
-                              *ngIf="activeIndex > 0 && selectKandidaat"
-                              name="arrow-back"
-                              (click)="activateKandidaat(activeIndex - 1)"></ion-icon>
-                </ion-row>
-            </ion-col>
-            <ion-col center>
-                <div>
-                    <ion-avatar *ngIf="activeKandidaat && selectKandidaat" class="is_mol_in_spel">
-                        <img [src]="activeKandidaat?.image_url">
-                    </ion-avatar>
-                    <ion-avatar *ngIf="activeKandidaat && !selectKandidaat">
-                        <ion-icon class="header-avatar" name="person"></ion-icon>
-                    </ion-avatar>
-                </div>
-            </ion-col>
-            <ion-col [size]="4" align-self-center>
-                <ion-row justify-content-center>
-                    <ion-icon class="large-icon"
-                              *ngIf="activeIndex + 1 < numberOfKandidaten && selectKandidaat"
-                              (click)="activateKandidaat(activeIndex + 1)"
-                              name="arrow-forward"></ion-icon>
-                </ion-row>
-            </ion-col>
-        </ion-row>
-    </ion-grid>
-</ion-toolbar>
+<ion-header>
+    <ion-toolbar color="dark">
+        <ion-grid class="no-padding">
+            <ion-row>
+                <ion-col [size]="4" align-self-center>
+                    <ion-row justify-content-center>
+                        <ion-icon class="large-icon"
+                                  *ngIf="activeIndex > 0 && selectKandidaat"
+                                  name="arrow-back"
+                                  (click)="activateKandidaat(activeIndex - 1)"></ion-icon>
+                    </ion-row>
+                </ion-col>
+                <ion-col center>
+                    <div (click)="saveKandidaat(voorspellingsType)">
+                        <ion-avatar *ngIf="activeKandidaat && selectKandidaat" class="is_mol_in_spel">
+                            <img [src]="activeKandidaat?.image_url">
+                        </ion-avatar>
+                        <ion-avatar *ngIf="activeKandidaat && !selectKandidaat">
+                            <ion-icon class="header-avatar" name="person"></ion-icon>
+                        </ion-avatar>
+                    </div>
+                </ion-col>
+                <ion-col [size]="4" align-self-center>
+                    <ion-row justify-content-center>
+                        <ion-icon class="large-icon"
+                                  *ngIf="activeIndex + 1 < numberOfKandidaten && selectKandidaat"
+                                  (click)="activateKandidaat(activeIndex + 1)"
+                                  name="arrow-forward"></ion-icon>
+                    </ion-row>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </ion-toolbar>
+</ion-header>
 <ion-content class="test">
     <ion-row>
         <ion-col class="cell-1 full">
@@ -51,10 +45,12 @@
                 <ng-container>
                     <ion-card-content>
                         <ion-item color="light" *ngFor="let voorspelling of voorspellingsLijst">
-                            <ion-avatar *ngIf="voorspelling.kandidaat && !voorspelling.selected" slot="start" class="item-avatar">
+                            <ion-avatar *ngIf="voorspelling.kandidaat && !voorspelling.selected" slot="start"
+                                        class="item-avatar">
                                 <img [src]="voorspelling?.kandidaat.image_url">
                             </ion-avatar>
-                            <ion-avatar *ngIf="voorspelling.kandidaat && voorspelling.selected" slot="start" class="item-avatar">
+                            <ion-avatar *ngIf="voorspelling.kandidaat && voorspelling.selected" slot="start"
+                                        class="item-avatar">
                                 <ion-icon class="icon-avatar" name="person"></ion-icon>
                             </ion-avatar>
                             <ion-label text-wrap>
@@ -84,3 +80,4 @@
         </ion-col>
     </ion-row>
 </ion-content>
+<app-footer></app-footer>

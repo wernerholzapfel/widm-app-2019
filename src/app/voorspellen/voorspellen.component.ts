@@ -8,6 +8,7 @@ import {select, Store} from '@ngrx/store';
 import {getActies} from '../store/acties/acties.reducer';
 import {VoorspellenService} from '../services/api/voorspellen.service';
 import {IKandidaat} from '../interface/IKandidaat';
+import {getDeelnemerId} from '../store/poules/poules.reducer';
 
 
 export interface VoorspellingsBody {
@@ -26,6 +27,7 @@ export interface VoorspellingsBody {
 })
 
 export class VoorspellenComponent implements OnInit, OnDestroy {
+    voorspellingsType: string;
     header: string;
     kandidaten: IKandidaat[];
     activeKandidaat: IKandidaat;
@@ -33,7 +35,7 @@ export class VoorspellenComponent implements OnInit, OnDestroy {
     activeIndex = 0;
     numberOfKandidaten: number;
     huidigeVoorspelling: VoorspellingsBody = {};
-    voorspellingsLijst: { type: string; kandidaat?: IKandidaat , selected?: boolean}[] = [
+    voorspellingsLijst: { type: string; kandidaat?: IKandidaat, selected?: boolean }[] = [
         {type: 'mol', kandidaat: null},
         {type: 'winnaar', kandidaat: null},
         {type: 'afvaller', kandidaat: null}];
@@ -66,6 +68,15 @@ export class VoorspellenComponent implements OnInit, OnDestroy {
                     this.huidigeVoorspelling.aflevering = response.voorspellingaflevering ? response.voorspellingaflevering : 1;
                 }
             });
+
+        this.store.pipe(
+            takeUntil(this.unsubscribe),
+            select(getDeelnemerId))
+            .subscribe(deelnemerId => {
+                if (deelnemerId) {
+                    this.huidigeVoorspelling.deelnemer = {id: deelnemerId};
+                }
+            });
         this.uiService.kandidaten$.pipe(takeUntil(this.unsubscribe)).subscribe(response => {
             this.kandidaten = response.filter(kandidaat => !kandidaat.afgevallen);
             this.activeKandidaat = this.kandidaten[0];
@@ -86,6 +97,7 @@ export class VoorspellenComponent implements OnInit, OnDestroy {
     }
 
     editKandidaat(voorspellingsType: string) {
+        this.voorspellingsType = voorspellingsType;
         this.setActiveIndex(voorspellingsType);
         this.setSelectedState(voorspellingsType, true);
     }
@@ -107,6 +119,8 @@ export class VoorspellenComponent implements OnInit, OnDestroy {
 
         console.log(this.huidigeVoorspelling);
         this.voorspellenService.saveVoorspelling(Object.assign({}, this.huidigeVoorspelling)).subscribe(response => {
+            this.uiService.huidigeVoorspelling$.next(response);
+            this.huidigeVoorspelling.id = response.id;
             this.uiService.presentToast('Opslaan is gelukt');
             // window['plugins'].OneSignal.sendTag('laatsteVoorspelling', this.voorspelling.get('aflevering').value);
         }, error => {
@@ -116,12 +130,17 @@ export class VoorspellenComponent implements OnInit, OnDestroy {
     }
 
     private setActiveIndex(voorspellingsType: string) {
-        const newIndex = this.kandidaten.findIndex(
-            kandidaat => kandidaat.id === this.voorspellingsLijst.find(
-                vp => vp.type === voorspellingsType).kandidaat.id);
-
-        this.activeIndex = newIndex > 0 ? newIndex : 0;
+        const vorigeVoorspelling = this.voorspellingsLijst.find(vp => vp.type === voorspellingsType);
+        if (vorigeVoorspelling.kandidaat) {
+            this.activeIndex = this.kandidaten.findIndex(
+                kandidaat => kandidaat.id === this.voorspellingsLijst.find(
+                    vp => vp.type === voorspellingsType).kandidaat.id);
+        } else {
+            this.activeIndex = 0;
+        }
         this.activeKandidaat = this.kandidaten[this.activeIndex];
+
+
     }
 
     private setSelectedState(voorspellingsType: string, state: boolean) {

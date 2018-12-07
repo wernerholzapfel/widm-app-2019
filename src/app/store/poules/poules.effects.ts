@@ -1,5 +1,5 @@
 import {from as observableFrom, of as observableOf} from 'rxjs';
-import {catchError, map, switchMap} from 'rxjs/operators';
+import {catchError, map, switchMap, take} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
 import {Actions, Effect, ofType} from '@ngrx/effects';
 import {
@@ -19,10 +19,10 @@ export class PoulesEffects {
     @Effect()
     fetchPoulesInProgress$ = this.actions$.pipe(
         ofType<FetchPoulesInProgress>(FETCH_POULES_IN_PROGRESS),
-        switchMap(() => {
+        switchMap((action) => {
             return this.poulesService
-                .getPoules().pipe(
-                    switchMap(response =>
+                .getPoules().pipe(take(1),
+                        switchMap(response =>
                         observableOf(new CalculatePoules(response))
                     ),
                     catchError(err =>

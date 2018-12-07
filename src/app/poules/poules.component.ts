@@ -41,7 +41,6 @@ export class PoulesComponent implements OnInit, OnDestroy {
         this.deelnemer$.pipe(takeUntil(this.unsubscribe))
             .subscribe(deelnemer => {
                 if (deelnemer.id) {
-                    this.uiService.deelnemerId$.next(deelnemer.id);
                     this.deelnemerId = deelnemer.id;
                     if (deelnemer.poules.length > 0) {
                         this.poules = deelnemer.poules;

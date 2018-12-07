@@ -7,6 +7,7 @@ export const FETCH_POULES_FAILURE = 'FETCH_POULES_FAILURE';
 export const CALCULATE_POULES = 'CALCULATE_POULES';
 export const UPDATE_POULES_SUCCESS = 'UPDATE_POULES_SUCCESS';
 export const UPDATE_POULES_FAILURE = 'UPDATE_POULES_FAILURE';
+export const RESET_POULES = 'RESET_POULES';
 
 export class FetchPoulesInProgress implements Action {
   readonly type = FETCH_POULES_IN_PROGRESS;
@@ -20,6 +21,9 @@ export class FetchPoulesSuccess implements Action {
   constructor(public payload: IPoules) {}
 }
 
+export class ResetPoules implements Action {
+    readonly type = RESET_POULES;
+}
 export class CalculatePoules implements Action {
   readonly type = CALCULATE_POULES;
 

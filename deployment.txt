@@ -1,0 +1,25 @@
+For android:
+
+build project:
+ionic cordova build android --prod --release
+copy project and key to
+cp /Users/Werner/projects/werner/molapp/platforms/android/build/outputs/apk/android-release-unsigned.apk ~/Library/Android/sdk/build-tools/26.0.1/
+
+Go to  ~/Library/Android/sdk/build-tools/26.0.1/
+cd ~/Library/Android/sdk/build-tools/26.0.1/
+and run:
+jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore supereleven-key.jks android-release-unsigned.apk supereleven
+./zipalign -v 4 android-release-unsigned.apk molapp_0.1.1.apk
+
+surf naar:
+https://play.google.com/apps/publish/?account=6886303713469501217#AppDashboardPlace:p=com.wernerholzapfel.mollotenapp
+
+For IOS
+build project
+ionic cordova build ios --prod
+open xcode
+check; general signing team: werner holzapfel
+build phases link with binaries. remove pods if any
+choose generic ios device.
+and create image in product -> archive?"
+

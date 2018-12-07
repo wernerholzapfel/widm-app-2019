@@ -32,6 +32,8 @@ import {TestModule} from './test/test.module';
 import {PouleModule} from './poules/poule/poule.module';
 import {UiService} from './services/app/ui.service';
 import { VoorspellenComponent } from './voorspellen/voorspellen.component';
+import { FooterComponent } from './footer/footer.component';
+import {FooterModule} from './footer/footer.module';
 
 @NgModule({
     declarations: [AppComponent],
@@ -44,6 +46,7 @@ import { VoorspellenComponent } from './voorspellen/voorspellen.component';
         HomePageModule,
         PoulesPageModule,
         DisclaimerModule,
+        FooterModule,
         TestModule,
         AngularFireModule.initializeApp(environment.firebase, 'angular-auth-firebase'),
         StoreModule.forRoot(reducers),

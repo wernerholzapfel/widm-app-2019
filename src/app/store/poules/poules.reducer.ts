@@ -1,5 +1,5 @@
 import {IPoules} from '../../interface/IPoules';
-import {FETCH_POULES_FAILURE, FETCH_POULES_SUCCESS, UPDATE_POULES_FAILURE, UPDATE_POULES_SUCCESS} from './poules.actions';
+import {FETCH_POULES_FAILURE, FETCH_POULES_SUCCESS, RESET_POULES, UPDATE_POULES_FAILURE, UPDATE_POULES_SUCCESS} from './poules.actions';
 import {createFeatureSelector, createSelector} from '@ngrx/store';
 
 export function poulesReducer(state: IPoules, action) {
@@ -12,6 +12,8 @@ export function poulesReducer(state: IPoules, action) {
             return {...action.payload};
         case UPDATE_POULES_FAILURE:
             return {...state};
+        case RESET_POULES:
+            return {};
         default:
             return {...state};
     }

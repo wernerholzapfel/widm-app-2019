@@ -1,6 +1,6 @@
 <ion-row>
     <ion-col class="cell-1 full">
-        <ion-card color="dark">
+        <ion-card color="dark" *ngIf="activePoule">
             <ion-card-header>
                 <ion-card-title>
                     {{activePoule ? activePoule.poule_name : 'loading'}}
@@ -28,6 +28,24 @@
                             </ion-text>
                         </ion-label>
                     </ion-item>
+                    <ion-button class="sublink" expand="block" color="light" fill="clear" (click)="goToAddPoule()">Start nieuwe poule
+                    </ion-button>
+                </ion-card-content>
+            </ng-container>
+        </ion-card>
+
+        <ion-card color="dark" *ngIf="!activePoule">
+            <ion-card-header>
+                <ion-card-title>
+                    Begin je eigen poule!
+                </ion-card-title>
+                <hr style="background-color: #25B973">
+            </ion-card-header>
+            <ng-container>
+                <ion-card-content>
+                    <ion-button (click)="goToAddPoule()" color="tertiary" expand="block" fill="outline">
+                        Start een poule
+                    </ion-button>
                 </ion-card-content>
             </ng-container>
         </ion-card>

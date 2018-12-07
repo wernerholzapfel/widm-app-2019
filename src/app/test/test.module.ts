@@ -3,6 +3,7 @@ import {CommonModule} from '@angular/common';
 import {TestComponent} from './test.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {IonicModule} from '@ionic/angular';
+import {FooterModule} from '../footer/footer.module';
 
 @NgModule({
     declarations: [TestComponent],
@@ -10,6 +11,7 @@ import {IonicModule} from '@ionic/angular';
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
+        FooterModule,
         IonicModule
     ],
     exports: [TestComponent]

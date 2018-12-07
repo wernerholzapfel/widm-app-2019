@@ -9,6 +9,7 @@ import {PersonalHeaderModule} from '../personal-header/personal-header.module';
 import {DashboardModule} from '../dashboard/dashboard.module';
 import {AvatarModule} from 'ngx-avatar';
 import {VoorspellenPageModule} from '../voorspellen/voorspellen.module';
+import {FooterModule} from '../footer/footer.module';
 
 @NgModule({
     declarations: [HomePage],
@@ -19,6 +20,7 @@ import {VoorspellenPageModule} from '../voorspellen/voorspellen.module';
         PersonalHeaderModule,
         DashboardModule,
         VoorspellenPageModule,
+        FooterModule,
         AvatarModule,
         RouterModule.forChild([
             {

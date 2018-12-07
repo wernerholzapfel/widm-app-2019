@@ -1,20 +1,23 @@
 <ion-header>
+    <!--<ion-toolbar color="dark">-->
+        <!--<ion-title *ngIf="(deelnemer$ | async) as deelnemer">{{deelnemer.display_name}}</ion-title>-->
+        <!--<ion-buttons slot="end">-->
+            <!--<ion-button *ngIf="!(authService.user$ | async)" (click)="goToLogin()">-->
+                <!--<ion-icon name="log-in"></ion-icon>-->
+            <!--</ion-button>-->
+            <!--<ion-button *ngIf="(authService.user$ | async)" (click)="logout()">-->
+                <!--<ion-icon name="log-out"></ion-icon>-->
+            <!--</ion-button>-->
+        <!--</ion-buttons>-->
+    <!--</ion-toolbar>-->
     <ion-toolbar color="dark">
-        <ion-title *ngIf="(deelnemer$ | async) as deelnemer">{{deelnemer.display_name}}</ion-title>
-        <ion-buttons slot="end">
-            <ion-button *ngIf="!(authService.user$ | async)" (click)="goToLogin()">
-                <ion-icon name="log-in"></ion-icon>
-            </ion-button>
-            <ion-button *ngIf="(authService.user$ | async)" (click)="authService.logout()">
-                <ion-icon name="log-out"></ion-icon>
-            </ion-button>
-        </ion-buttons>
+        <app-personal-header></app-personal-header>
     </ion-toolbar>
-    <app-personal-header></app-personal-header>
 </ion-header>
 <ion-content>
     <app-dashboard></app-dashboard>
 </ion-content>
+<app-footer></app-footer>
 <!--<ion-tabs color="dark" *ngIf="router.url !== '/home/dashboard'">-->
     <!--<ion-tab (ionSelect)="goToDashboard()" label="Dashboard" icon="home"></ion-tab>-->
     <!--<ion-tab label="Poules" icon="logo-buffer"></ion-tab>-->

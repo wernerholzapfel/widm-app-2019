@@ -1,45 +1,33 @@
-<ion-toolbar color="dark">
-    <ion-buttons slot="start">
-        <ion-back-button defaultHref="home"></ion-back-button>
-    </ion-buttons>
-    <ion-buttons slot="end">
-        <ion-button *ngIf="uitnodigingen?.length > 0" color="warning" (click)="goToAcceptInvite()">
-            <ion-icon name="mail-unread"></ion-icon>
-        </ion-button>
-        <ion-button (click)="goToAddPoule()">
-            <ion-icon name="add"></ion-icon>
-        </ion-button>
-    </ion-buttons>
-    <ion-title>{{poule_name}}</ion-title>
-</ion-toolbar>
-<ion-toolbar color="dark">
-    <ion-grid>
-        <ion-row>
-            <ion-col [size]="2" align-self-center>
-                <ion-row justify-content-center>
-                    <ion-icon class="large-icon"
-                              *ngIf="activePouleIndex > 0 && router.url !== '/poules/adddeelnemer'"
-                              name="arrow-back"
-                              (click)="activatePoule(activePouleIndex - 1)"></ion-icon>
-                </ion-row>
-            </ion-col>
-            <ion-col align-self-center>
-                <ion-row justify-content-center>
-                    <div class="eigen-avatar">#{{positie ? positie : 0}}</div>
-                </ion-row>
-            </ion-col>
-            <ion-col [size]="2" align-self-center>
-                <ion-row justify-content-center>
-                    <ion-icon class="large-icon"
-                              *ngIf="activePouleIndex + 1 < numberOfPoules && router.url !== '/poules/adddeelnemer'"
-                              (click)="activatePoule(activePouleIndex + 1)"
-                              name="arrow-forward"></ion-icon>
-                </ion-row>
-            </ion-col>
-        </ion-row>
-    </ion-grid>
-</ion-toolbar>
+<ion-header>
+    <ion-toolbar color="dark">
+        <ion-grid class="no-padding">
+            <ion-row>
+                <ion-col [size]="2" align-self-center>
+                    <ion-row justify-content-center>
+                        <ion-icon class="large-icon"
+                                  *ngIf="activePouleIndex > 0 && router.url !== '/poules/adddeelnemer'"
+                                  name="arrow-back"
+                                  (click)="activatePoule(activePouleIndex - 1)"></ion-icon>
+                    </ion-row>
+                </ion-col>
+                <ion-col align-self-center>
+                    <ion-row justify-content-center>
+                        <div class="eigen-avatar">#{{positie ? positie : 0}}</div>
+                    </ion-row>
+                </ion-col>
+                <ion-col [size]="2" align-self-center>
+                    <ion-row justify-content-center>
+                        <ion-icon class="large-icon"
+                                  *ngIf="activePouleIndex + 1 < numberOfPoules && router.url !== '/poules/adddeelnemer'"
+                                  (click)="activatePoule(activePouleIndex + 1)"
+                                  name="arrow-forward"></ion-icon>
+                    </ion-row>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </ion-toolbar>
+</ion-header>
 <ion-content class="grid-full">
     <ion-router-outlet></ion-router-outlet>
-    <!--<app-poule [activePoule]="activePoule"></app-poule>-->
 </ion-content>
+<app-footer></app-footer>

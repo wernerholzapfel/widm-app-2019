@@ -5,6 +5,9 @@ import {combineLatest, Subject} from 'rxjs';
 import {NavController} from '@ionic/angular';
 import {ActivatedRoute} from '@angular/router';
 import {navigation} from '../../constants/navigation.constants';
+import {getDeelnemerId} from '../../store/poules/poules.reducer';
+import {select, Store} from '@ngrx/store';
+import {IAppState} from '../../store/store';
 
 @Component({
     selector: 'app-poule',
@@ -15,19 +18,17 @@ export class PouleComponent implements OnInit, OnDestroy {
     unsubscribe: Subject<void> = new Subject<void>();
     activePoule: any;
     isPouleAdmin: boolean;
-    deelnemerId: boolean;
+    deelnemerId: string;
 
-    constructor(private uiService: UiService, private navCtrl: NavController, private route: ActivatedRoute) {
+    constructor(private uiService: UiService,
+                private navCtrl: NavController,
+                private route: ActivatedRoute,
+                private store: Store<IAppState>) {
     }
 
     ngOnInit() {
 
-        // this.uiService.activePoule$.pipe(takeUntil(this.unsubscribe)).subscribe(activePoule => {
-        //     this.deelnemerId = this.uiService.deelnemerId$.getValue();
-        //     this.activePoule = activePoule;
-        //     this.isPouleAdmin = !!activePoule.admins.find(admin => admin.id === this.deelnemerId);
-        // });
-        combineLatest(this.uiService.activePoule$, this.uiService.deelnemerId$)
+        combineLatest(this.uiService.activePoule$, this.store.pipe(select(getDeelnemerId)))
             .pipe(takeUntil(this.unsubscribe))
             .subscribe(
                 ([activePoule, deelnemerId]) => {
@@ -47,6 +48,10 @@ export class PouleComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.unsubscribe.unsubscribe();
+    }
+
+    goToAddPoule() {
+        this.navCtrl.navigateForward(`${navigation.poules}/${navigation.addpoule}`);
     }
 
 }
