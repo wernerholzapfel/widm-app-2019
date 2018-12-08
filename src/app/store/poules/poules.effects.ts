@@ -113,7 +113,7 @@ export class PoulesEffects {
     }
 
     determineTestPunten(test: any) {
-        return !test.antwoord.is_niet_meer_mogelijk_sinds ? vragenPunten : 0;
+        return (test.antwoord && !test.antwoord.is_niet_meer_mogelijk_sinds) ? vragenPunten : 0;
     }
 
     calculatePosition(deelnemer, index, deelnemers) {

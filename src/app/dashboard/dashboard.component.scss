@@ -1,7 +1,7 @@
 :host {
   .grid-full ion-row {
     height: 100%;
-    padding: 0;
+    padding: 0 5px 10px 5px;
     flex-wrap: wrap;
   }
 
@@ -9,14 +9,14 @@
     flex: 0 0 100% !important;
     max-width: 100% !important;
     text-align: center;
-    padding: 10px 5px;
+    padding: 10px 10px 0 10px;
   }
 
   .grid-full ion-col {
     flex: 0 0 50%;
     max-width: 50%;
     text-align: center;
-    padding: 10px 5px;
+    padding: 10px 5px 0 5px;
   }
 
   ion-card {

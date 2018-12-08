@@ -50,6 +50,7 @@ export class AuthService {
         this._firebaseAuth.auth.signOut()
             .then(response => {
             this.store.dispatch(new ResetPoules());
+            this.uiService.huidigeVoorspelling$.next(null);
         });
     }
 

@@ -9,6 +9,8 @@ import {getActies} from '../store/acties/acties.reducer';
 import {VoorspellenService} from '../services/api/voorspellen.service';
 import {IKandidaat} from '../interface/IKandidaat';
 import {getDeelnemerId} from '../store/poules/poules.reducer';
+import {NavController} from '@ionic/angular';
+import {navigation} from '../constants/navigation.constants';
 
 
 export interface VoorspellingsBody {
@@ -44,7 +46,7 @@ export class VoorspellenComponent implements OnInit, OnDestroy {
     constructor(private uiService: UiService,
                 private formBuilder: FormBuilder,
                 private store: Store<IAppState>,
-                private voorspellenService: VoorspellenService) {
+                private voorspellenService: VoorspellenService, private navCtrl: NavController) {
     }
 
     ngOnInit() {
@@ -93,7 +95,7 @@ export class VoorspellenComponent implements OnInit, OnDestroy {
         this.voorspellingsLijst.find(vp => vp.type === voorspellingsType).kandidaat = this.activeKandidaat;
         this.huidigeVoorspelling[voorspellingsType] = this.activeKandidaat;
         this.setSelectedState(voorspellingsType, false);
-        this.submitVoorspellingen();
+        this.submitVoorspellingen(false);
     }
 
     editKandidaat(voorspellingsType: string) {
@@ -112,17 +114,20 @@ export class VoorspellenComponent implements OnInit, OnDestroy {
         this.huidigeVoorspelling[voorspellingsType] = kandidaat;
     }
 
-    submitVoorspellingen() {
-        // if (this.nieuweRonde) {
-        //     this.voorspelling.get('id').disable();
-        // }
+    submitVoorspellingen(final: boolean) {
 
         console.log(this.huidigeVoorspelling);
         this.voorspellenService.saveVoorspelling(Object.assign({}, this.huidigeVoorspelling)).subscribe(response => {
             this.uiService.huidigeVoorspelling$.next(response);
             this.huidigeVoorspelling.id = response.id;
+            if (this.huidigeVoorspelling.mol && this.huidigeVoorspelling.afvaller && this.huidigeVoorspelling.winnaar) {
+                this.uiService.voorspellingAfgerond$.next(true);
+                // window['plugins'].OneSignal.sendTag('laatsteVoorspelling', this.voorspelling.get('aflevering').value);
+            }
             this.uiService.presentToast('Opslaan is gelukt');
-            // window['plugins'].OneSignal.sendTag('laatsteVoorspelling', this.voorspelling.get('aflevering').value);
+            if (final) {
+                this.navCtrl.navigateForward(`${navigation.home}`);
+            }
         }, error => {
             // todo error message er uithalen en tonen.
             this.uiService.presentToast('Er is iets misgegaan.');

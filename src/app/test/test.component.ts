@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {Subject, Subscription, timer} from 'rxjs';
+import {combineLatest, Subject, Subscription, timer} from 'rxjs';
 import {take, takeUntil} from 'rxjs/operators';
 
 import {AlertController, NavController, ToastController} from '@ionic/angular';
@@ -55,36 +55,42 @@ export class TestComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.isLoading = true;
-        this.store.pipe(select(getDeelnemerId)).pipe(takeUntil(this.unsubscribe)).subscribe(response => {
-                this.deelnemerId = response;
-        });
-        this.store
-            .pipe(
-                takeUntil(this.unsubscribe),
-                select(getActies))
+        this.store.pipe(
+            takeUntil(this.unsubscribe),
+            select(getDeelnemerId))
             .subscribe(response => {
-                if (response) {
-                    console.log('nieuwe acties');
-                    this.acties = response;
-                    this.deadlineVerstreken = this.acties.testDeadlineDatetime <= new Date().toISOString();
-                    switch (true) {
-                        case (this.acties.testaflevering === 0):
-                            this.showgeentestschermFunc();
-                            break;
-                        case (this.acties.testaflevering === null):
-                            console.log('testaflevering is null');
-                            this.showeindeseizoenschermFunc();
-                            break;
-                        default:
-                            this.showstartscherm = true;
-                            break;
-                    }
-                    if (this.deadlineVerstreken) {
-                        this.showDeadlinePopup();
-                    }
-                    this.isLoading = false;
-                }
+                this.deelnemerId = response;
             });
+
+        combineLatest(this.store.pipe(select(getActies)),
+            this.testService.gettest())
+            .pipe(takeUntil(this.unsubscribe))
+                .subscribe(([response, testvragen]) => {
+                    if (response && testvragen) {
+                        console.log('nieuwe acties');
+                        this.acties = response;
+                        this.deadlineVerstreken = this.acties.testDeadlineDatetime <= new Date().toISOString();
+                        switch (true) {
+                            case (testvragen.aantalOpenVragen === 0):
+                                this.showeindschermFunc();
+                                break;
+                            case (this.acties.testaflevering === 0):
+                                this.showgeentestschermFunc();
+                                break;
+                            case (this.acties.testaflevering === null):
+                                console.log('testaflevering is null');
+                                this.showeindeseizoenschermFunc();
+                                break;
+                            default:
+                                this.showstartscherm = true;
+                                break;
+                        }
+                        if (this.deadlineVerstreken) {
+                            this.showDeadlinePopup();
+                        }
+                        this.isLoading = false;
+                    }
+                });
     }
 
     async showDeadlinePopup() {
@@ -132,6 +138,7 @@ export class TestComponent implements OnInit, OnDestroy {
                     this.question = null;
                 });
             } else {
+                this.uiService.testAfgerond$.next(true);
                 this.showeindschermFunc();
             }
         });
@@ -168,7 +175,7 @@ export class TestComponent implements OnInit, OnDestroy {
     }
 
 
-     presentToast(message: string) {
+    presentToast(message: string) {
         this.uiService.presentToast(message);
     }
 

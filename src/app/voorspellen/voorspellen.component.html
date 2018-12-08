@@ -11,8 +11,8 @@
                     </ion-row>
                 </ion-col>
                 <ion-col center>
-                    <div (click)="saveKandidaat(voorspellingsType)">
-                        <ion-avatar *ngIf="activeKandidaat && selectKandidaat" class="is_mol_in_spel">
+                    <div>
+                        <ion-avatar (click)="saveKandidaat(voorspellingsType)" *ngIf="activeKandidaat && selectKandidaat" class="is_mol_in_spel">
                             <img [src]="activeKandidaat?.image_url">
                         </ion-avatar>
                         <ion-avatar *ngIf="activeKandidaat && !selectKandidaat">
@@ -72,7 +72,7 @@
                             <ion-icon slot="end" *ngIf="voorspelling.selected" color="dark" name="ios-save"
                                       (click)="saveKandidaat(voorspelling.type)"></ion-icon>
                         </ion-item>
-                        <ion-button color="tertiary" expand="full">Opslaan
+                        <ion-button color="tertiary" expand="full" (click)="submitVoorspellingen(true)">Opslaan
                         </ion-button>
                     </ion-card-content>
                 </ng-container>

@@ -13,8 +13,8 @@ import {KandidatenService} from './services/api/kandidaten.service';
 import {VoorspellenService} from './services/api/voorspellen.service';
 import {AuthService} from './services/authentication/auth.service';
 import {combineLatest, Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
 import {getActies} from './store/acties/acties.reducer';
+import {TestService} from './services/api/test.service';
 
 @Component({
     selector: 'app-root',
@@ -34,27 +34,42 @@ export class AppComponent implements OnInit, OnDestroy {
         private uiService: UiService,
         private kandidatenService: KandidatenService,
         private voorspellenService: VoorspellenService,
-        private authService: AuthService
+        private authService: AuthService,
+        private testService: TestService
     ) {
         this.initializeApp();
 
     }
 
     ngOnInit() {
+        this.platform.resume.subscribe(() => {
+            this.store.dispatch(new FetchActiesInProgress());
+        });
+
         this.store.dispatch(new FetchActiesInProgress());
 
-        combineLatest(this.store.pipe(
-            takeUntil(this.unsubscribe),
-            select(getActies))
-            , this.authService.user$,
-            this.voorspellenService.getLaatsteVoorspelling()).subscribe(([acties, user, voorspelling]) => {
-            if (acties && user) {
-                this.aflevering = acties.voorspellingaflevering ? acties.voorspellingaflevering : 1;
-                this.store.dispatch(new FetchPoulesInProgress());
-                this.uitnodigingenService.getUitnodigingen().subscribe(response => this.uiService.uitnodigingen$.next(response));
-                this.uiService.huidigeVoorspelling$.next(Object.assign([], voorspelling, {aflevering: acties.voorspellingaflevering ? acties.voorspellingaflevering : 1}));
-            }
-        });
+        const acties$ = this.store.pipe(select(getActies));
+
+        const aantalOnbeantwoordeVragen$ = this.testService.getaantalOnbeantwoordeVragen();
+
+        this.authService.user$.subscribe(response =>  this.uiService.isLoading$.next(false));
+
+        combineLatest(acties$, this.authService.user$,
+            this.voorspellenService.getLaatsteVoorspelling(),
+            aantalOnbeantwoordeVragen$)
+            .subscribe(([acties, user, voorspelling, aantalOnbeantwoordeVragen]) => {
+                if (acties && user) {
+                    this.aflevering = acties.voorspellingaflevering ? acties.voorspellingaflevering : 1;
+                    this.store.dispatch(new FetchPoulesInProgress());
+                    this.uitnodigingenService.getUitnodigingen().subscribe(response => this.uiService.uitnodigingen$.next(response));
+                    this.uiService.huidigeVoorspelling$
+                        .next(Object.assign([], voorspelling,
+                            {aflevering: acties.voorspellingaflevering ? acties.voorspellingaflevering : 1}));
+                    this.uiService.voorspellingAfgerond$.next(voorspelling && acties.voorspellingaflevering === voorspelling.aflevering);
+                    this.uiService.testAfgerond$.next(aantalOnbeantwoordeVragen.aantalOpenVragen === 0);
+                    this.uiService.isLoading$.next(false);
+                }
+            });
         this.kandidatenService.getKandidaten().subscribe(response => this.uiService.kandidaten$.next(response));
     }
 

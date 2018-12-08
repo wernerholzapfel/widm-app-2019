@@ -11,19 +11,23 @@ export class UiService {
     constructor(private store: Store<IAppState>, private toastCtrl: ToastController) {
     }
 
+    isLoading$: BehaviorSubject<boolean> = new BehaviorSubject(true);
     activePoule$: BehaviorSubject<any> = new BehaviorSubject(null);
     uitnodigingen$: BehaviorSubject<any> = new BehaviorSubject([]);
     kandidaten$: BehaviorSubject<any> = new BehaviorSubject([]);
     huidigeVoorspelling$: BehaviorSubject<any> = new BehaviorSubject(null);
+    testAfgerond$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+    voorspellingAfgerond$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
-    async presentToast(message: string) {
+    async presentToast(message: string, color: string = 'tertiary') {
         const toast = await this.toastCtrl.create({
             message: message,
-            duration: 50000,
+            duration: 4000,
             position: 'bottom',
             showCloseButton: true,
             closeButtonText: 'OK',
-            color: 'dark'
+            color: color,
+            cssClass: 'toast-position'
         });
         toast.present();
     }

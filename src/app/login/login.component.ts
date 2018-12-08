@@ -4,6 +4,7 @@ import {FormControl, FormGroup, NgForm, Validators} from '@angular/forms';
 import {AuthService} from '../services/authentication/auth.service';
 import {NavController} from '@ionic/angular';
 import {navigation} from '../constants/navigation.constants';
+import {UiService} from '../services/app/ui.service';
 
 @Component({
     selector: 'app-login',
@@ -22,7 +23,8 @@ export class LoginComponent implements OnInit {
     activeSegment = 'inschrijven';
 
     constructor(public authService: AuthService,
-                private router: Router, public navCtrl: NavController) {
+                private router: Router, public navCtrl: NavController,
+                private uiService: UiService) {
     }
     wachtwoordvergeten = false;
 
@@ -37,8 +39,7 @@ export class LoginComponent implements OnInit {
                 this.navCtrl.navigateForward(`${navigation.home}/${navigation.dashboard}`, false);
             })
             .catch((err) => {
-                // this.snackBar.open(err.message, 'OK', {});
-                console.log('error: ' + err);
+                this.uiService.presentToast(err.message);
             });
     }
 
@@ -71,8 +72,7 @@ export class LoginComponent implements OnInit {
                 }
             )
             .catch((err) => {
-                // this.snackBar.open(err.message, 'OK', {});
-                console.log('error: ' + err);
+                this.uiService.presentToast(err.message);
             });
     }
 

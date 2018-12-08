@@ -38,8 +38,23 @@ $green: #25B973;
 .no-padding {
   padding: 0;
 }
+.toast-position {
+  top: -44px;
+}
 
-.toast-bottom {
-  bottom: 44px;
+div.spinner {
+  margin: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 85px;
+  text-align: center;
+}
+
+.spinner svg {
+  //width: 19% !important;
+  height: 85px !important;
 }
 

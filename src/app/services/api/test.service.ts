@@ -22,6 +22,12 @@ export class TestService {
                 map(res => <any[]>res));
     }
 
+    getaantalOnbeantwoordeVragen(): Observable<any> {
+        return this.httpClient.get(`${this.api}/quizvragen/aantalopenvragen`)
+            .pipe(
+                map(res => <any[]>res));
+    }
+
     saveAnswer(answer): Observable<any> {
         return this.httpClient.post(`${this.api}/quizresultaten`, answer)
             .pipe(
