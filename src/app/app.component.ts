@@ -15,6 +15,7 @@ import {AuthService} from './services/authentication/auth.service';
 import {combineLatest, Subject} from 'rxjs';
 import {getActies} from './store/acties/acties.reducer';
 import {TestService} from './services/api/test.service';
+import {takeUntil} from 'rxjs/operators';
 
 @Component({
     selector: 'app-root',
@@ -42,6 +43,15 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+
+        this.voorspellenService.getAllVoorspellingen().pipe(takeUntil(this.unsubscribe)).subscribe(response => {
+            this.uiService.voorspellingen$.next(response);
+        });
+
+        this.testService.gettests().pipe(takeUntil(this.unsubscribe)).subscribe(response => {
+            this.uiService.tests$.next(response);
+        });
+
         this.platform.resume.subscribe(() => {
             this.store.dispatch(new FetchActiesInProgress());
         });
@@ -63,8 +73,7 @@ export class AppComponent implements OnInit, OnDestroy {
                     this.store.dispatch(new FetchPoulesInProgress());
                     this.uitnodigingenService.getUitnodigingen().subscribe(response => this.uiService.uitnodigingen$.next(response));
                     this.uiService.huidigeVoorspelling$
-                        .next(Object.assign([], voorspelling,
-                            {aflevering: acties.voorspellingaflevering ? acties.voorspellingaflevering : 1}));
+                        .next(voorspelling);
                     this.uiService.voorspellingAfgerond$.next(voorspelling && acties.voorspellingaflevering === voorspelling.aflevering);
                     this.uiService.testAfgerond$.next(aantalOnbeantwoordeVragen.aantalOpenVragen === 0);
                     this.uiService.isLoading$.next(false);

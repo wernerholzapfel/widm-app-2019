@@ -54,7 +54,7 @@
                                 <ion-icon class="icon-avatar" name="person"></ion-icon>
                             </ion-avatar>
                             <ion-label text-wrap>
-                                <ion-text color="dark" *ngIf="!voorspelling.selected && voorspelling.kandidaat">
+                                <ion-text color="dark" [ngClass]="{'afgevallen': voorspelling.kandidaat.afgevallen}" *ngIf="!voorspelling.selected && voorspelling.kandidaat">
                                     <h3>{{voorspelling.type}}</h3>
                                     <h3>{{voorspelling.kandidaat?.display_name}}</h3>
                                     <p>46% heeft deze {{voorspelling.type}}

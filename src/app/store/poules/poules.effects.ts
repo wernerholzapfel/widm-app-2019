@@ -12,6 +12,7 @@ import {
 } from './poules.actions';
 import {AddAlert} from '../alerts/alerts.actions';
 import {PoulesService} from '../../services/api/poules.service';
+import {CalculatieService, vragenPunten} from '../../calculatie.service';
 
 @Injectable()
 export class PoulesEffects {
@@ -47,16 +48,16 @@ export class PoulesEffects {
                                 .map(voorspelling => ({
                                     ...voorspelling,
                                     mol: Object.assign(voorspelling.mol,
-                                        {punten: this.determineMolPunten(voorspelling.mol, voorspelling.aflevering)}),
+                                        {punten: this.calculatieService.determineMolPunten(voorspelling.mol, voorspelling.aflevering)}),
                                     winnaar: Object.assign(voorspelling.winnaar,
-                                        {punten: this.determineWinnaarPunten(voorspelling.winnaar, voorspelling.aflevering)}),
+                                        {punten: this.calculatieService.determineWinnaarPunten(voorspelling.winnaar, voorspelling.aflevering)}),
                                     afvaller: Object.assign(voorspelling.afvaller,
-                                        {punten: this.determineAfvallerPunten(voorspelling.afvaller, voorspelling.aflevering)}),
+                                        {punten: this.calculatieService.determineAfvallerPunten(voorspelling.afvaller, voorspelling.aflevering)}),
                                 })),
                             tests: deelnemer.tests
                                 .map(test => ({
                                     ...test,
-                                    punten: this.determineTestPunten(test)
+                                    punten: this.calculatieService.determineTestPunten(test)
                                 }))
                         }))
                         .map(deelnemer => {
@@ -85,7 +86,7 @@ export class PoulesEffects {
                         }))
                         .sort((a, b) => b.totaalpunten - a.totaalpunten)
                         .map((deelnemer, index, deelnemers) => Object.assign(deelnemer, {
-                            positie: this.calculatePosition(deelnemer, index, deelnemers)
+                            positie: this.calculatieService.calculatePosition(deelnemer, index, deelnemers)
                         }))
                 }))
         })),
@@ -97,34 +98,6 @@ export class PoulesEffects {
             ])));
 
     constructor(private actions$: Actions,
-                private poulesService: PoulesService) {
-    }
-
-    determineMolPunten(mol: any, aflevering: number) {
-        return mol.mol ? molPunten : mol.afgevallen && mol.aflevering === aflevering ? molStrafpunten : 0;
-    }
-
-    determineWinnaarPunten(winnaar: any, aflevering: number) {
-        return winnaar.winner ? winnaarPunten : winnaar.afgevallen && winnaar.aflevering === aflevering ? winnaarStrafpunten : 0;
-    }
-
-    determineAfvallerPunten(afvaller: any, aflevering: number) {
-        return afvaller.afgevallen && afvaller.aflevering === aflevering ? afvallerPunten : 0;
-    }
-
-    determineTestPunten(test: any) {
-        return (test.antwoord && !test.antwoord.is_niet_meer_mogelijk_sinds) ? vragenPunten : 0;
-    }
-
-    calculatePosition(deelnemer, index, deelnemers) {
-        return index > 0 && deelnemer.totaalpunten === deelnemers[index - 1].totaalpunten ?
-            deelnemers[index - 1].positie : index + 1;
+                private poulesService: PoulesService, private calculatieService: CalculatieService) {
     }
 }
-
-export const molStrafpunten = -10;
-export const winnaarStrafpunten = -5;
-export const afvallerPunten = 20;
-export const molPunten = 20;
-export const winnaarPunten = 10;
-export const vragenPunten = 10;

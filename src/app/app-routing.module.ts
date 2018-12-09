@@ -6,11 +6,12 @@ import {LoginComponent} from './login/login.component';
 import {DisclaimerComponent} from './disclaimer/disclaimer.component';
 import {TestComponent} from './test/test.component';
 import {VoorspellenComponent} from './voorspellen/voorspellen.component';
+import {PuntenComponent} from './punten/punten.component';
 
 const routes: Routes = [
     {path: '', redirectTo: navigation.home, pathMatch: 'full'},
     {path: navigation.poules, loadChildren: './poules/poules.module#PoulesPageModule'},
-    {path: navigation.disclaimer, component: DisclaimerComponent},
+    {path: navigation.punten, component: PuntenComponent},
     {path: navigation.test, component: TestComponent},
     {path: navigation.voorspellen, component: VoorspellenComponent},
     {path: navigation.home, component: HomePage},

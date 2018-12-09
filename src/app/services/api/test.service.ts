@@ -47,5 +47,10 @@ export class TestService {
                 map(res => <any>res));
     }
 
+    gettests(): Observable<any> {
+        return this.httpClient.get(`${this.api}/deelnemers/tests`)
+            .pipe(
+                map(res => <any>res));
+    }
 
 }

@@ -4,7 +4,7 @@ export const navigation = {
     dashboard: 'dashboard',
     poules: 'poules',
     test: 'test',
-    disclaimer: 'disclaimer',
+    punten: 'punten',
     poule: 'poule',
     addpoule: 'addpoule',
     acceptinvite: 'acceptinvite',

@@ -1,7 +1,6 @@
 // Ionic Variables and Theming. For more info, please see:
 // http://ionicframework.com/docs/theming/
 
-
 /** Ionic CSS Variables **/
 :root {
   $background-color: #222428;
@@ -29,8 +28,8 @@
   --ion-color-tertiary-rgb: 112,68,255;
   --ion-color-tertiary-contrast: #ffffff;
   --ion-color-tertiary-contrast-rgb: 255,255,255;
-  --ion-color-success-shade: #0ec254;
-  --ion-color-success-tint: #28e070;
+  --ion-color-tertiary-shade: #0ec254;
+  --ion-color-tertiary-tint: #28e070;
 
   /** success **/
   --ion-color-success: #10dc60;
@@ -82,4 +81,6 @@
 
   --inner-border-width: 0px;
   --border-color: transparent;
+
+  --border-style: none;
 }

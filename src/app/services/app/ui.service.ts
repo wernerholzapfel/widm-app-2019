@@ -13,6 +13,8 @@ export class UiService {
 
     isLoading$: BehaviorSubject<boolean> = new BehaviorSubject(true);
     activePoule$: BehaviorSubject<any> = new BehaviorSubject(null);
+    tests$: BehaviorSubject<any> = new BehaviorSubject(null);
+    voorspellingen$: BehaviorSubject<any> = new BehaviorSubject(null);
     uitnodigingen$: BehaviorSubject<any> = new BehaviorSubject([]);
     kandidaten$: BehaviorSubject<any> = new BehaviorSubject([]);
     huidigeVoorspelling$: BehaviorSubject<any> = new BehaviorSubject(null);

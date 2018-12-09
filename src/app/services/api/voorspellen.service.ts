@@ -21,6 +21,12 @@ export class VoorspellenService {
             map(res => <any>res));
     }
 
+    getAllVoorspellingen(): Observable<any> {
+        return this.httpClient.get(`${this.api}/deelnemers/voorspellingen`)
+            .pipe(
+            map(res => <any>res));
+    }
+
     saveVoorspelling(value): Observable<any> {
         return this.httpClient.post(`${this.api}/voorspellingen/`, JSON.stringify(value)).pipe(
             map(res => <any>res));

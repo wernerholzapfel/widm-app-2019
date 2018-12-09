@@ -24,16 +24,14 @@ import {EffectsModule} from '@ngrx/effects';
 import {PoulesEffects} from './store/poules/poules.effects';
 import {PoulesService} from './services/api/poules.service';
 import {AuthService} from './services/authentication/auth.service';
-import { DisclaimerComponent } from './disclaimer/disclaimer.component';
-import { TestComponent } from './test/test.component';
 import {PoulesPageModule} from './poules/poules.module';
 import {DisclaimerModule} from './disclaimer/disclaimer.module';
 import {TestModule} from './test/test.module';
-import {PouleModule} from './poules/poule/poule.module';
 import {UiService} from './services/app/ui.service';
-import { VoorspellenComponent } from './voorspellen/voorspellen.component';
-import { FooterComponent } from './footer/footer.component';
 import {FooterModule} from './footer/footer.module';
+import {PuntenModule} from './punten/punten.module';
+import {PuntenItemModule} from './punten/punten-item/punten-item.module';
+import {AvatarModule} from 'ng2-avatar';
 
 @NgModule({
     declarations: [AppComponent],
@@ -48,6 +46,9 @@ import {FooterModule} from './footer/footer.module';
         DisclaimerModule,
         FooterModule,
         TestModule,
+        PuntenModule,
+        PuntenItemModule,
+        AvatarModule.forRoot(),
         AngularFireModule.initializeApp(environment.firebase, 'angular-auth-firebase'),
         StoreModule.forRoot(reducers),
         StoreDevtoolsModule.instrument(),

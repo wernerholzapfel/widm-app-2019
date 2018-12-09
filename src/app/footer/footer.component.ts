@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../services/authentication/auth.service';
 import {navigation} from '../constants/navigation.constants';
 import {NavController} from '@ionic/angular';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'app-footer',
@@ -10,7 +11,7 @@ import {NavController} from '@ionic/angular';
 })
 export class FooterComponent implements OnInit {
 
-    constructor(public authService: AuthService, private navCtrl: NavController) {
+    constructor(public authService: AuthService, private navCtrl: NavController, public router: Router) {
     }
 
     ngOnInit() {

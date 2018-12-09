@@ -12,8 +12,8 @@
         </ion-col>
         <ion-col center>
             <div>
-                <ion-avatar *ngIf="mol" class="is_mol_in_spel" (click)="goToVoorspelling()">
-                    <img [src]="mol?.image_url">
+                <ion-avatar *ngIf="mol" (click)="goToVoorspelling()">
+                    <img class="is_mol_in_spel" [src]="mol?.image_url">
                 </ion-avatar>
                 <ion-avatar *ngIf="!mol">
                     <ion-icon class="header-avatar" name="person"></ion-icon>

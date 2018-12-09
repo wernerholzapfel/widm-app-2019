@@ -71,11 +71,11 @@ export class TestComponent implements OnInit, OnDestroy {
                         this.acties = response;
                         this.deadlineVerstreken = this.acties.testDeadlineDatetime <= new Date().toISOString();
                         switch (true) {
-                            case (testvragen.aantalOpenVragen === 0):
-                                this.showeindschermFunc();
-                                break;
                             case (this.acties.testaflevering === 0):
                                 this.showgeentestschermFunc();
+                                break;
+                            case (testvragen.aantalOpenVragen === 0):
+                                this.showeindschermFunc();
                                 break;
                             case (this.acties.testaflevering === null):
                                 console.log('testaflevering is null');

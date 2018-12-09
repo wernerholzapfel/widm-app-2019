@@ -90,7 +90,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     goToDisclaimer() {
-        this.navCtrl.navigateForward(`${navigation.disclaimer}`);
+        this.navCtrl.navigateForward(`${navigation.punten}`);
     }
 
     goToVoorspellen() {
