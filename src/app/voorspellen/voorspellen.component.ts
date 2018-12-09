@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {UiService} from '../services/app/ui.service';
 import {takeUntil} from 'rxjs/operators';
-import {Subject} from 'rxjs';
+import {combineLatest, Subject} from 'rxjs';
 import {FormBuilder} from '@angular/forms';
 import {IAppState} from '../store/store';
 import {select, Store} from '@ngrx/store';
@@ -53,23 +53,20 @@ export class VoorspellenComponent implements OnInit, OnDestroy {
 
         this.header = 'Voorspellen';
 
-        this.uiService.huidigeVoorspelling$.pipe(takeUntil(this.unsubscribe)).subscribe(response => {
-            if (response) {
-                this.huidigeVoorspelling = response;
-                this.setInitialKandidaat('mol', response.mol);
-                this.setInitialKandidaat('afvaller', response.afvaller);
-                this.setInitialKandidaat('winnaar', response.winnaar);
+        combineLatest(this.uiService.huidigeVoorspelling$, this.store.pipe(
+            select(getActies)))
+            .pipe(takeUntil(this.unsubscribe)).subscribe(([huidigevoorspelling, acties]) => {
+            if (huidigevoorspelling && acties) {
+                this.huidigeVoorspelling = huidigevoorspelling;
+                if (acties.voorspellingaflevering !== huidigevoorspelling.aflevering) {
+                    delete this.huidigeVoorspelling.id;
+                }
+                this.huidigeVoorspelling.aflevering = acties.voorspellingaflevering ? acties.voorspellingaflevering : 1;
+                this.setInitialKandidaat('mol', huidigevoorspelling.mol);
+                this.setInitialKandidaat('afvaller', huidigevoorspelling.afvaller);
+                this.setInitialKandidaat('winnaar', huidigevoorspelling.winnaar);
             }
         });
-
-        this.store.pipe(
-            takeUntil(this.unsubscribe),
-            select(getActies))
-            .subscribe(response => {
-                if (response) {
-                    this.huidigeVoorspelling.aflevering = response.voorspellingaflevering ? response.voorspellingaflevering : 1;
-                }
-            });
 
         this.store.pipe(
             takeUntil(this.unsubscribe),
@@ -136,7 +133,7 @@ export class VoorspellenComponent implements OnInit, OnDestroy {
 
     private setActiveIndex(voorspellingsType: string) {
         const vorigeVoorspelling = this.voorspellingsLijst.find(vp => vp.type === voorspellingsType);
-        if (vorigeVoorspelling.kandidaat) {
+        if (vorigeVoorspelling.kandidaat && !vorigeVoorspelling.kandidaat.afgevallen) {
             this.activeIndex = this.kandidaten.findIndex(
                 kandidaat => kandidaat.id === this.voorspellingsLijst.find(
                     vp => vp.type === voorspellingsType).kandidaat.id);

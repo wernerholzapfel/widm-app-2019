@@ -1,0 +1,13 @@
+<ion-item [ngClass]="{'afgevallen': kandidaat?.afgevallen}">
+  <ion-avatar slot="start">
+    <img [src]="kandidaat?.image_url">
+  </ion-avatar>
+  <ion-label text-wrap>
+    <ion-text>
+      <h3>{{kandidaat?.display_name}}</h3>
+      <ion-text>
+        <p class="subtitle">{{voorspellingsType}} - {{kandidaat?.punten}} punten</p>
+      </ion-text>
+    </ion-text>
+  </ion-label>
+</ion-item>

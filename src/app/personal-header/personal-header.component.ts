@@ -5,9 +5,10 @@ import {NavController} from '@ionic/angular';
 import {IAppState} from '../store/store';
 import {select, Store} from '@ngrx/store';
 import {getDeelnemerScore} from '../store/poules/poules.reducer';
-import {Observable, Subject} from 'rxjs';
+import {combineLatest, Observable, Subject} from 'rxjs';
 import {UiService} from '../services/app/ui.service';
 import {takeUntil} from 'rxjs/operators';
+import {KandidatenService} from '../services/api/kandidaten.service';
 
 @Component({
     selector: 'app-personal-header',
@@ -18,6 +19,7 @@ export class PersonalHeaderComponent implements OnInit, OnDestroy {
     unsubscribe: Subject<void> = new Subject<void>();
     deelnemer$: Observable<any>;
     mol: any;
+    molPercentage: number;
     options: NativeTransitionOptions = {
         direction: 'down',
         duration: 1000,
@@ -31,7 +33,9 @@ export class PersonalHeaderComponent implements OnInit, OnDestroy {
     constructor(private navCtrl: NavController,
                 private nativePageTransitions: NativePageTransitions,
                 private store: Store<IAppState>,
-                private uiService: UiService) {
+                private uiService: UiService,
+                private kandidatenService: KandidatenService
+    ) {
     }
 
     goToVoorspelling() {
@@ -41,8 +45,20 @@ export class PersonalHeaderComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.deelnemer$ = this.store.pipe(select(getDeelnemerScore));
+        combineLatest(this.uiService.statistieken$,
+            this.uiService.huidigeVoorspelling$)
+            .pipe(takeUntil(this.unsubscribe))
+            .subscribe(([statistieken, huidigevoorspelling]) => {
+                if (huidigevoorspelling) {
+                    this.mol = huidigevoorspelling ? huidigevoorspelling.mol : null;
+                }
+                if (huidigevoorspelling && statistieken) {
+                    this.molPercentage = statistieken.data.find(item => item.mol.id === huidigevoorspelling.mol.id).percentage;
+                }
+            });
+
         this.uiService.huidigeVoorspelling$.pipe(takeUntil(this.unsubscribe)).subscribe(response => {
-                this.mol = response ? response.mol : null;
+            this.mol = response ? response.mol : null;
         });
     }
 

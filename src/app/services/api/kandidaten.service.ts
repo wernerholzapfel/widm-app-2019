@@ -19,4 +19,9 @@ export class KandidatenService {
         return this.httpClient.get(`${this.api}/kandidaten`).pipe(
             map(res => <any[]>res));
     }
+
+    getMolStatistieken(): Observable<any[]> {
+        return this.httpClient.get(`${this.api}/standen/statistieken`).pipe(
+            map(res => <any[]>res));
+    }
 }

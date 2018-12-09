@@ -15,7 +15,7 @@ import {AuthService} from './services/authentication/auth.service';
 import {combineLatest, Subject} from 'rxjs';
 import {getActies} from './store/acties/acties.reducer';
 import {TestService} from './services/api/test.service';
-import {takeUntil} from 'rxjs/operators';
+import {switchMap, takeUntil} from 'rxjs/operators';
 
 @Component({
     selector: 'app-root',
@@ -44,6 +44,17 @@ export class AppComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
 
+        this.fetchNewData();
+
+        this.platform.resume.subscribe(() => {
+            this.fetchNewData();
+        });
+
+        this.uiService.huidigeVoorspelling$.pipe(switchMap(huidigeVoorspelling =>
+            this.kandidatenService.getMolStatistieken())).subscribe(stat => {
+                this.uiService.statistieken$.next(stat);
+            });
+
         this.voorspellenService.getAllVoorspellingen().pipe(takeUntil(this.unsubscribe)).subscribe(response => {
             this.uiService.voorspellingen$.next(response);
         });
@@ -52,17 +63,9 @@ export class AppComponent implements OnInit, OnDestroy {
             this.uiService.tests$.next(response);
         });
 
-        this.platform.resume.subscribe(() => {
-            this.store.dispatch(new FetchActiesInProgress());
-        });
-
-        this.store.dispatch(new FetchActiesInProgress());
-
         const acties$ = this.store.pipe(select(getActies));
 
         const aantalOnbeantwoordeVragen$ = this.testService.getaantalOnbeantwoordeVragen();
-
-        this.authService.user$.subscribe(response =>  this.uiService.isLoading$.next(false));
 
         combineLatest(acties$, this.authService.user$,
             this.voorspellenService.getLaatsteVoorspelling(),
@@ -79,7 +82,20 @@ export class AppComponent implements OnInit, OnDestroy {
                     this.uiService.isLoading$.next(false);
                 }
             });
+
         this.kandidatenService.getKandidaten().subscribe(response => this.uiService.kandidaten$.next(response));
+        this.authService.user$.subscribe(response => this.uiService.isLoading$.next(false));
+
+    }
+
+
+    // functie dat aangeroepen wordt iedere keer dat app wordt geladen.
+    fetchNewData() {
+        this.store.dispatch(new FetchActiesInProgress());
+        this.kandidatenService.getMolStatistieken().pipe(takeUntil(this.unsubscribe)).subscribe(response => {
+            this.uiService.statistieken$.next(response);
+        });
+
     }
 
     initializeApp() {
