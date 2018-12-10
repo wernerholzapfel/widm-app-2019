@@ -32,6 +32,7 @@ import {FooterModule} from './footer/footer.module';
 import {PuntenModule} from './punten/punten.module';
 import {PuntenItemModule} from './punten/punten-item/punten-item.module';
 import {AvatarModule} from 'ng2-avatar';
+import {DeelnemerService} from './deelnemer.service';
 
 @NgModule({
     declarations: [AppComponent],
@@ -62,6 +63,7 @@ import {AvatarModule} from 'ng2-avatar';
         PoulesService,
         AuthService,
         UiService,
+        DeelnemerService,
         {provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
         {
             provide: HTTP_INTERCEPTORS,

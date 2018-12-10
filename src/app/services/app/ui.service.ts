@@ -25,7 +25,7 @@ export class UiService {
     async presentToast(message: string, color: string = 'tertiary') {
         const toast = await this.toastCtrl.create({
             message: message,
-            duration: 4000,
+            duration: 2000,
             position: 'bottom',
             showCloseButton: true,
             closeButtonText: 'OK',

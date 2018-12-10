@@ -5,6 +5,10 @@ import {AuthService} from '../services/authentication/auth.service';
 import {NavController} from '@ionic/angular';
 import {navigation} from '../constants/navigation.constants';
 import {UiService} from '../services/app/ui.service';
+import {DeelnemerService} from '../deelnemer.service';
+import {FetchPoulesInProgress} from '../store/poules/poules.actions';
+import {IAppState} from '../store/store';
+import {Store} from '@ngrx/store';
 
 @Component({
     selector: 'app-login',
@@ -24,7 +28,7 @@ export class LoginComponent implements OnInit {
 
     constructor(public authService: AuthService,
                 private router: Router, public navCtrl: NavController,
-                private uiService: UiService) {
+                private uiService: UiService, private deelnemerService: DeelnemerService, private store: Store<IAppState>) {
     }
     wachtwoordvergeten = false;
 
@@ -58,15 +62,13 @@ export class LoginComponent implements OnInit {
         this.authService.signUpRegular(this.signupForm.value.email, this.signupForm.value.password, this.signupForm.value.displayName)
             .then((res) => {
                     if (res) {
-                        // delete this.user.password;
-                        // this.participantService.postParticipant({
-                        //   displayName: this.user.displayName,
-                        //   teamName: this.user.teamName,
-                        //   email: this.user.email
-                        // }).subscribe(response => {
-                        //   console.log('user opgeslagen in database');
-                        // });
-                        // this.store.dispatch(new fromParticipantForm.ClearParticipantform());
+                        delete this.user.password;
+                        this.deelnemerService.postDeelnemer({
+                            display_name: this.signupForm.value.displayName,
+                          email: this.signupForm.value.email
+                        }).subscribe(response => {
+                            this.store.dispatch(new FetchPoulesInProgress());
+                        });
                         this.navCtrl.navigateForward(`${navigation.home}/${navigation.dashboard}`, false);
                     }
                 }

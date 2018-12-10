@@ -24,22 +24,26 @@
         <ion-spinner name="bubbles"></ion-spinner>
     </div>
 
-    <ion-list *ngIf="showgeentestscherm">
-        <ion-card color='dark'>
-            <ion-card-content>
-                De 1e test verschijnt na aflevering 1.
-                Heb je je notificaties ingeschakeld dan krijg je een notificatie wanneer de test beschikbaar is.
-            </ion-card-content>
-        </ion-card>
-    </ion-list>
+    <ion-grid *ngIf="showgeentestscherm">
+        <ion-row align-items-center>
+            <ion-card color='dark'>
+                <ion-card-content>
+                    De 1e test verschijnt na aflevering 1.
+                    Heb je je notificaties ingeschakeld dan krijg je een notificatie wanneer de test beschikbaar is.
+                </ion-card-content>
+            </ion-card>
+        </ion-row>
+    </ion-grid>
 
-    <ion-list *ngIf="showeindeseizoenscherm">
-        <ion-card color='dark'>
-            <ion-card-content>
-                De laatste aflevering van wie is de mol is geweest. Er is geen test meer.
-            </ion-card-content>
-        </ion-card>
-    </ion-list>
+    <ion-grid *ngIf="showeindeseizoenscherm">
+        <ion-row align-items-center>
+            <ion-card color='dark'>
+                <ion-card-content>
+                    De laatste aflevering van wie is de mol is geweest. Er is geen test meer.
+                </ion-card-content>
+            </ion-card>
+        </ion-row>
+    </ion-grid>
 
     <ion-grid *ngIf="showstartscherm && !isLoading">
         <ion-row align-items-center>

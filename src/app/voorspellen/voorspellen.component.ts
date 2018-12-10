@@ -56,12 +56,14 @@ export class VoorspellenComponent implements OnInit, OnDestroy {
         combineLatest(this.uiService.huidigeVoorspelling$, this.store.pipe(
             select(getActies)))
             .pipe(takeUntil(this.unsubscribe)).subscribe(([huidigevoorspelling, acties]) => {
+                if (acties) {
+                    this.huidigeVoorspelling.aflevering = acties.voorspellingaflevering ? acties.voorspellingaflevering : 1;
+                }
             if (huidigevoorspelling && acties) {
                 this.huidigeVoorspelling = huidigevoorspelling;
                 if (acties.voorspellingaflevering !== huidigevoorspelling.aflevering) {
                     delete this.huidigeVoorspelling.id;
                 }
-                this.huidigeVoorspelling.aflevering = acties.voorspellingaflevering ? acties.voorspellingaflevering : 1;
                 this.setInitialKandidaat('mol', huidigevoorspelling.mol);
                 this.setInitialKandidaat('afvaller', huidigevoorspelling.afvaller);
                 this.setInitialKandidaat('winnaar', huidigevoorspelling.winnaar);
