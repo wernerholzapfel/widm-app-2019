@@ -10,6 +10,7 @@ import {getActies} from '../store/acties/acties.reducer';
 import {IAppState} from '../store/store';
 import {select, Store} from '@ngrx/store';
 import {getDeelnemerId} from '../store/poules/poules.reducer';
+import {environment} from '../../environments/environment';
 
 @Component({
     selector: 'app-test',
@@ -65,32 +66,32 @@ export class TestComponent implements OnInit, OnDestroy {
         combineLatest(this.store.pipe(select(getActies)),
             this.testService.gettest())
             .pipe(takeUntil(this.unsubscribe))
-                .subscribe(([response, testvragen]) => {
-                    if (response && testvragen) {
-                        console.log('nieuwe acties');
-                        this.acties = response;
-                        this.deadlineVerstreken = this.acties.testDeadlineDatetime <= new Date().toISOString();
-                        switch (true) {
-                            case (this.acties.testaflevering === 0):
-                                this.showgeentestschermFunc();
-                                break;
-                            case (testvragen.aantalOpenVragen === 0):
-                                this.showeindschermFunc();
-                                break;
-                            case (this.acties.testaflevering === null):
-                                console.log('testaflevering is null');
-                                this.showeindeseizoenschermFunc();
-                                break;
-                            default:
-                                this.showstartscherm = true;
-                                break;
-                        }
-                        if (this.deadlineVerstreken) {
-                            this.showDeadlinePopup();
-                        }
-                        this.isLoading = false;
+            .subscribe(([response, testvragen]) => {
+                if (response && testvragen) {
+                    console.log('nieuwe acties');
+                    this.acties = response;
+                    this.deadlineVerstreken = this.acties.testDeadlineDatetime <= new Date().toISOString();
+                    switch (true) {
+                        case (this.acties.testaflevering === 0):
+                            this.showgeentestschermFunc();
+                            break;
+                        case (testvragen.aantalOpenVragen === 0):
+                            this.showeindschermFunc();
+                            break;
+                        case (this.acties.testaflevering === null):
+                            console.log('testaflevering is null');
+                            this.showeindeseizoenschermFunc();
+                            break;
+                        default:
+                            this.showstartscherm = true;
+                            break;
                     }
-                });
+                    if (this.deadlineVerstreken) {
+                        this.showDeadlinePopup();
+                    }
+                    this.isLoading = false;
+                }
+            });
     }
 
     async showDeadlinePopup() {
@@ -228,9 +229,9 @@ export class TestComponent implements OnInit, OnDestroy {
             .subscribe(response => {
                 this.testAntwoorden = response;
                 this.aflevering = response[0].aflevering;
-
-                // todo oneSignal!
-                // window['plugins'].OneSignal.sendTag('laatstIngevuldeTest', response[0].aflevering);
+                if (environment.production) {
+                    window['plugins'].OneSignal.sendTag('laatstIngevuldeTest', response[0].aflevering);
+                }
             });
     }
 }

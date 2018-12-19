@@ -6,16 +6,18 @@ import {StatusBar} from '@ionic-native/status-bar/ngx';
 import {FetchActiesInProgress} from './store/acties/acties.actions';
 import {IAppState} from './store/store';
 import {select, Store} from '@ngrx/store';
-import {FetchPoulesInProgress} from './store/poules/poules.actions';
+import {FetchPoulesInProgress, ResetPoules} from './store/poules/poules.actions';
 import {UitnodigingenService} from './services/api/uitnodigingen.service';
 import {UiService} from './services/app/ui.service';
 import {KandidatenService} from './services/api/kandidaten.service';
 import {VoorspellenService} from './services/api/voorspellen.service';
 import {AuthService} from './services/authentication/auth.service';
-import {combineLatest, Subject} from 'rxjs';
+import {from as observableFrom, Subject} from 'rxjs';
 import {getActies} from './store/acties/acties.reducer';
 import {TestService} from './services/api/test.service';
-import {switchMap, takeUntil} from 'rxjs/operators';
+import {distinctUntilChanged, map, take, takeUntil} from 'rxjs/operators';
+import {environment} from '../environments/environment';
+import {IActies} from './interface/IActies';
 
 @Component({
     selector: 'app-root',
@@ -25,6 +27,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     unsubscribe: Subject<void> = new Subject<void>();
     aflevering: number;
+    acties: IActies;
 
     constructor(
         private platform: Platform,
@@ -43,55 +46,70 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.authService.user$.pipe(takeUntil(this.unsubscribe)).subscribe(response => {
+            console.log('user gewijzigd');
+            this.uiService.isLoading$.next(false);
+        });
 
-        this.fetchNewData();
+        this.store.dispatch(new FetchActiesInProgress());
+
+        this.store.pipe(select(getActies)).pipe(takeUntil(this.unsubscribe)).subscribe(response => {
+            if (response && JSON.stringify(response) !== JSON.stringify(this.acties)) {
+                console.log('nieuwe acties beschikbaar');
+                this.aflevering = response.voorspellingaflevering ? response.voorspellingaflevering : 1;
+
+                this.acties = response;
+                this.fetchNewData(response);
+            }
+        });
 
         this.platform.resume.subscribe(() => {
-            this.fetchNewData();
+            this.store.dispatch(new FetchActiesInProgress());
         });
-
-        this.uiService.huidigeVoorspelling$.pipe(switchMap(huidigeVoorspelling =>
-            this.kandidatenService.getMolStatistieken())).subscribe(stat => {
-                this.uiService.statistieken$.next(stat);
-            });
-
-        this.voorspellenService.getAllVoorspellingen().pipe(takeUntil(this.unsubscribe)).subscribe(response => {
-            this.uiService.voorspellingen$.next(response);
-        });
-
-        this.testService.gettests().pipe(takeUntil(this.unsubscribe)).subscribe(response => {
-            this.uiService.tests$.next(response);
-        });
-
-        const acties$ = this.store.pipe(select(getActies));
-
-        const aantalOnbeantwoordeVragen$ = this.testService.getaantalOnbeantwoordeVragen();
-
-        combineLatest(acties$, this.authService.user$,
-            this.voorspellenService.getLaatsteVoorspelling(),
-            aantalOnbeantwoordeVragen$)
-            .subscribe(([acties, user, voorspelling, aantalOnbeantwoordeVragen]) => {
-                if (acties && user) {
-                    this.aflevering = acties.voorspellingaflevering ? acties.voorspellingaflevering : 1;
-                    this.store.dispatch(new FetchPoulesInProgress());
-                    this.uitnodigingenService.getUitnodigingen().subscribe(response => this.uiService.uitnodigingen$.next(response));
-                    this.uiService.huidigeVoorspelling$
-                        .next(voorspelling);
-                    this.uiService.voorspellingAfgerond$.next(voorspelling && acties.voorspellingaflevering === voorspelling.aflevering);
-                    this.uiService.testAfgerond$.next(aantalOnbeantwoordeVragen.aantalOpenVragen === 0);
-                    this.uiService.isLoading$.next(false);
-                }
-            });
-
-        this.kandidatenService.getKandidaten().subscribe(response => this.uiService.kandidaten$.next(response));
-        this.authService.user$.subscribe(response => this.uiService.isLoading$.next(false));
 
     }
 
+    fetchNewData(acties) {
+        this.uiService.isLoading$.next(true);
+        this.authService.user$.pipe(distinctUntilChanged(), map(user => {
+            if (user) {
 
-    // functie dat aangeroepen wordt iedere keer dat app wordt geladen.
-    fetchNewData() {
-        this.store.dispatch(new FetchActiesInProgress());
+                return observableFrom([this.store.dispatch(new FetchPoulesInProgress()),
+                    this.uitnodigingenService.getUitnodigingen().pipe(take(1))
+                        .subscribe(response => this.uiService.uitnodigingen$.next(response)),
+
+                    this.voorspellenService.getLaatsteVoorspelling().pipe(take(1)).subscribe(voorspelling => {
+                        this.uiService.huidigeVoorspelling$.next(voorspelling);
+                        this.uiService.voorspellingAfgerond$
+                            .next(voorspelling && acties.voorspellingaflevering === voorspelling.aflevering);
+                    }),
+
+                    this.testService.getaantalOnbeantwoordeVragen().pipe(take(1)).subscribe(response => {
+                        this.uiService.testAfgerond$.next(response.aantalOpenVragen === 0);
+                    }),
+
+                    this.uiService.isLoading$.next(false),
+                    this.voorspellenService.getAllVoorspellingen().pipe(take(1)).subscribe(response => {
+                        if (response) {
+                            this.uiService.voorspellingen$.next(response);
+                        }
+                    }),
+
+                    this.testService.gettests().pipe(take(1)).subscribe(response => {
+                        this.uiService.tests$.next(response);
+                    }),
+                ]);
+            } else {
+                this.uiService.isLoading$.next(false);
+                return observableFrom([this.store.dispatch(new ResetPoules())]);
+            }
+        })).subscribe(response => {
+            this.uiService.isLoading$.next(false);
+        });
+
+        this.kandidatenService.getKandidaten().subscribe(response => this.uiService.kandidaten$.next(response));
+
+
         this.kandidatenService.getMolStatistieken().pipe(takeUntil(this.unsubscribe)).subscribe(response => {
             this.uiService.statistieken$.next(response);
         });
@@ -102,7 +120,29 @@ export class AppComponent implements OnInit, OnDestroy {
         this.platform.ready().then(() => {
             this.statusBar.styleDefault();
             this.splashScreen.hide();
+
+            // OneSignal Code start:
+            // Enable to debug issues:
+            // window["plugins"].OneSignal.setLogLevel({logLevel: 4, visualLevel: 4});
+
+            const notificationOpenedCallback = function (jsonData) {
+                console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));
+            };
+
+            const handleNotificationReceived = function (jsonData) {
+                console.log('notificationReceived: ' + JSON.stringify(jsonData));
+                this.store.dispatch(new FetchActiesInProgress());
+            };
+
+            if (environment.production) {
+                window['plugins'].OneSignal
+                    .startInit('c9e91d07-f6c6-480b-a9ac-8322418085f8')
+                    .handleNotificationOpened(notificationOpenedCallback)
+                    .handleNotificationReceived(handleNotificationReceived)
+                    .endInit();
+            }
         });
+
     }
 
     ngOnDestroy() {

@@ -9,6 +9,7 @@ import {DeelnemerService} from '../deelnemer.service';
 import {FetchPoulesInProgress} from '../store/poules/poules.actions';
 import {IAppState} from '../store/store';
 import {Store} from '@ngrx/store';
+import {FetchActiesInProgress, FetchActiesSuccess} from '../store/acties/acties.actions';
 
 @Component({
     selector: 'app-login',
@@ -38,8 +39,6 @@ export class LoginComponent implements OnInit {
     signInWithEmail() {
         this.authService.signInRegular(this.loginForm.value.email, this.loginForm.value.password)
             .then((res) => {
-                // console.log(res);
-                // this.store.dispatch(new fromParticipantForm.ClearParticipantform());
                 this.navCtrl.navigateForward(`${navigation.home}/${navigation.dashboard}`, false);
             })
             .catch((err) => {
@@ -50,10 +49,8 @@ export class LoginComponent implements OnInit {
     sendPasswordResetEmail() {
         this.authService.sendPasswordResetEmail(this.user.email)
             .then((res) => {
-                // this.snackBar.open(res, 'OK', {});
             })
             .catch((err) => {
-                // this.snackBar.open(err.message, 'OK', {});
                 console.log('error: ' + err);
             });
     }
@@ -67,7 +64,9 @@ export class LoginComponent implements OnInit {
                             display_name: this.signupForm.value.displayName,
                           email: this.signupForm.value.email
                         }).subscribe(response => {
-                            this.store.dispatch(new FetchPoulesInProgress());
+                            // set acties to null so data is reloaded on app.component when acties are succesfully fetched
+                            this.store.dispatch(new FetchActiesSuccess(null));
+                            this.store.dispatch(new FetchActiesInProgress());
                         });
                         this.navCtrl.navigateForward(`${navigation.home}/${navigation.dashboard}`, false);
                     }

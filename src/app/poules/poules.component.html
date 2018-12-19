@@ -26,6 +26,9 @@
             </ion-row>
         </ion-grid>
     </ion-toolbar>
+    <ion-toolbar *ngIf="uitnodigingen.length > 0 && router.url === '/poules/poule'">
+        <ion-button expand="full" color="tertiary" (click)="goToAcceptInvite()">Je hebt {{uitnodigingen.length}} uitnodigingen</ion-button>
+    </ion-toolbar>
 </ion-header>
 <ion-content class="grid-full">
     <ion-router-outlet></ion-router-outlet>

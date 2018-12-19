@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {UiService} from '../services/app/ui.service';
-import {takeUntil} from 'rxjs/operators';
+import {distinctUntilChanged, switchMap, takeUntil} from 'rxjs/operators';
 import {combineLatest, Subject} from 'rxjs';
 import {FormBuilder} from '@angular/forms';
 import {IAppState} from '../store/store';
@@ -11,6 +11,8 @@ import {IKandidaat} from '../interface/IKandidaat';
 import {getDeelnemerId} from '../store/poules/poules.reducer';
 import {NavController} from '@ionic/angular';
 import {navigation} from '../constants/navigation.constants';
+import {KandidatenService} from '../services/api/kandidaten.service';
+import {environment} from '../../environments/environment';
 
 
 export interface VoorspellingsBody {
@@ -46,7 +48,9 @@ export class VoorspellenComponent implements OnInit, OnDestroy {
     constructor(private uiService: UiService,
                 private formBuilder: FormBuilder,
                 private store: Store<IAppState>,
-                private voorspellenService: VoorspellenService, private navCtrl: NavController) {
+                private voorspellenService: VoorspellenService,
+                private kandidatenService: KandidatenService,
+                private navCtrl: NavController) {
     }
 
     ngOnInit() {
@@ -54,11 +58,11 @@ export class VoorspellenComponent implements OnInit, OnDestroy {
         this.header = 'Voorspellen';
 
         combineLatest(this.uiService.huidigeVoorspelling$, this.store.pipe(
-            select(getActies)))
-            .pipe(takeUntil(this.unsubscribe)).subscribe(([huidigevoorspelling, acties]) => {
-                if (acties) {
-                    this.huidigeVoorspelling.aflevering = acties.voorspellingaflevering ? acties.voorspellingaflevering : 1;
-                }
+            select(getActies)), this.uiService.statistieken$)
+            .pipe(takeUntil(this.unsubscribe)).subscribe(([huidigevoorspelling, acties, statistieken]) => {
+            if (acties) {
+                this.huidigeVoorspelling.aflevering = acties.voorspellingaflevering ? acties.voorspellingaflevering : 1;
+            }
             if (huidigevoorspelling && acties) {
                 this.huidigeVoorspelling = huidigevoorspelling;
                 if (acties.voorspellingaflevering !== huidigevoorspelling.aflevering) {
@@ -121,7 +125,9 @@ export class VoorspellenComponent implements OnInit, OnDestroy {
             this.huidigeVoorspelling.id = response.id;
             if (this.huidigeVoorspelling.mol && this.huidigeVoorspelling.afvaller && this.huidigeVoorspelling.winnaar) {
                 this.uiService.voorspellingAfgerond$.next(true);
-                // window['plugins'].OneSignal.sendTag('laatsteVoorspelling', this.voorspelling.get('aflevering').value);
+                if (environment.production) {
+                    window['plugins'].OneSignal.sendTag('laatsteVoorspelling', this.huidigeVoorspelling.aflevering);
+                }
             }
             this.uiService.presentToast('Opslaan is gelukt');
             if (final) {

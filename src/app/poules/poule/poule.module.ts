@@ -12,7 +12,7 @@ import {PoulesRoutingModule} from '../poules-routing.module';
       CommonModule,
       FormsModule,
       IonicModule,
-      AvatarModule
+      AvatarModule,
   ],
     exports: [PouleComponent]
 })

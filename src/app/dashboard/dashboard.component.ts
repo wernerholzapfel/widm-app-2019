@@ -8,6 +8,7 @@ import {takeUntil} from 'rxjs/operators';
 import {getActies} from '../store/acties/acties.reducer';
 import {IAppState} from '../store/store';
 import {select, Store} from '@ngrx/store';
+import {FetchActiesInProgress} from '../store/acties/acties.actions';
 
 @Component({
     selector: 'app-dashboard',
@@ -105,5 +106,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.unsubscribe.unsubscribe();
     }
 
+    fetchACties() {
+        this.store.dispatch(new FetchActiesInProgress());
+    }
 
 }

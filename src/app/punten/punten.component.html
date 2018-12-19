@@ -22,6 +22,13 @@
                 <ng-container>
                     <ion-card-content>
                         <div *ngIf="activeSegment === 'voorspellingen'">
+                            <ng-container *ngIf="voorspellingen?.length === 0">
+                                <ion-item color="dark">
+                                    <ion-label text-wrap>
+                                        <ion-text>Er zijn nog geen punten bekend voor je voorspellingen</ion-text>
+                                    </ion-label>
+                                </ion-item>
+                            </ng-container>
                             <ng-container *ngFor="let voorspelling of voorspellingen">
                                 <ion-item color="tertiary">
                                     Aflevering {{voorspelling.aflevering}}
@@ -35,6 +42,13 @@
                             </ng-container>
                         </div>
                         <div *ngIf="activeSegment === 'tests'">
+                            <ng-container *ngIf="testAfleveringen?.length === 0">
+                                <ion-item color="dark">
+                                    <ion-label text-wrap>
+                                        <ion-text>Er zijn nog geen punten bekend voor je test</ion-text>
+                                    </ion-label>
+                                </ion-item>
+                            </ng-container>
                             <ng-container *ngFor="let aflevering of testAfleveringen">
                                 <div *ngIf="aflevering">
                                     <ion-item color="tertiary">
@@ -46,7 +60,8 @@
                                             <ion-text>
                                                 <h3>{{test?.vraag?.vraag}}</h3>
                                                 <ion-text>
-                                                    <p class="subtitle">{{test?.antwoord?.antwoord}}</p>
+                                                    <p class="subtitle" *ngIf="test?.antwoord?.antwoord">{{test?.antwoord?.antwoord}}</p>
+                                                    <p class="subtitle" *ngIf="!test?.antwoord?.antwoord">Geen antwoord</p>
                                                 </ion-text>
                                             </ion-text>
                                         </ion-label>

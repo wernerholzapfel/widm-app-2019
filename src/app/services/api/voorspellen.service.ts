@@ -17,14 +17,12 @@ export class VoorspellenService {
 
     getLaatsteVoorspelling(): Observable<any> {
         return this.httpClient.get(`${this.api}/deelnemers/actualvoorspelling`)
-            .pipe(
-            map(res => <any>res));
+            .pipe(map(res => <any>res));
     }
 
     getAllVoorspellingen(): Observable<any> {
         return this.httpClient.get(`${this.api}/deelnemers/voorspellingen`)
-            .pipe(
-            map(res => <any>res));
+            .pipe(map(res => <any>res));
     }
 
     saveVoorspelling(value): Observable<any> {

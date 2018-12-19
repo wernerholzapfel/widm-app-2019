@@ -19,7 +19,7 @@
                     <ion-input required type="password" placeholder="Wachtwoord" name="password" ngModel></ion-input>
                 </ion-item>
                 <div class="button-container">
-                    <ion-button [disabled]="!loginForm.valid" color="tertiary" expand="block" type="submit">
+                    <ion-button [disabled]="!loginForm.valid" color="tertiary" expand="full" type="submit">
                         Inloggen
                     </ion-button>
                 </div>
@@ -38,7 +38,7 @@
                     <ion-input required type="password" placeholder="Wachtwoord" name="password" ngModel></ion-input>
                 </ion-item>
                 <div class="button-container">
-                    <ion-button [disabled]="!signupForm.valid" color="tertiary" expand="block" type="submit">
+                    <ion-button [disabled]="!signupForm.valid" color="tertiary" expand="full" type="submit">
                         Inschrijven
                     </ion-button>
                 </div>
@@ -62,7 +62,7 @@
                 </ion-input>
             </ion-item>
         <div class="button-container">
-            <ion-button expand="block" color="tertiary" (click)="sendPasswordResetEmail()"
+            <ion-button expand="full" color="tertiary" (click)="sendPasswordResetEmail()"
                     [disabled]="!user.email">Reset wachtwoord
             </ion-button>
         </div>

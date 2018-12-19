@@ -7,7 +7,7 @@ import {select, Store} from '@ngrx/store';
 import {getDeelnemerScore} from '../store/poules/poules.reducer';
 import {combineLatest, Observable, Subject} from 'rxjs';
 import {UiService} from '../services/app/ui.service';
-import {takeUntil} from 'rxjs/operators';
+import {distinctUntilChanged, takeUntil} from 'rxjs/operators';
 import {KandidatenService} from '../services/api/kandidaten.service';
 
 @Component({
@@ -45,15 +45,25 @@ export class PersonalHeaderComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.deelnemer$ = this.store.pipe(select(getDeelnemerScore));
-        combineLatest(this.uiService.statistieken$,
-            this.uiService.huidigeVoorspelling$)
+
+        combineLatest(this.uiService.statistieken$.pipe(distinctUntilChanged()),
+            this.uiService.huidigeVoorspelling$.pipe(distinctUntilChanged()))
             .pipe(takeUntil(this.unsubscribe))
             .subscribe(([statistieken, huidigevoorspelling]) => {
                 if (huidigevoorspelling) {
                     this.mol = huidigevoorspelling ? huidigevoorspelling.mol : null;
+                } else {
+                    this.mol = null;
+                    this.molPercentage = null;
                 }
-                if (huidigevoorspelling && statistieken) {
+                if (huidigevoorspelling && statistieken && statistieken.data.find(item => item.mol.id === huidigevoorspelling.mol.id)) {
                     this.molPercentage = statistieken.data.find(item => item.mol.id === huidigevoorspelling.mol.id).percentage;
+                } else if (huidigevoorspelling && statistieken) {
+                    this.kandidatenService.getMolStatistieken()
+                        .pipe(distinctUntilChanged(), takeUntil(this.unsubscribe))
+                        .subscribe(newStats => {
+                        this.uiService.statistieken$.next(newStats);
+                    });
                 }
             });
 

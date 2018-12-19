@@ -4,7 +4,7 @@
             <ion-item color="dark" class="ion-item-header">
                 <ion-header>
                     <ion-label>
-                        <h1>Voeg deelnemers toe</h1>
+                        <h3>Voeg deelnemers toe</h3>
                     </ion-label>
                 </ion-header>
             </ion-item>
@@ -13,9 +13,11 @@
                     <ion-item>
                         <ion-input required type="email" placeholder="email-adres" name="email" ngModel></ion-input>
                     </ion-item>
-                    <ion-button fill="outline" [disabled]="!form.valid" color="tertiary" expand="block" type="submit">
-                        Voeg toe
-                    </ion-button>
+                    <div class="button-container">
+                        <ion-button [disabled]="!form.valid" color="tertiary" expand="full" type="submit">
+                            Voeg toe
+                        </ion-button>
+                    </div>
                 </form>
             </ion-card-content>
         </ion-card>

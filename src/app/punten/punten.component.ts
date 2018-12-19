@@ -12,8 +12,8 @@ import {CalculatieService} from '../calculatie.service';
 export class PuntenComponent implements OnInit, OnDestroy {
 
     unsubscribe: Subject<void> = new Subject<void>();
-    testAfleveringen: any[];
-    voorspellingen: any[];
+    testAfleveringen: any[] = [];
+    voorspellingen: any[] = [];
     activeSegment = 'voorspellingen';
 
     constructor(private uiService: UiService, private calculatieService: CalculatieService) {

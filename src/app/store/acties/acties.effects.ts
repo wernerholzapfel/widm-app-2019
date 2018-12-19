@@ -1,6 +1,6 @@
 import {from as observableFrom, of as observableOf} from 'rxjs';
 
-import {catchError, map, switchMap, take} from 'rxjs/operators';
+import {catchError, distinctUntilChanged, map, switchMap, take} from 'rxjs/operators';
 
 
 import {Injectable} from '@angular/core';
@@ -25,7 +25,7 @@ export class ActiesEffects {
         ofType(FETCH_ACTIES_IN_PROGRESS),
         switchMap((action) => {
             return this.actiesService
-                .getActies().pipe(take(1),
+                .getActies().pipe(
                     switchMap(acties =>
                         observableOf(new FetchActiesSuccess(acties))
                     ),

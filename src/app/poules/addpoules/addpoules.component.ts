@@ -8,6 +8,7 @@ import {Subject} from 'rxjs';
 import {select, Store} from '@ngrx/store';
 import {IAppState} from '../../store/store';
 import {getDeelnemerId} from '../../store/poules/poules.reducer';
+import {FetchPoulesInProgress} from '../../store/poules/poules.actions';
 
 @Component({
     selector: 'app-addpoules',
@@ -42,6 +43,7 @@ export class AddpoulesComponent implements OnInit {
         }).subscribe(response => {
                 // todo add to redux store
                 this.uiService.presentToast(`Poule ${this.createPouleForm.value.name} aangemaakt`);
+                this.store.dispatch(new FetchPoulesInProgress());
                 this.navCtrl.navigateForward(`${navigation.poules}/${navigation.poule}`, false);
             }
         );

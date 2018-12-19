@@ -4,7 +4,7 @@
 <ion-content class="grid-full" *ngIf="(authService.user$ | async) && !(uiService.isLoading$ | async)">
     <ion-row>
         <ion-col class="cell-1 full">
-            <ion-card color="dark">
+            <ion-card color="dark" (click)="fetchACties()">
                 <ion-card-header>
                     <ion-card-subtitle>
                         De Molloot 2019
