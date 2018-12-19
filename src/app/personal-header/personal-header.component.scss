@@ -6,8 +6,12 @@
   .subtitle {
     margin-top: -12px;
   }
-  .is_mol_in_spel {
+  .mol_is_niet_afgevallen {
     border: 2px solid #25B973;
+  }
+
+  .mol_is_afgevallen {
+    border: 2px solid #d33939;
   }
   .header-avatar {
     width: 109px;
