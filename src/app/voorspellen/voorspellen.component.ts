@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {UiService} from '../services/app/ui.service';
-import {distinctUntilChanged, switchMap, takeUntil} from 'rxjs/operators';
+import {takeUntil} from 'rxjs/operators';
 import {combineLatest, Subject} from 'rxjs';
 import {FormBuilder} from '@angular/forms';
 import {IAppState} from '../store/store';
@@ -57,22 +57,25 @@ export class VoorspellenComponent implements OnInit, OnDestroy {
 
         this.header = 'Voorspellen';
 
-        combineLatest(this.uiService.huidigeVoorspelling$, this.store.pipe(
-            select(getActies)), this.uiService.statistieken$)
-            .pipe(takeUntil(this.unsubscribe)).subscribe(([huidigevoorspelling, acties, statistieken]) => {
-            if (acties) {
-                this.huidigeVoorspelling.aflevering = acties.voorspellingaflevering ? acties.voorspellingaflevering : 1;
-            }
-            if (huidigevoorspelling && acties) {
-                this.huidigeVoorspelling = huidigevoorspelling;
-                if (acties.voorspellingaflevering !== huidigevoorspelling.aflevering) {
-                    delete this.huidigeVoorspelling.id;
+        combineLatest(this.uiService.huidigeVoorspelling$,
+            this.store.pipe(select(getActies)),
+            this.uiService.statistieken$)
+            .pipe(takeUntil(this.unsubscribe))
+            .subscribe(([huidigevoorspelling, acties, statistieken]) => {
+                if (acties) {
+                    this.huidigeVoorspelling.aflevering = acties.voorspellingaflevering ? acties.voorspellingaflevering : 1;
                 }
-                this.setInitialKandidaat('mol', huidigevoorspelling.mol);
-                this.setInitialKandidaat('afvaller', huidigevoorspelling.afvaller);
-                this.setInitialKandidaat('winnaar', huidigevoorspelling.winnaar);
-            }
-        });
+                if (huidigevoorspelling && acties) {
+                    this.huidigeVoorspelling = huidigevoorspelling;
+                    this.huidigeVoorspelling.aflevering = acties.voorspellingaflevering ? acties.voorspellingaflevering : 1;
+                    if (acties.voorspellingaflevering !== huidigevoorspelling.aflevering) {
+                        delete this.huidigeVoorspelling.id;
+                    }
+                    this.setInitialKandidaat('mol', huidigevoorspelling.mol);
+                    this.setInitialKandidaat('afvaller', huidigevoorspelling.afvaller);
+                    this.setInitialKandidaat('winnaar', huidigevoorspelling.winnaar);
+                }
+            });
 
         this.store.pipe(
             takeUntil(this.unsubscribe),
