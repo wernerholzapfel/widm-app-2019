@@ -19,14 +19,14 @@
         </ion-grid>
     </ion-toolbar>
 </ion-header>
-<ion-content class="test">
+<ion-content>
     <div *ngIf="isLoading" class="spinner">
         <ion-spinner name="bubbles"></ion-spinner>
     </div>
 
     <ion-grid *ngIf="showgeentestscherm">
         <ion-row align-items-center>
-            <ion-card color='dark'>
+            <ion-card color='secondary'>
                 <ion-card-content>
                     De 1e test verschijnt na aflevering 1.
                     Heb je je notificaties ingeschakeld dan krijg je een notificatie wanneer de test beschikbaar is.
@@ -37,7 +37,7 @@
 
     <ion-grid *ngIf="showeindeseizoenscherm">
         <ion-row align-items-center>
-            <ion-card color='dark'>
+            <ion-card color='secondary'>
                 <ion-card-content>
                     De laatste aflevering van wie is de mol is geweest. Er is geen test meer.
                 </ion-card-content>
@@ -47,25 +47,27 @@
 
     <ion-grid *ngIf="showstartscherm && !isLoading">
         <ion-row align-items-center>
-            <ion-card color='dark'>
+            <ion-card color='secondary'>
                 <ion-card-header text-wrap>
                     Wanneer je de test start gaat de teller lopen. Je hebt 20 seconden om iedere vraag te
                     beantwoorden.<br>
                     Succes!
+                    <hr style="background-color: #25B973">
                 </ion-card-header>
                 <ion-card-content>
-                    <ion-button color="tertiary" expand="full" (click)="nextSlide()">Start de test!</ion-button>
+                    <ion-button color="primary" expand="full" (click)="nextSlide()">Start de test!</ion-button>
                 </ion-card-content>
             </ion-card>
         </ion-row>
     </ion-grid>
 
-    <ion-card color='dark' class="testscherm" *ngIf="showtestscherm">
+    <ion-card color='secondary' class="testscherm" *ngIf="showtestscherm">
         <ion-card-header class="vragen-header" text-wrap>
             {{question?.vraag}}
+            <hr style="background-color: #25B973">
         </ion-card-header>
         <ion-card-content>
-            <ion-button color="tertiary" expand="full" *ngFor="let answer of question?.antwoorden; let i = index;"
+            <ion-button color="primary" expand="full" *ngFor="let answer of question?.antwoorden; let i = index;"
                         (click)="selectAnswer(answer, question)">
                 {{i+1}}. {{answer.antwoord}}
             </ion-button>
@@ -74,16 +76,24 @@
     </ion-card>
 
     <ion-grid *ngIf="showeindscherm">
-        <ion-card color='dark'>
-            <ion-card-header text-wrap>Je hebt de test afgerond, hieronder zie je jouw antwoorden voor aflevering
-                {{aflevering}}
+        <ion-card color='secondary'>
+            <ion-card-header text-wrap>
+                <ion-card-title>
+                   De test
+                </ion-card-title>
+                <hr style="background-color: #25B973">
             </ion-card-header>
-            <ion-card-content>
-                <ion-item color="medium" *ngFor="let testAntwoord of testAntwoorden; let i = index;">
+            <ion-card-content *ngIf="testAntwoorden?.length > 0">
+                <ion-item color="primary">Aflevering {{aflevering}}</ion-item>
+                <ion-item color="tertiary" *ngFor="let testAntwoord of testAntwoorden; let i = index;">
                     <ion-label text-wrap>
-                        <ion-text>{{testAntwoord.vraag.vraag}}</ion-text>
                         <ion-text>
-                            {{testAntwoord.antwoord?.antwoord ? testAntwoord.antwoord.antwoord : 'geen antwoord'}}
+                            <div>
+                                {{testAntwoord.vraag.vraag}}
+                            </div>
+                            <div>
+                                {{testAntwoord.antwoord?.antwoord ? testAntwoord.antwoord.antwoord : 'geen antwoord'}}
+                            </div>
                         </ion-text>
                     </ion-label>
                 </ion-item>
@@ -91,8 +101,8 @@
         </ion-card>
     </ion-grid>
 </ion-content>
-<ion-footer *ngIf="showeindscherm || showstartscherm || showgeentestscherm || showeindeseizoenscherm">
-    <ion-button (click)="goBack()" expand="full" color="tertiary">Keer terug naar het menu</ion-button>
-    <app-footer></app-footer>
 
+<ion-footer color="dark" *ngIf="showeindscherm || showstartscherm || showgeentestscherm || showeindeseizoenscherm">
+    <!--<ion-button (click)="goBack()" expand="full" color="primary">Keer terug naar het menu</ion-button>-->
+    <app-footer></app-footer>
 </ion-footer>

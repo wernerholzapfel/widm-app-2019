@@ -39,7 +39,7 @@ export class LoginComponent implements OnInit {
     signInWithEmail() {
         this.authService.signInRegular(this.loginForm.value.email, this.loginForm.value.password)
             .then((res) => {
-                this.navCtrl.navigateForward(`${navigation.home}/${navigation.dashboard}`, false);
+                this.navCtrl.navigateForward(`${navigation.home}/${navigation.dashboard}`, true);
             })
             .catch((err) => {
                 this.uiService.presentToast(err.message);
@@ -68,7 +68,7 @@ export class LoginComponent implements OnInit {
                             this.store.dispatch(new FetchActiesSuccess(null));
                             this.store.dispatch(new FetchActiesInProgress());
                         });
-                        this.navCtrl.navigateForward(`${navigation.home}/${navigation.dashboard}`, false);
+                        this.navCtrl.navigateForward(`${navigation.home}/${navigation.dashboard}`, true);
                     }
                 }
             )

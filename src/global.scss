@@ -3,25 +3,25 @@
 @import "~@ionic/angular/css/normalize.css";
 @import "~@ionic/angular/css/structure.css";
 @import "~@ionic/angular/css/typography.css";
-
 @import "~@ionic/angular/css/padding.css";
 @import "~@ionic/angular/css/float-elements.css";
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
+//.scroll-content{
+//  background: url("https://wieisdemol.avrotros.nl/typo3conf/ext/widm_resources/Resources/Public/GFX/bg-mobile.jpg") no-repeat center center fixed;
+//  -webkit-background-size: cover;
+//  -moz-background-size: cover;
+//  background-size: cover;
+//}
+//
+//.ion-item-header {
+//  border-bottom: 1px solid #25B973;
+//}
+//
+
 $green: #25B973;
-
-.scroll-content{
-  background: url("https://wieisdemol.avrotros.nl/typo3conf/ext/widm_resources/Resources/Public/GFX/bg-mobile.jpg") no-repeat center center fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  background-size: cover;
-}
-
-.ion-item-header {
-  border-bottom: 1px solid #25B973;
-}
 
 .eigen-avatar {
   text-align: center;
@@ -38,6 +38,12 @@ $green: #25B973;
 .no-padding {
   padding: 0;
 }
+
+.justify-content-center {
+  display: grid;
+  justify-content: center;
+}
+
 .toast-position {
   top: -44px;
 }
@@ -54,9 +60,30 @@ div.spinner {
 }
 
 .spinner svg {
-  //width: 19% !important;
   height: 85px !important;
 }
+
 .button-container {
   margin-top: 16px;
 }
+
+.grid-full ion-row {
+  height: 100%;
+  padding: 0 5px 10px 5px;
+  flex-wrap: wrap;
+}
+
+.full {
+  flex: 0 0 100% !important;
+  max-width: 100% !important;
+  text-align: center;
+  padding: 10px 10px 0 10px;
+}
+
+.grid-full ion-col {
+  flex: 0 0 50%;
+  max-width: 50%;
+  text-align: center;
+  padding: 10px 5px 0 5px;
+}
+

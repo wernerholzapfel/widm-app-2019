@@ -18,7 +18,7 @@ export class FooterComponent implements OnInit {
     }
 
     goToLogin() {
-        this.navCtrl.navigateForward(`${navigation.home}`, false);
+        this.navCtrl.navigateForward(`${navigation.home}`, true);
     }
 
     logout() {

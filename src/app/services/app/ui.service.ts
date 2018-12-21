@@ -22,7 +22,7 @@ export class UiService {
     testAfgerond$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
     voorspellingAfgerond$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
-    async presentToast(message: string, color: string = 'tertiary') {
+    async presentToast(message: string, color: string = 'primary') {
         const toast = await this.toastCtrl.create({
             message: message,
             duration: 2000,

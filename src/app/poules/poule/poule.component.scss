@@ -1,11 +1,5 @@
 :host {
-  ion-card {
-    height: 100%;
-    margin: 0;
-  }
-  ion-searchbar {
-    padding: 0;
-  }
+
   .icon-in-title {
     float: right;
   }
@@ -13,8 +7,10 @@
     text-align: center;
     font-size: 14px;
   }
-
-  .highlight {
-    background-color: yellow;
+  ion-card-content {
+    display: grid;
+    align-content: space-between;
+    padding-bottom: 0;
+    min-height: calc(100vh - 128px - 44px - 30px - 84px);
   }
 }

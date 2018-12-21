@@ -10,22 +10,24 @@
                 </h3>
             </ng-container>
         </ion-col>
-        <ion-col center>
-            <div>
+        <ion-col class="justify-content-center">
                 <ion-avatar *ngIf="mol" (click)="goToVoorspelling()">
-                    <img [ngClass]="{'mol_is_niet_afgevallen': !mol?.afgevallen, 'mol_is_afgevallen' : mol?.afgevallen}" [src]="mol?.image_url">
+                    <img [ngClass]="{'mol_is_niet_afgevallen': !mol?.afgevallen, 'mol_is_afgevallen' : mol?.afgevallen}"
+                         [src]="mol?.image_url">
                 </ion-avatar>
-                <ion-avatar *ngIf="!mol">
+                <ion-avatar class="icon_avatar" *ngIf="!mol">
                     <ion-icon class="header-avatar" name="person"></ion-icon>
                 </ion-avatar>
-            </div>
         </ion-col>
         <ion-col [size]="4" align-self-center>
-            <ion-row justify-content-center>
-                <h1 *ngIf="molPercentage">
+            <ng-container *ngIf="molPercentage">
+                <h1 text-center>
                     {{molPercentage}}%
                 </h1>
-            </ion-row>
+                <h3 class="subtitle" text-center>
+                    verdacht
+                </h3>
+            </ng-container>
         </ion-col>
     </ion-row>
 </ion-grid>

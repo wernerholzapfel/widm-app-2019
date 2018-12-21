@@ -1,82 +1,87 @@
-<ion-header>
-    <ion-toolbar color="dark">
-        <ion-grid class="no-padding">
-            <ion-row>
-                <ion-col [size]="4" align-self-center>
-                    <ion-row justify-content-center>
-                        <ion-icon class="large-icon"
-                                  *ngIf="activeIndex > 0 && selectKandidaat"
-                                  name="arrow-back"
-                                  (click)="activateKandidaat(activeIndex - 1)"></ion-icon>
-                    </ion-row>
-                </ion-col>
-                <ion-col center>
-                    <div>
-                        <ion-avatar (click)="saveKandidaat(voorspellingsType)" *ngIf="activeKandidaat && selectKandidaat" class="is_mol_in_spel">
+<ng-container *ngIf="huidigeVoorspelling.aflevering">
+    <ion-header>
+        <ion-toolbar color="dark">
+            <ion-grid class="no-padding">
+                <ion-row>
+                    <ion-col [size]="4" align-self-center>
+                        <ion-row justify-content-center>
+                            <ion-icon class="large-icon"
+                                      *ngIf="activeIndex > 0 && selectKandidaat"
+                                      name="arrow-back"
+                                      (click)="activateKandidaat(activeIndex - 1)"></ion-icon>
+                        </ion-row>
+                    </ion-col>
+                    <ion-col class="justify-content-center">
+                        <ion-avatar class="header-avatar-img" (click)="saveKandidaat(voorspellingsType)"
+                                    *ngIf="activeKandidaat && selectKandidaat">
                             <img [src]="activeKandidaat?.image_url">
                         </ion-avatar>
-                        <ion-avatar *ngIf="activeKandidaat && !selectKandidaat">
+                        <ion-avatar class="header-icon-avatar" *ngIf="activeKandidaat && !selectKandidaat">
                             <ion-icon class="header-avatar" name="person"></ion-icon>
                         </ion-avatar>
-                    </div>
-                </ion-col>
-                <ion-col [size]="4" align-self-center>
-                    <ion-row justify-content-center>
-                        <ion-icon class="large-icon"
-                                  *ngIf="activeIndex + 1 < numberOfKandidaten && selectKandidaat"
-                                  (click)="activateKandidaat(activeIndex + 1)"
-                                  name="arrow-forward"></ion-icon>
-                    </ion-row>
-                </ion-col>
-            </ion-row>
-        </ion-grid>
-    </ion-toolbar>
-</ion-header>
-<ion-content class="test">
-    <ion-row>
-        <ion-col class="cell-1 full">
-            <ion-card color="dark">
-                <ion-card-header>
-                    <ion-card-title>
-                        Jouw voorspellingen
-                    </ion-card-title>
-                    <hr style="background-color: #25B973">
-                </ion-card-header>
-                <ng-container>
-                    <ion-card-content>
-                        <ion-item color="light" *ngFor="let voorspelling of voorspellingsLijst">
-                            <ion-avatar *ngIf="voorspelling.kandidaat && !voorspelling.selected" slot="start"
-                                        class="item-avatar">
-                                <img [src]="voorspelling?.kandidaat.image_url">
-                            </ion-avatar>
-                            <ion-avatar *ngIf="voorspelling.kandidaat && voorspelling.selected" slot="start"
-                                        class="item-avatar">
-                                <ion-icon class="icon-avatar" name="person"></ion-icon>
-                            </ion-avatar>
-                            <ion-label text-wrap>
-                                <ion-text color="dark" [ngClass]="{'afgevallen': voorspelling.kandidaat.afgevallen}" *ngIf="!voorspelling.selected && voorspelling.kandidaat">
-                                    <h3>{{voorspelling.type | titlecase}}</h3>
-                                    <h3>{{voorspelling.kandidaat?.display_name}}</h3>
-                                </ion-text>
-                                <ion-text color="dark" *ngIf="voorspelling.selected || !voorspelling.kandidaat">
-                                    <h3>{{voorspelling.type | titlecase}}</h3>
-                                    <ion-skeleton-text width=300px></ion-skeleton-text>
-                                    <ion-skeleton-text width=200px></ion-skeleton-text>
-                                </ion-text>
-                            </ion-label>
-                            <ion-icon slot="end" *ngIf="!voorspelling.selected" color="dark" name="md-create"
-                                      (click)="editKandidaat(voorspelling.type)"></ion-icon>
-                            <ion-icon slot="end" *ngIf="voorspelling.selected" color="dark" name="undo"
-                                      (click)="cancelEditKandidaat(voorspelling.type)"></ion-icon>
-                            <ion-icon slot="end" *ngIf="voorspelling.selected" color="dark" name="ios-save"
-                                      (click)="saveKandidaat(voorspelling.type)"></ion-icon>
-                        </ion-item>
-                        <ion-button color="tertiary" expand="full" (click)="submitVoorspellingen(true)">Opslaan
-                        </ion-button>
-                    </ion-card-content>
-                </ng-container>
-            </ion-card>
-        </ion-col>
-    </ion-row>
-</ion-content>
-<app-footer></app-footer>
+                    </ion-col>
+                    <ion-col [size]="4" align-self-center>
+                        <ion-row justify-content-center>
+                            <ion-icon class="large-icon"
+                                      *ngIf="activeIndex + 1 < numberOfKandidaten && selectKandidaat"
+                                      (click)="activateKandidaat(activeIndex + 1)"
+                                      name="arrow-forward"></ion-icon>
+                        </ion-row>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+        </ion-toolbar>
+    </ion-header>
+    <ion-content>
+        <ion-card color="secondary">
+            <ion-card-header>
+                <ion-card-title>
+                    Jouw voorspellingen
+                </ion-card-title>
+                <hr style="background-color: #25B973">
+            </ion-card-header>
+            <ion-card-content>
+                <div>
+                    <ion-item color="primary">
+                        <ion-text text-wrap="">
+                            Aflevering {{huidigeVoorspelling.aflevering}}
+                        </ion-text>
+                    </ion-item>
+                    <ion-item color="tertiary" *ngFor="let voorspelling of voorspellingsLijst">
+                        <ion-avatar *ngIf="voorspelling.kandidaat && !voorspelling.selected" slot="start"
+                                    class="item-avatar">
+                            <img [src]="voorspelling?.kandidaat.image_url">
+                        </ion-avatar>
+                        <ion-avatar *ngIf="voorspelling.kandidaat && voorspelling.selected" slot="start"
+                                    class="item-avatar">
+                            <ion-icon class="icon-avatar" name="person"></ion-icon>
+                        </ion-avatar>
+                        <ion-label text-wrap>
+                            <ion-text color="secondary"
+                                      [ngClass]="{'afgevallen': voorspelling.kandidaat.afgevallen}"
+                                      *ngIf="!voorspelling.selected && voorspelling.kandidaat">
+                                <h3>{{voorspelling.type | titlecase}}</h3>
+                                <h3>{{voorspelling.kandidaat?.display_name}}</h3>
+                            </ion-text>
+                            <ion-text color="secondary"
+                                      *ngIf="voorspelling.selected || !voorspelling.kandidaat">
+                                <h3>{{voorspelling.type | titlecase}}</h3>
+                                <ion-skeleton-text></ion-skeleton-text>
+                                <ion-skeleton-text></ion-skeleton-text>
+                            </ion-text>
+                        </ion-label>
+                        <ion-icon slot="end" *ngIf="!voorspelling.selected" color="secondary" name="md-create"
+                                  (click)="editKandidaat(voorspelling.type)"></ion-icon>
+                        <ion-icon slot="end" *ngIf="voorspelling.selected" color="secondary" name="undo"
+                                  (click)="cancelEditKandidaat(voorspelling.type)"></ion-icon>
+                        <ion-icon slot="end" *ngIf="voorspelling.selected" color="secondary" name="ios-save"
+                                  (click)="saveKandidaat(voorspelling.type)"></ion-icon>
+                    </ion-item>
+                </div>
+                <ion-button color="primary" expand="full" (click)="submitVoorspellingen(true)">Opslaan
+                </ion-button>
+            </ion-card-content>
+        </ion-card>
+    </ion-content>
+    <app-footer></app-footer>
+</ng-container>

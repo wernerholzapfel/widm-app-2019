@@ -1,10 +1,7 @@
 :host {
-  // todo remove below to specific component
-
-  .subtitle {
-    margin-top: -12px;
-  }
-  ion-icon {
-    font-size: 36px; //Preferred size here
+  @media screen and (max-height: 640px) {
+    ion-header {
+      display: none !important;
+    }
   }
 }

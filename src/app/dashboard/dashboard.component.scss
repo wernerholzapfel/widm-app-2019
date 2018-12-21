@@ -1,30 +1,24 @@
 :host {
-  .grid-full ion-row {
-    height: 100%;
-    padding: 0 5px 10px 5px;
-    flex-wrap: wrap;
-  }
 
-  .full {
-    flex: 0 0 100% !important;
-    max-width: 100% !important;
-    text-align: center;
-    padding: 10px 10px 0 10px;
-  }
+  --ion-background-color: #E7E5DF;
 
-  .grid-full ion-col {
-    flex: 0 0 50%;
-    max-width: 50%;
-    text-align: center;
-    padding: 10px 5px 0 5px;
+  .large-icon {
+    font-size: 36px;
   }
-
   ion-card {
     height: 100%;
     margin: 0;
   }
+  ion-card-content {
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    // header - border - padding - padding / aantal rijen - header van individuele kaart - padding-bottom
+    height: calc(((100vh - 128px - 44px - 60px) / 3) - 66px);
+    padding-top: 0;
+    padding-bottom: 36px; // optisch is card content onder groene lijn, maar officieel is dat onderdeel van header, dus hier er afgehaald
+    margin-top: 0;
+    margin-bottom: 0;
 
-  .large-icon {
-    font-size: 36px;
   }
 }

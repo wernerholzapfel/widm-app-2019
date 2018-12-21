@@ -4,79 +4,80 @@
     </ion-toolbar>
 </ion-header>
 <ion-content>
-    <ion-row>
-        <ion-col class="cell-1 full">
-            <ion-card color="dark">
-                <ion-card-header>
-                    <ion-segment color="light" (ionChange)="segmentChanged($event)">
-                        <ion-segment-button large value="voorspellingen" [checked]="activeSegment === 'voorspellingen'">
-                            Voorspellingen
-                        </ion-segment-button>
-                        <ion-segment-button large value="tests" [checked]="activeSegment === 'tests'">
-                            Tests
-                        </ion-segment-button>
-                    </ion-segment>
-
-                    <hr style="background-color: #25B973">
-                </ion-card-header>
-                <ng-container>
-                    <ion-card-content>
-                        <div *ngIf="activeSegment === 'voorspellingen'">
-                            <ng-container *ngIf="voorspellingen?.length === 0">
-                                <ion-item color="dark">
-                                    <ion-label text-wrap>
-                                        <ion-text>Er zijn nog geen punten bekend voor je voorspellingen</ion-text>
-                                    </ion-label>
-                                </ion-item>
-                            </ng-container>
-                            <ng-container *ngFor="let voorspelling of voorspellingen">
-                                <ion-item color="tertiary">
-                                    Aflevering {{voorspelling.aflevering}}
-                                </ion-item>
-                                <app-punten-item voorspellingsType="mol"
-                                                 [kandidaat]="voorspelling?.mol"></app-punten-item>
-                                <app-punten-item voorspellingsType="winnaar"
-                                                 [kandidaat]="voorspelling?.winnaar"></app-punten-item>
-                                <app-punten-item voorspellingsType="afvaller"
-                                                 [kandidaat]="voorspelling?.afvaller"></app-punten-item>
-                            </ng-container>
-                        </div>
-                        <div *ngIf="activeSegment === 'tests'">
-                            <ng-container *ngIf="testAfleveringen?.length === 0">
-                                <ion-item color="dark">
-                                    <ion-label text-wrap>
-                                        <ion-text>Er zijn nog geen punten bekend voor je test</ion-text>
-                                    </ion-label>
-                                </ion-item>
-                            </ng-container>
-                            <ng-container *ngFor="let aflevering of testAfleveringen">
-                                <div *ngIf="aflevering">
-                                    <ion-item color="tertiary">
-                                        Test aflevering {{aflevering[0]?.aflevering}}
-                                    </ion-item>
-                                    <ion-item *ngFor="let test of aflevering"
-                                              [ngClass]="{'afgevallen': kandidaat?.afgevallen}">
-                                        <ion-label text-wrap>
-                                            <ion-text>
-                                                <h3>{{test?.vraag?.vraag}}</h3>
-                                                <ion-text>
-                                                    <p class="subtitle" *ngIf="test?.antwoord?.antwoord">{{test?.antwoord?.antwoord}}</p>
-                                                    <p class="subtitle" *ngIf="!test?.antwoord?.antwoord">Geen antwoord</p>
-                                                </ion-text>
-                                            </ion-text>
-                                        </ion-label>
-                                        <ion-avatar slot="start">
-                                            <avatar size="40" background="#000" [letter]="test?.punten" [displayType]="'circle'"></avatar>
-                                        </ion-avatar>
-                                    </ion-item>
-                                </div>
-                            </ng-container>
-                        </div>
-                    </ion-card-content>
+    <ion-card color="secondary">
+        <ion-card-header>
+            <ion-segment (ionChange)="segmentChanged($event)">
+                <ion-segment-button mode="md" value="voorspellingen" [checked]="activeSegment === 'voorspellingen'">
+                    Voorspellingen
+                </ion-segment-button>
+                <ion-segment-button mode="md" value="tests" [checked]="activeSegment === 'tests'">
+                    Tests
+                </ion-segment-button>
+            </ion-segment>
+            <hr style="background-color: #25B973">
+        </ion-card-header>
+        <ion-card-content>
+            <div *ngIf="activeSegment === 'voorspellingen'">
+                <ng-container *ngIf="voorspellingen?.length === 0">
+                    <ion-item color="primary">
+                        Voorspellingen
+                    </ion-item>
+                    <ion-item color="tertiary">
+                        <ion-label text-wrap>
+                            <ion-text>Er zijn nog geen punten bekend voor je voorspellingen</ion-text>
+                        </ion-label>
+                    </ion-item>
                 </ng-container>
-            </ion-card>
-        </ion-col>
-    </ion-row>
+                <ng-container *ngFor="let voorspelling of voorspellingen">
+                    <ion-item color="tertiary">
+                        Aflevering {{voorspelling.aflevering}}
+                    </ion-item>
+                    <app-punten-item voorspellingsType="mol"
+                                     [kandidaat]="voorspelling?.mol"></app-punten-item>
+                    <app-punten-item voorspellingsType="winnaar"
+                                     [kandidaat]="voorspelling?.winnaar"></app-punten-item>
+                    <app-punten-item voorspellingsType="afvaller"
+                                     [kandidaat]="voorspelling?.afvaller"></app-punten-item>
+                </ng-container>
+            </div>
+            <div *ngIf="activeSegment === 'tests'">
+                <ng-container *ngIf="testAfleveringen?.length === 0">
+                    <ion-item color="primary">
+                        Testuitslagen
+                    </ion-item>
+                    <ion-item color="tertiary">
+                        <ion-label text-wrap>
+                            <ion-text>Er zijn nog geen punten bekend voor je test</ion-text>
+                        </ion-label>
+                    </ion-item>
+                </ng-container>
+                <ng-container *ngFor="let aflevering of testAfleveringen">
+                    <div *ngIf="aflevering">
+                        <ion-item color="primary">
+                            Test aflevering {{aflevering[0]?.aflevering}}
+                        </ion-item>
+                        <ion-item color="tertiary" *ngFor="let test of aflevering"
+                                  [ngClass]="{'afgevallen': kandidaat?.afgevallen}">
+                            <ion-label text-wrap>
+                                <ion-text>
+                                    <h3>{{test?.vraag?.vraag}}</h3>
+                                    <ion-text>
+                                        <p class="subtitle" *ngIf="test?.antwoord?.antwoord">
+                                            {{test?.antwoord?.antwoord}}</p>
+                                        <p class="subtitle" *ngIf="!test?.antwoord?.antwoord">Geen antwoord</p>
+                                    </ion-text>
+                                </ion-text>
+                            </ion-label>
+                            <ion-avatar slot="start">
+                                <avatar size="40" background="#000" [letter]="test?.punten"
+                                        [displayType]="'circle'"></avatar>
+                            </ion-avatar>
+                        </ion-item>
+                    </div>
+                </ng-container>
+            </div>
+        </ion-card-content>
+    </ion-card>
 </ion-content>
 
 <app-footer></app-footer>

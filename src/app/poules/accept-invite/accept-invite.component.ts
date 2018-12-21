@@ -29,7 +29,7 @@ export class AcceptInviteComponent implements OnInit, OnDestroy {
         this.uiService.uitnodigingen$.pipe(takeUntil(this.unsubscribe)).subscribe(response => {
             this.uitnodigingen = response;
             if (this.uitnodigingen.length === 0) {
-                this.navCtrl.navigateForward(`${navigation.poules}/${navigation.poule}`, false);
+                this.navCtrl.navigateForward(`${navigation.poules}/${navigation.poule}`, true);
             }
         });
     }

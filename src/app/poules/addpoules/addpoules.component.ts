@@ -44,7 +44,7 @@ export class AddpoulesComponent implements OnInit {
                 // todo add to redux store
                 this.uiService.presentToast(`Poule ${this.createPouleForm.value.name} aangemaakt`);
                 this.store.dispatch(new FetchPoulesInProgress());
-                this.navCtrl.navigateForward(`${navigation.poules}/${navigation.poule}`, false);
+                this.navCtrl.navigateForward(`${navigation.poules}/${navigation.poule}`, true);
             }
         );
     }

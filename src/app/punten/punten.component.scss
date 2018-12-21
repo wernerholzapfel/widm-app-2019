@@ -1,6 +1,6 @@
 :host {
   ion-card {
-    height: 100%;
-    margin: 0;
+    margin-top: 0;
+    min-height: calc(100vh - 128px - 44px - 30px);
   }
 }

@@ -1,11 +1,24 @@
 :host {
   ion-avatar {
-    height: 100%;
-    width: 100%;
+    max-width: calc(100vw / 4);
+    max-height: calc(100vw / 4);
+    min-height: 109px;
+    min-width: 109px;
+  }
+  .header-avatar {
+    max-width: calc(100vw / 4);
+    max-height: calc(100vw / 4);
+    height: 109px;
+    width: 109px;
+  }
+  ion-avatar.icon_avatar {
+    display: grid;
+    justify-content: center;
   }
   .subtitle {
     margin-top: -12px;
   }
+
   .mol_is_niet_afgevallen {
     border: 2px solid #25B973;
   }
@@ -13,8 +26,5 @@
   .mol_is_afgevallen {
     border: 2px solid #d33939;
   }
-  .header-avatar {
-    width: 109px;
-    height: 109px;
-  }
+
 }

@@ -1,29 +1,47 @@
 :host {
-  ion-avatar {
-    height: 100%;
-    width: 100%;
+  .header-avatar-img {
+    height: 109px;
+    width: 109px;
+  }
+
+  .header-avatar {
+    max-width: calc(100vw / 4);
+    max-height: calc(100vw / 4);
+    min-height: 109px;
+    min-width: 109px;
+  }
+
+  ion-avatar.header-icon-avatar {
+    max-width: calc(100vw / 4);
+    max-height: calc(100vw / 4);
+    min-height: 109px;
+    min-width: 109px;
+    display: grid;
+    justify-content: center;
   }
   .subtitle {
     margin-top: -12px;
   }
-  .is_mol_in_spel {
-    //border: 4px solid #25B973;
-  }
+
   ion-card {
-    height: 100%;
-    margin: 0;
+    margin-top: 0;
+    min-height: calc(100vh - 128px - 44px - 30px);
   }
+
+  ion-card-content {
+    display: grid;
+    align-content: space-between;
+    min-height: calc(100vh - 128px - 44px - 30px - 84px);
+  }
+
   ion-icon.large-icon {
     font-size: 36px;
   }
+
   .icon-avatar,
   .item-avatar {
     width: 60px;
     height: 60px;
-  }
-  .header-avatar {
-    width: 109px;
-    height: 109px;
   }
 
   .afgevallen > h3 {

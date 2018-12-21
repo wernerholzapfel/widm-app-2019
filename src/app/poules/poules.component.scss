@@ -1,7 +1,14 @@
 $green: #25B973;
 
 :host {
+  ::ng-deep {
+    ion-card {
+      margin-top: 0;
+      min-height: calc(100vh - 128px - 44px - 30px);
+    }
+  }
   ion-icon.large-icon {
     font-size: 36px;
   }
 }
+
