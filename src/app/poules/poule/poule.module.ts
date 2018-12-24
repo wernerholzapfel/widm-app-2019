@@ -4,17 +4,18 @@ import {PouleComponent} from './poule.component';
 import {FormsModule} from '@angular/forms';
 import {IonicModule} from '@ionic/angular';
 import {AvatarModule} from 'ngx-avatar';
-import {VoorspellingPuntenItemComponent} from './voorspelling-punten-item/voorspelling-punten-item.component';
 import {VoorspellingsscoreModule} from '../../voorspellingsscore/voorspellingsscore.module';
+import {VoorspellingPuntenItemModule} from './voorspelling-punten-item/voorspelling-punten-item.module';
 
 @NgModule({
-    declarations: [PouleComponent, VoorspellingPuntenItemComponent],
+    declarations: [PouleComponent],
     imports: [
         CommonModule,
         FormsModule,
         IonicModule,
         AvatarModule,
-        VoorspellingsscoreModule
+        VoorspellingsscoreModule,
+        VoorspellingPuntenItemModule
     ],
     exports: [PouleComponent]
 })

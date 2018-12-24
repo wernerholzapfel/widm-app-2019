@@ -22,6 +22,7 @@ export function poulesReducer(state: IPoules, action) {
 export const getDeelnemer = createFeatureSelector<IPoules>('poules');
 export const getPoules = createSelector(getDeelnemer, (deelnemer: IPoules) => deelnemer.poules);
 export const getDeelnemerId = createSelector(getDeelnemer, (deelnemer: IPoules) => deelnemer.id);
+export const getDisplayname = createSelector(getDeelnemer, (deelnemer: IPoules) => deelnemer.display_name);
 export const getDeelnemerScore = createSelector(getDeelnemer,
     (deelnemer: IPoules) =>  deelnemer && deelnemer.poules && deelnemer.poules.length > 0
         ? deelnemer.poules[0].deelnemers.find(pouleDeelnemer => pouleDeelnemer.id === deelnemer.id)

@@ -19,7 +19,8 @@
                                             [value]="deelnemer.positie"></ngx-avatar>
                             </ion-avatar>
                             <ion-label text-wrap>
-                                <ion-text [color]="deelnemer.id !== deelnemerId ? 'primary' : 'secondary'">
+                                <!--todo keuze maken in kleuren-->
+                                <ion-text [color]="deelnemer.id !== deelnemerId ? 'dark' : 'dark'">
                                     <ion-row>
                                         <ion-col [size]="9">
                                             <h3>{{deelnemer.display_name}}</h3>
@@ -35,7 +36,7 @@
                                 </ion-text>
                             </ion-label>
                         </ion-item>
-                        <app-voorspellingsscore *ngIf="deelnemer.showDetails"
+                        <app-voorspellingsscore *ngIf="deelnemer.showDetails" [headercolor]="'medium'"
                                                 [voorspellingen]="deelnemer?.voorspellingen"></app-voorspellingsscore>
                     </ng-container>
                 </div>

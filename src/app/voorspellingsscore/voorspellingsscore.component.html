@@ -1,5 +1,5 @@
 <ng-container *ngFor="let voorspelling of voorspellingen">
-    <ion-item lines="full" color="primary">
+    <ion-item lines="full" [color]="headercolor">
         Aflevering {{voorspelling.aflevering}}
     </ion-item>
     <app-punten-item voorspellingsType="mol"

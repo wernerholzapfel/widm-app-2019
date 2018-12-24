@@ -39,6 +39,7 @@ export class VoorspellenComponent implements OnInit, OnDestroy {
     activeIndex = 0;
     numberOfKandidaten: number;
     huidigeVoorspelling: VoorspellingsBody = {};
+    isBusy = false;
     voorspellingsLijst: { type: string; kandidaat?: IKandidaat, selected?: boolean }[] = [
         {type: 'mol', kandidaat: null},
         {type: 'winnaar', kandidaat: null},
@@ -100,8 +101,7 @@ export class VoorspellenComponent implements OnInit, OnDestroy {
     saveKandidaat(voorspellingsType: string) {
         this.voorspellingsLijst.find(vp => vp.type === voorspellingsType).kandidaat = this.activeKandidaat;
         this.huidigeVoorspelling[voorspellingsType] = this.activeKandidaat;
-        this.setSelectedState(voorspellingsType, false);
-        this.submitVoorspellingen(false);
+        this.submitVoorspellingen(false, voorspellingsType);
     }
 
     editKandidaat(voorspellingsType: string) {
@@ -120,25 +120,35 @@ export class VoorspellenComponent implements OnInit, OnDestroy {
         this.huidigeVoorspelling[voorspellingsType] = kandidaat;
     }
 
-    submitVoorspellingen(final: boolean) {
-
+    submitVoorspellingen(final: boolean, voorspellingsType) {
+        this.isBusy = true;
         console.log(this.huidigeVoorspelling);
         this.voorspellenService.saveVoorspelling(Object.assign({}, this.huidigeVoorspelling)).subscribe(response => {
             this.uiService.huidigeVoorspelling$.next(response);
             this.huidigeVoorspelling.id = response.id;
-            if (this.huidigeVoorspelling.mol && !this.huidigeVoorspelling.mol.afgevallen && this.huidigeVoorspelling.afvaller && this.huidigeVoorspelling.winnaar) {
+            if (this.huidigeVoorspelling.mol &&
+                !this.huidigeVoorspelling.mol.afgevallen &&
+                this.huidigeVoorspelling.afvaller &&
+                this.huidigeVoorspelling.winnaar) {
                 this.uiService.voorspellingAfgerond$.next(true);
                 if (environment.production) {
                     window['plugins'].OneSignal.sendTag('laatsteVoorspelling', this.huidigeVoorspelling.aflevering);
                 }
             }
             this.uiService.presentToast('Opslaan is gelukt');
+            if (voorspellingsType) {
+                this.setSelectedState(voorspellingsType, false);
+            }
             if (final) {
                 this.navCtrl.navigateForward(`${navigation.home}`);
             }
+            this.isBusy = false;
+
         }, error => {
             // todo error message er uithalen en tonen.
             this.uiService.presentToast('Er is iets misgegaan.');
+            this.isBusy = false;
+
         });
     }
 

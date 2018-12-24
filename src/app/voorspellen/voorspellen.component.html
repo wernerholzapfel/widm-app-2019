@@ -1,14 +1,17 @@
 <ng-container *ngIf="huidigeVoorspelling.aflevering">
     <ion-header>
+        <app-footer></app-footer>
         <ion-toolbar color="dark">
             <ion-grid class="no-padding">
                 <ion-row>
                     <ion-col align-self-center>
                         <ion-row justify-content-center>
-                            <ion-icon class="large-icon"
-                                      *ngIf="activeIndex > 0 && selectKandidaat"
-                                      name="arrow-back"
-                                      (click)="activateKandidaat(activeIndex - 1)"></ion-icon>
+                            <ion-button fill="clear" [disabled]="isBusy"
+                                        *ngIf="activeIndex > 0 && selectKandidaat"
+                                        (click)="activateKandidaat(activeIndex - 1)">
+                                <ion-icon color="tertiary" slot="icon-only" class="large-icon"
+                                          name="arrow-back"></ion-icon>
+                            </ion-button>
                         </ion-row>
                     </ion-col>
                     <ion-col class="justify-content-center">
@@ -22,10 +25,12 @@
                     </ion-col>
                     <ion-col align-self-center>
                         <ion-row justify-content-center>
-                            <ion-icon class="large-icon"
-                                      *ngIf="activeIndex + 1 < numberOfKandidaten && selectKandidaat"
-                                      (click)="activateKandidaat(activeIndex + 1)"
-                                      name="arrow-forward"></ion-icon>
+                            <ion-button fill="clear" [disabled]="isBusy"
+                                        *ngIf="activeIndex + 1 < numberOfKandidaten && selectKandidaat"
+                                        (click)="activateKandidaat(activeIndex + 1)">
+                                <ion-icon color="tertiary" slot="icon-only" class="large-icon"
+                                          name="arrow-forward"></ion-icon>
+                            </ion-button>
                         </ion-row>
                     </ion-col>
                 </ion-row>
@@ -70,18 +75,24 @@
                                 <ion-skeleton-text></ion-skeleton-text>
                             </ion-text>
                         </ion-label>
-                        <ion-icon slot="end" *ngIf="!voorspelling.selected" color="secondary" name="md-create"
-                                  (click)="editKandidaat(voorspelling.type)"></ion-icon>
-                        <ion-icon slot="end" *ngIf="voorspelling.selected" color="secondary" name="undo"
-                                  (click)="cancelEditKandidaat(voorspelling.type)"></ion-icon>
-                        <ion-icon slot="end" *ngIf="voorspelling.selected" color="secondary" name="ios-save"
-                                  (click)="saveKandidaat(voorspelling.type)"></ion-icon>
+                        <ion-button no-padding fill="clear" [disabled]="isBusy" *ngIf="!voorspelling.selected"
+                                    (click)="editKandidaat(voorspelling.type)" size="small">
+                            <ion-icon color="secondary" slot="icon-only" name="md-create"></ion-icon>
+                        </ion-button>
+                        <ion-button no-padding fill="clear" [disabled]="isBusy" *ngIf="voorspelling.selected"
+                                    (click)="cancelEditKandidaat(voorspelling.type)" size="small">
+                            <ion-icon color="secondary" slot="icon-only" name="undo"></ion-icon>
+                        </ion-button>
+                        <ion-button no-padding fill="clear" [disabled]="isBusy" *ngIf="voorspelling.selected"
+                                    (click)="saveKandidaat(voorspelling.type)" size="small">
+                            <ion-icon color="secondary" slot="icon-only" name="ios-save"></ion-icon>
+                        </ion-button>
                     </ion-item>
                 </div>
-                <ion-button color="primary" expand="full" (click)="submitVoorspellingen(true)">Opslaan
+                <ion-button [disabled]="isBusy" color="primary" expand="full" (click)="submitVoorspellingen(true)">
+                    Opslaan
                 </ion-button>
             </ion-card-content>
         </ion-card>
     </ion-content>
-    <app-footer></app-footer>
 </ng-container>

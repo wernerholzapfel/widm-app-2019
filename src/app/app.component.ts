@@ -118,7 +118,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     initializeApp() {
         this.platform.ready().then(() => {
-            this.statusBar.styleDefault();
+            this.statusBar.styleLightContent();
             this.splashScreen.hide();
 
             // OneSignal Code start:

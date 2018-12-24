@@ -8,6 +8,7 @@ import {Component, Input, OnInit} from '@angular/core';
 export class VoorspellingsscoreComponent implements OnInit {
 
     @Input() voorspellingen: any;
+    @Input() headercolor = 'primary';
 
     constructor() {
     }
