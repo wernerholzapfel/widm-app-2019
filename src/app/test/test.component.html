@@ -22,10 +22,10 @@
 </ion-header>
 <ion-content>
     <div *ngIf="isLoading" class="spinner">
-        <ion-spinner name="bubbles"></ion-spinner>
+        <ion-spinner name="dots"></ion-spinner>
     </div>
 
-    <ion-grid *ngIf="showgeentestscherm">
+    <ion-grid *ngIf="showgeentestscherm && !isLoading">
         <ion-row align-items-center>
             <ion-card color='secondary'>
                 <ion-card-content>
@@ -36,7 +36,7 @@
         </ion-row>
     </ion-grid>
 
-    <ion-grid *ngIf="showeindeseizoenscherm">
+    <ion-grid *ngIf="showeindeseizoenscherm && !isLoading">
         <ion-row align-items-center>
             <ion-card color='secondary'>
                 <ion-card-content>
@@ -50,25 +50,28 @@
         <ion-row align-items-center>
             <ion-card color='secondary'>
                 <ion-card-header text-wrap>
-                    Wanneer je de test start gaat de teller lopen. Je hebt 20 seconden om iedere vraag te
+                    Wanneer je de test start gaat de teller lopen. Je hebt voor iedere vraag 20 seconden om deze te
                     beantwoorden.<br>
                     Succes!
                     <hr style="background-color: #25B973">
                 </ion-card-header>
                 <ion-card-content>
-                    <ion-button color="primary" expand="full" (click)="nextSlide()">Start de test!</ion-button>
+                    <ion-button [disabled]="isLoading" color="primary" expand="full" (click)="nextSlide()">Start de
+                        test!
+                    </ion-button>
                 </ion-card-content>
             </ion-card>
         </ion-row>
     </ion-grid>
 
-    <ion-card color='secondary' class="testscherm" *ngIf="showtestscherm">
+    <ion-card color='secondary' class="testscherm" *ngIf="showtestscherm && !isLoading">
         <ion-card-header class="vragen-header" text-wrap>
             {{question?.vraag}}
             <hr style="background-color: #25B973">
         </ion-card-header>
         <ion-card-content>
-            <ion-button color="primary" expand="full" *ngFor="let answer of question?.antwoorden; let i = index;"
+            <ion-button [disabled]="isLoading" color="primary" expand="full"
+                        *ngFor="let answer of question?.antwoorden; let i = index;"
                         (click)="selectAnswer(answer, question)">
                 {{i+1}}. {{answer.antwoord}}
             </ion-button>
@@ -76,7 +79,7 @@
         </ion-card-content>
     </ion-card>
 
-    <ion-grid *ngIf="showeindscherm">
+    <ion-grid *ngIf="showeindscherm && !isLoading">
         <ion-card color='secondary'>
             <ion-card-header text-wrap>
                 <ion-card-title>

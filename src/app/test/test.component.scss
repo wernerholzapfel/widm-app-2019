@@ -6,4 +6,21 @@
     margin-top: 0;
     min-height: calc(100vh - 128px - 44px - 30px - #{$safe-area-inset-top} - #{$safe-area-inset-bottom});
   }
+
+  div.spinner {
+    margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    height: 85px;
+    text-align: center;
+  }
+  ion-spinner {
+    color: $tertiary
+  }
+  .spinner svg {
+    height: 85px !important;
+  }
 }
