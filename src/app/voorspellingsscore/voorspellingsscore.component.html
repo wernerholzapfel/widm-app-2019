@@ -1,0 +1,11 @@
+<ng-container *ngFor="let voorspelling of voorspellingen">
+    <ion-item lines="full" color="primary">
+        Aflevering {{voorspelling.aflevering}}
+    </ion-item>
+    <app-punten-item voorspellingsType="mol"
+                     [kandidaat]="voorspelling?.mol"></app-punten-item>
+    <app-punten-item voorspellingsType="winnaar"
+                     [kandidaat]="voorspelling?.winnaar"></app-punten-item>
+    <app-punten-item voorspellingsType="afvaller"
+                     [kandidaat]="voorspelling?.afvaller"></app-punten-item>
+</ng-container>

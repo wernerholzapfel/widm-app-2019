@@ -3,13 +3,13 @@ For android:
 build project:
 ionic cordova build android --prod --release
 copy project and key to
-cp /Users/Werner/projects/werner/molapp/platforms/android/build/outputs/apk/android-release-unsigned.apk ~/Library/Android/sdk/build-tools/26.0.1/
+cp /Users/Werner/projects/werner/widm-app-2019/platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk ~/Library/Android/sdk/build-tools/28.0.3/
 
-Go to  ~/Library/Android/sdk/build-tools/26.0.1/
-cd ~/Library/Android/sdk/build-tools/26.0.1/
+Go to  ~/Library/Android/sdk/build-tools/28.0.3/
+cd ~/Library/Android/sdk/build-tools/28.0.3/
 and run:
-jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore supereleven-key.jks android-release-unsigned.apk supereleven
-./zipalign -v 4 android-release-unsigned.apk molapp_0.1.1.apk
+jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore supereleven-key.jks app-release-unsigned.apk supereleven
+./zipalign -v 4 app-release-unsigned.apk molloot_2.2.0.apk
 
 surf naar:
 https://play.google.com/apps/publish/?account=6886303713469501217#AppDashboardPlace:p=com.wernerholzapfel.mollotenapp

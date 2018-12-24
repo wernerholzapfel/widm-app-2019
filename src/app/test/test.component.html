@@ -84,8 +84,8 @@
                 <hr style="background-color: #25B973">
             </ion-card-header>
             <ion-card-content *ngIf="testAntwoorden?.length > 0">
-                <ion-item color="primary">Aflevering {{aflevering}}</ion-item>
-                <ion-item color="tertiary" *ngFor="let testAntwoord of testAntwoorden; let i = index;">
+                <ion-item lines="full" color="primary">Aflevering {{aflevering}}</ion-item>
+                <ion-item lines="full" color="tertiary" *ngFor="let testAntwoord of testAntwoorden; let i = index;">
                     <ion-label text-wrap>
                         <ion-text>
                             <div>

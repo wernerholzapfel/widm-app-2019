@@ -1,7 +1,8 @@
 <div *ngIf="(uiService.isLoading$ | async)" class="spinner">
     <ion-spinner name="bubbles"></ion-spinner>
 </div>
-<ion-content class="grid-full" *ngIf="(authService.user$ | async) && !(uiService.isLoading$ | async)">
+<ion-content class="dashboard-container grid-full"
+             *ngIf="(authService.user$ | async) && !(uiService.isLoading$ | async)">
     <ion-row>
         <ion-col class="cell-1 full">
             <ion-card color="dark" (click)="fetchACties()">
@@ -25,7 +26,8 @@
                     <hr style="background-color: #25B973">
                 </ion-card-header>
                 <ion-card-content>
-                    <ion-icon [color]="(uiService.testAfgerond$ | async) ? 'tertiary' : 'primary'" name="clock" style="font-size: 48px;"></ion-icon>
+                    <ion-icon [color]="(uiService.testAfgerond$ | async) ? 'tertiary' : 'primary'" name="clock"
+                              style="font-size: 48px;"></ion-icon>
                 </ion-card-content>
             </ion-card>
         </ion-col>
@@ -51,7 +53,8 @@
                     <hr style="background-color: #25B973">
                 </ion-card-header>
                 <ion-card-content>
-                        <ion-icon [color]="(uiService.voorspellingAfgerond$ | async) ? 'tertiary' : 'primary'" name="finger-print" style="font-size: 48px;"></ion-icon>
+                    <ion-icon [color]="(uiService.voorspellingAfgerond$ | async) ? 'tertiary' : 'primary'"
+                              name="finger-print" style="font-size: 48px;"></ion-icon>
                 </ion-card-content>
             </ion-card>
         </ion-col>
@@ -70,7 +73,7 @@
         </ion-col>
     </ion-row>
 </ion-content>
-<ion-content class="grid-full" *ngIf="!(authService.user$ | async) && !(uiService.isLoading$ | async)">
+<ion-content *ngIf="!(authService.user$ | async) && !(uiService.isLoading$ | async)">
     <ion-row>
         <ion-col class="cell-1 full">
             <ion-card color="dark">
@@ -81,7 +84,8 @@
                     <hr style="background-color: #25B973">
                 </ion-card-header>
                 <ion-card-content>
-                    Voor de molloot 2019 is een nieuw account nodig, maak deze hieronder aan. Al een account aangemaakt,
+                    Voor de molloot 2019 is een nieuw account nodig, maak deze hieronder aan. Al een account
+                    aangemaakt,
                     log dan meteen in.
                 </ion-card-content>
             </ion-card>

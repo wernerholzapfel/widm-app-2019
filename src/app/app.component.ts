@@ -81,7 +81,7 @@ export class AppComponent implements OnInit, OnDestroy {
                     this.voorspellenService.getLaatsteVoorspelling().pipe(take(1)).subscribe(voorspelling => {
                         this.uiService.huidigeVoorspelling$.next(voorspelling);
                         this.uiService.voorspellingAfgerond$
-                            .next(voorspelling && acties.voorspellingaflevering === voorspelling.aflevering);
+                            .next(voorspelling && acties.voorspellingaflevering === voorspelling.aflevering && !voorspelling.mol.afgevallen);
                     }),
 
                     this.testService.getaantalOnbeantwoordeVragen().pipe(take(1)).subscribe(response => {
@@ -136,7 +136,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
             if (environment.production) {
                 window['plugins'].OneSignal
-                    .startInit('c9e91d07-f6c6-480b-a9ac-8322418085f8')
+                    .startInit('c9e91d07-f6c6-480b-a9ac-8322418085f8', 'molloot-8de9b')
                     .handleNotificationOpened(notificationOpenedCallback)
                     .handleNotificationReceived(handleNotificationReceived)
                     .endInit();

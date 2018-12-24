@@ -1,5 +1,5 @@
 import {from as observableFrom, of as observableOf} from 'rxjs';
-import {catchError, map, switchMap, take} from 'rxjs/operators';
+import {catchError, map, switchMap} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
 import {Actions, Effect, ofType} from '@ngrx/effects';
 import {
@@ -22,9 +22,12 @@ export class PoulesEffects {
         ofType<FetchPoulesInProgress>(FETCH_POULES_IN_PROGRESS),
         switchMap((action) => {
             return this.poulesService
-                .getPoules().pipe(take(1),
-                        switchMap(response =>
-                        observableOf(new CalculatePoules(response))
+                .getPoules().pipe(
+                    switchMap(response => {
+                            if (response) {
+                                return observableOf(new CalculatePoules(response));
+                            }
+                        }
                     ),
                     catchError(err =>
                         observableFrom([
@@ -34,7 +37,7 @@ export class PoulesEffects {
         }));
 
     @Effect()
-    calculatePoules = this.actions$.pipe(
+    calculatePoules$ = this.actions$.pipe(
         ofType<CalculatePoules>(CALCULATE_POULES),
         map(action => ({
             ...action.payload,
@@ -50,9 +53,15 @@ export class PoulesEffects {
                                     mol: Object.assign(voorspelling.mol,
                                         {punten: this.calculatieService.determineMolPunten(voorspelling.mol, voorspelling.aflevering)}),
                                     winnaar: Object.assign(voorspelling.winnaar,
-                                        {punten: this.calculatieService.determineWinnaarPunten(voorspelling.winnaar, voorspelling.aflevering)}),
+                                        {
+                                            punten:
+                                                this.calculatieService.determineWinnaarPunten(voorspelling.winnaar, voorspelling.aflevering)
+                                        }),
                                     afvaller: Object.assign(voorspelling.afvaller,
-                                        {punten: this.calculatieService.determineAfvallerPunten(voorspelling.afvaller, voorspelling.aflevering)}),
+                                        {
+                                            punten:
+                                                this.calculatieService.determineAfvallerPunten(voorspelling.afvaller, voorspelling.aflevering)
+                                        }),
                                 })),
                             tests: deelnemer.tests
                                 .map(test => ({

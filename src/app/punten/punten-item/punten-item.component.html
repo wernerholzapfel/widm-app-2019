@@ -1,13 +1,13 @@
-<ion-item [ngClass]="{'afgevallen': kandidaat?.afgevallen}">
-  <ion-avatar slot="start">
-    <img [src]="kandidaat?.image_url">
-  </ion-avatar>
-  <ion-label text-wrap>
+<ion-item lines="full" color="tertiary" [ngClass]="{'afgevallen': kandidaat?.afgevallen}">
+    <ion-avatar slot="start">
+        <img [src]="kandidaat?.image_url">
+    </ion-avatar>
+    <ion-label text-wrap>
+        <ion-text>De {{voorspellingsType | titlecase}}:
+            <h3>{{kandidaat?.display_name}}</h3>
+        </ion-text>
+    </ion-label>
     <ion-text>
-      <h3>{{kandidaat?.display_name}}</h3>
-      <ion-text>
-        <p class="subtitle">{{voorspellingsType}} - {{kandidaat?.punten}} punten</p>
-      </ion-text>
+        {{kandidaat?.punten}}
     </ion-text>
-  </ion-label>
 </ion-item>

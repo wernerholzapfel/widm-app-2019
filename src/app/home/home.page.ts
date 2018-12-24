@@ -28,19 +28,19 @@ export class HomePage implements OnInit {
     }
 
     goToVoorspelling() {
-        this.navCtrl.navigateForward(`${navigation.home}/${navigation.voorspellen}`, true);
+        this.navCtrl.navigateForward(`${navigation.home}/${navigation.voorspellen}`, {animated: true});
     }
 
     goToDashboard() {
-        this.navCtrl.navigateForward(`${navigation.home}/${navigation.dashboard}`, true);
+        this.navCtrl.navigateForward(`${navigation.home}/${navigation.dashboard}`, {animated: true});
     }
 
     goToPoule() {
-        this.navCtrl.navigateForward(`${navigation.home}/${navigation.poules}`, true);
+        this.navCtrl.navigateForward(`${navigation.home}/${navigation.poules}`, {animated: true});
     }
 
     goToTest() {
-        this.navCtrl.navigateForward(`${navigation.home}/${navigation.poules}`, true);
+        this.navCtrl.navigateForward(`${navigation.home}/${navigation.poules}`, {animated: true});
     }
 
 }

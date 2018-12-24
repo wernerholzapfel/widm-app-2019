@@ -126,7 +126,7 @@ export class VoorspellenComponent implements OnInit, OnDestroy {
         this.voorspellenService.saveVoorspelling(Object.assign({}, this.huidigeVoorspelling)).subscribe(response => {
             this.uiService.huidigeVoorspelling$.next(response);
             this.huidigeVoorspelling.id = response.id;
-            if (this.huidigeVoorspelling.mol && this.huidigeVoorspelling.afvaller && this.huidigeVoorspelling.winnaar) {
+            if (this.huidigeVoorspelling.mol && !this.huidigeVoorspelling.mol.afgevallen && this.huidigeVoorspelling.afvaller && this.huidigeVoorspelling.winnaar) {
                 this.uiService.voorspellingAfgerond$.next(true);
                 if (environment.production) {
                     window['plugins'].OneSignal.sendTag('laatsteVoorspelling', this.huidigeVoorspelling.aflevering);

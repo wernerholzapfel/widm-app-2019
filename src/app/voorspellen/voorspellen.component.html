@@ -3,7 +3,7 @@
         <ion-toolbar color="dark">
             <ion-grid class="no-padding">
                 <ion-row>
-                    <ion-col [size]="4" align-self-center>
+                    <ion-col align-self-center>
                         <ion-row justify-content-center>
                             <ion-icon class="large-icon"
                                       *ngIf="activeIndex > 0 && selectKandidaat"
@@ -20,7 +20,7 @@
                             <ion-icon class="header-avatar" name="person"></ion-icon>
                         </ion-avatar>
                     </ion-col>
-                    <ion-col [size]="4" align-self-center>
+                    <ion-col align-self-center>
                         <ion-row justify-content-center>
                             <ion-icon class="large-icon"
                                       *ngIf="activeIndex + 1 < numberOfKandidaten && selectKandidaat"
@@ -42,12 +42,12 @@
             </ion-card-header>
             <ion-card-content>
                 <div>
-                    <ion-item color="primary">
+                    <ion-item lines="full" color="primary">
                         <ion-text text-wrap="">
                             Aflevering {{huidigeVoorspelling.aflevering}}
                         </ion-text>
                     </ion-item>
-                    <ion-item color="tertiary" *ngFor="let voorspelling of voorspellingsLijst">
+                    <ion-item lines="full" color="tertiary" *ngFor="let voorspelling of voorspellingsLijst">
                         <ion-avatar *ngIf="voorspelling.kandidaat && !voorspelling.selected" slot="start"
                                     class="item-avatar">
                             <img [src]="voorspelling?.kandidaat.image_url">

@@ -12,13 +12,13 @@
         <ion-card-content>
             <div *ngIf="!(authService.user$ | async) && activeSegment === 'inloggen'">
                 <form (ngSubmit)="signInWithEmail()" #loginForm="ngForm">
-                    <ion-item color="primary">
+                    <ion-item lines="full" color="primary">
                         <ion-text text-wrap>Inloggen</ion-text>
                     </ion-item>
-                    <ion-item>
+                    <ion-item lines="full">
                         <ion-input required type="email" placeholder="Emailadres" name="email" ngModel></ion-input>
                     </ion-item>
-                    <ion-item>
+                    <ion-item lines="full">
                         <ion-input required type="password" placeholder="Wachtwoord" name="password"
                                    ngModel></ion-input>
                     </ion-item>
@@ -32,16 +32,16 @@
             </div>
             <div *ngIf="activeSegment === 'inschrijven'">
                 <form (ngSubmit)="signUpRegular()" #signupForm="ngForm">
-                    <ion-item color="primary">
+                    <ion-item lines="full" color="primary">
                        <ion-text text-wrap>Inschrijven</ion-text>
                     </ion-item>
-                    <ion-item>
+                    <ion-item lines="full">
                         <ion-input required type="email" placeholder="Emailadres" name="email" ngModel></ion-input>
                     </ion-item>
-                    <ion-item>
+                    <ion-item lines="full">
                         <ion-input required type="text" placeholder="Naam" name="displayName" ngModel></ion-input>
                     </ion-item>
-                    <ion-item>
+                    <ion-item lines="full">
                         <ion-input required type="password" placeholder="Wachtwoord" name="password"
                                    ngModel></ion-input>
                     </ion-item>
@@ -65,7 +65,7 @@
         </ion-card-header>
         <ion-card-content>
             <form class="login-form">
-                <ion-item>
+                <ion-item lines="full">
                     <ion-input required placeholder="Email" name="inlogEmail" [(ngModel)]="user.email">
                     </ion-input>
                 </ion-item>

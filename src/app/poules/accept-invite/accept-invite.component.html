@@ -7,10 +7,10 @@
             <hr style="background-color: #25B973">
         </ion-card-header>
         <ion-card-content>
-            <ion-item color="primary">
+            <ion-item lines="full" color="primary">
                 <ion-text text-wrap>Uitnodigingen</ion-text>
             </ion-item>
-            <ion-item color="tertiary" *ngFor="let uitnodiging of uitnodigingen">
+            <ion-item lines="full" color="tertiary" *ngFor="let uitnodiging of uitnodigingen">
                 <ion-label text-wrap>
                     <ion-text>
                         <h3>{{uitnodiging.poule.poule_name}}</h3>

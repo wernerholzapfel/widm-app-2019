@@ -1,3 +1,5 @@
+@import '../../../theme/variables';
+
 :host {
 
   .icon-in-title {
@@ -11,6 +13,6 @@
     display: grid;
     align-content: space-between;
     padding-bottom: 0;
-    min-height: calc(100vh - 128px - 44px - 30px - 84px);
+    min-height: calc(100vh - 128px - 44px - 30px - 84px - #{$safe-area-inset-top} - #{$safe-area-inset-bottom});
   }
 }

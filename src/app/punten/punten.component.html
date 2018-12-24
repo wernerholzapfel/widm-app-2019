@@ -6,7 +6,7 @@
 <ion-content>
     <ion-card color="secondary">
         <ion-card-header>
-            <ion-segment (ionChange)="segmentChanged($event)">
+            <ion-segment mode="md" (ionChange)="segmentChanged($event)">
                 <ion-segment-button mode="md" value="voorspellingen" [checked]="activeSegment === 'voorspellingen'">
                     Voorspellingen
                 </ion-segment-button>
@@ -19,33 +19,23 @@
         <ion-card-content>
             <div *ngIf="activeSegment === 'voorspellingen'">
                 <ng-container *ngIf="voorspellingen?.length === 0">
-                    <ion-item color="primary">
+                    <ion-item lines="full" color="primary">
                         Voorspellingen
                     </ion-item>
-                    <ion-item color="tertiary">
+                    <ion-item lines="full" color="tertiary">
                         <ion-label text-wrap>
                             <ion-text>Er zijn nog geen punten bekend voor je voorspellingen</ion-text>
                         </ion-label>
                     </ion-item>
                 </ng-container>
-                <ng-container *ngFor="let voorspelling of voorspellingen">
-                    <ion-item color="tertiary">
-                        Aflevering {{voorspelling.aflevering}}
-                    </ion-item>
-                    <app-punten-item voorspellingsType="mol"
-                                     [kandidaat]="voorspelling?.mol"></app-punten-item>
-                    <app-punten-item voorspellingsType="winnaar"
-                                     [kandidaat]="voorspelling?.winnaar"></app-punten-item>
-                    <app-punten-item voorspellingsType="afvaller"
-                                     [kandidaat]="voorspelling?.afvaller"></app-punten-item>
-                </ng-container>
+                <app-voorspellingsscore [voorspellingen]="voorspellingen"></app-voorspellingsscore>
             </div>
             <div *ngIf="activeSegment === 'tests'">
                 <ng-container *ngIf="testAfleveringen?.length === 0">
-                    <ion-item color="primary">
+                    <ion-item lines="full" color="primary">
                         Testuitslagen
                     </ion-item>
-                    <ion-item color="tertiary">
+                    <ion-item lines="full" color="tertiary">
                         <ion-label text-wrap>
                             <ion-text>Er zijn nog geen punten bekend voor je test</ion-text>
                         </ion-label>
@@ -56,7 +46,7 @@
                         <ion-item color="primary">
                             Test aflevering {{aflevering[0]?.aflevering}}
                         </ion-item>
-                        <ion-item color="tertiary" *ngFor="let test of aflevering"
+                        <ion-item lines="full" lines="full" color="tertiary" *ngFor="let test of aflevering"
                                   [ngClass]="{'afgevallen': kandidaat?.afgevallen}">
                             <ion-label text-wrap>
                                 <ion-text>

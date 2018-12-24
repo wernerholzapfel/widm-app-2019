@@ -19,6 +19,7 @@ export class PouleComponent implements OnInit, OnDestroy {
     activePoule: any;
     isPouleAdmin: boolean;
     deelnemerId: string;
+    showDetails = false;
 
     constructor(private uiService: UiService,
                 private navCtrl: NavController,
@@ -52,6 +53,10 @@ export class PouleComponent implements OnInit, OnDestroy {
 
     goToAddPoule() {
         this.navCtrl.navigateForward(`${navigation.poules}/${navigation.addpoule}`);
+    }
+
+    loggenmaar() {
+        console.log('klikerdeklik');
     }
 
 }

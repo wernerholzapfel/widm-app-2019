@@ -1,12 +1,11 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
-import {FormControl, FormGroup, NgForm, Validators} from '@angular/forms';
+import {NgForm} from '@angular/forms';
 import {AuthService} from '../services/authentication/auth.service';
 import {NavController} from '@ionic/angular';
 import {navigation} from '../constants/navigation.constants';
 import {UiService} from '../services/app/ui.service';
 import {DeelnemerService} from '../deelnemer.service';
-import {FetchPoulesInProgress} from '../store/poules/poules.actions';
 import {IAppState} from '../store/store';
 import {Store} from '@ngrx/store';
 import {FetchActiesInProgress, FetchActiesSuccess} from '../store/acties/acties.actions';
@@ -39,7 +38,7 @@ export class LoginComponent implements OnInit {
     signInWithEmail() {
         this.authService.signInRegular(this.loginForm.value.email, this.loginForm.value.password)
             .then((res) => {
-                this.navCtrl.navigateForward(`${navigation.home}/${navigation.dashboard}`, true);
+                this.navCtrl.navigateForward(`${navigation.home}/${navigation.dashboard}`, {animated: true});
             })
             .catch((err) => {
                 this.uiService.presentToast(err.message);
@@ -68,7 +67,7 @@ export class LoginComponent implements OnInit {
                             this.store.dispatch(new FetchActiesSuccess(null));
                             this.store.dispatch(new FetchActiesInProgress());
                         });
-                        this.navCtrl.navigateForward(`${navigation.home}/${navigation.dashboard}`, true);
+                        this.navCtrl.navigateForward(`${navigation.home}/${navigation.dashboard}`, {animated: true});
                     }
                 }
             )

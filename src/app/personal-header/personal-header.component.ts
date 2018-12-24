@@ -58,7 +58,7 @@ export class PersonalHeaderComponent implements OnInit, OnDestroy {
                 }
                 if (huidigevoorspelling && statistieken && statistieken.data.find(item => item.mol.id === huidigevoorspelling.mol.id)) {
                     this.molPercentage = statistieken.data.find(item => item.mol.id === huidigevoorspelling.mol.id).percentage;
-                } else if (huidigevoorspelling && statistieken) {
+                } else if (huidigevoorspelling && huidigevoorspelling.mol && !huidigevoorspelling.mol.afgevallen && statistieken) {
                     this.kandidatenService.getMolStatistieken()
                         .pipe(distinctUntilChanged(), takeUntil(this.unsubscribe))
                         .subscribe(newStats => {
