@@ -2,5 +2,14 @@
   ion-avatar {
     height: 40px;
     width: 40px;
+    &.afgevallen {
+      background: darkred;
+    }
+    &.afgevallen img {
+      opacity: 0.5;
+    }
+    &.volgenderonde {
+      background: darkgreen;
+    }
   }
 }

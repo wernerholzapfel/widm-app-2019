@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {UiService} from '../services/app/ui.service';
-import {takeUntil} from 'rxjs/operators';
+import {distinctUntilChanged, takeUntil} from 'rxjs/operators';
 import {combineLatest, Subject} from 'rxjs';
 import {FormBuilder} from '@angular/forms';
 import {IAppState} from '../store/store';
@@ -61,20 +61,22 @@ export class VoorspellenComponent implements OnInit, OnDestroy {
         combineLatest(this.uiService.huidigeVoorspelling$,
             this.store.pipe(select(getActies)),
             this.uiService.statistieken$)
-            .pipe(takeUntil(this.unsubscribe))
-            .subscribe(([huidigevoorspelling, acties, statistieken]) => {
+            .pipe(distinctUntilChanged(), takeUntil(this.unsubscribe))
+            .subscribe(([huidigevoorspellingResponse, acties, statistieken]) => {
                 if (acties) {
                     this.huidigeVoorspelling.aflevering = acties.voorspellingaflevering ? acties.voorspellingaflevering : 1;
                 }
-                if (huidigevoorspelling && acties) {
-                    this.huidigeVoorspelling = huidigevoorspelling;
+                if (huidigevoorspellingResponse && acties) {
+                    console.log('voorspellingaflevering: ' + acties.voorspellingaflevering);
+                    console.log('huidigevoorspelling: ' + huidigevoorspellingResponse.aflevering);
+                    this.huidigeVoorspelling = Object.assign({}, huidigevoorspellingResponse);
                     this.huidigeVoorspelling.aflevering = acties.voorspellingaflevering ? acties.voorspellingaflevering : 1;
-                    if (acties.voorspellingaflevering !== huidigevoorspelling.aflevering) {
+                    if (acties.voorspellingaflevering !== huidigevoorspellingResponse.aflevering) {
                         delete this.huidigeVoorspelling.id;
                     }
-                    this.setInitialKandidaat('mol', huidigevoorspelling.mol);
-                    this.setInitialKandidaat('afvaller', huidigevoorspelling.afvaller);
-                    this.setInitialKandidaat('winnaar', huidigevoorspelling.winnaar);
+                    this.setInitialKandidaat('mol', huidigevoorspellingResponse.mol);
+                    this.setInitialKandidaat('afvaller', huidigevoorspellingResponse.afvaller);
+                    this.setInitialKandidaat('winnaar', huidigevoorspellingResponse.winnaar);
                 }
             });
 
@@ -124,7 +126,7 @@ export class VoorspellenComponent implements OnInit, OnDestroy {
         this.isBusy = true;
         console.log(this.huidigeVoorspelling);
         this.voorspellenService.saveVoorspelling(Object.assign({}, this.huidigeVoorspelling)).subscribe(response => {
-            this.uiService.huidigeVoorspelling$.next(response);
+            this.uiService.huidigeVoorspelling$.next(Object.assign({}, response));
             this.huidigeVoorspelling.id = response.id;
             if (this.huidigeVoorspelling.mol &&
                 !this.huidigeVoorspelling.mol.afgevallen &&

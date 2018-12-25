@@ -3,9 +3,12 @@
         Aflevering {{voorspelling.aflevering}}
     </ion-item>
     <app-punten-item voorspellingsType="mol"
-                     [kandidaat]="voorspelling?.mol"></app-punten-item>
+                     [kandidaat]="voorspelling?.mol"
+                     [aflevering]="voorspelling?.aflevering"></app-punten-item>
     <app-punten-item voorspellingsType="winnaar"
-                     [kandidaat]="voorspelling?.winnaar"></app-punten-item>
+                     [kandidaat]="voorspelling?.winnaar"
+                     [aflevering]="voorspelling?.aflevering"></app-punten-item>
     <app-punten-item voorspellingsType="afvaller"
-                     [kandidaat]="voorspelling?.afvaller"></app-punten-item>
+                     [kandidaat]="voorspelling?.afvaller"
+                     [aflevering]="voorspelling?.aflevering"></app-punten-item>
 </ng-container>

@@ -2,8 +2,7 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
 import {ToastController} from '@ionic/angular';
 import {IAppState} from '../../store/store';
-import {select, Store} from '@ngrx/store';
-import {getDeelnemerId} from '../../store/poules/poules.reducer';
+import {Store} from '@ngrx/store';
 
 @Injectable()
 export class UiService {
@@ -13,9 +12,9 @@ export class UiService {
 
     isLoading$: BehaviorSubject<boolean> = new BehaviorSubject(true);
     activePoule$: BehaviorSubject<any> = new BehaviorSubject(null);
-    tests$: BehaviorSubject<any> = new BehaviorSubject(null);
+    tests$: BehaviorSubject<any[]> = new BehaviorSubject(null);
     statistieken$: BehaviorSubject<any> = new BehaviorSubject(null);
-    voorspellingen$: BehaviorSubject<any> = new BehaviorSubject(null);
+    voorspellingen$: BehaviorSubject<any[]> = new BehaviorSubject(null);
     uitnodigingen$: BehaviorSubject<any> = new BehaviorSubject([]);
     kandidaten$: BehaviorSubject<any> = new BehaviorSubject([]);
     huidigeVoorspelling$: BehaviorSubject<any> = new BehaviorSubject(null);

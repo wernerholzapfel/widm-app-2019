@@ -1,5 +1,5 @@
-<ion-item lines="full" color="tertiary" [ngClass]="{'afgevallen': kandidaat?.afgevallen}">
-    <ion-avatar slot="start">
+<ion-item lines="full" color="tertiary">
+    <ion-avatar slot="start" [ngClass]="{'afgevallen': kandidaat?.afgevallen && kandidaat.aflevering == aflevering}">
         <img [src]="kandidaat?.image_url">
     </ion-avatar>
     <ion-label text-wrap>

@@ -38,6 +38,9 @@
                         </ion-item>
                         <app-voorspellingsscore *ngIf="deelnemer.showDetails" [headercolor]="'medium'"
                                                 [voorspellingen]="deelnemer?.voorspellingen"></app-voorspellingsscore>
+
+                        <ion-item-divider *ngIf="deelnemer.showDetails" color="secondary">
+                        </ion-item-divider>
                     </ng-container>
                 </div>
                 <ion-button class="sublink" expand="full" color="tertiary" fill="clear" (click)="goToAddPoule()">Start

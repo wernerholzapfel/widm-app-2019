@@ -62,7 +62,7 @@ export class PersonalHeaderComponent implements OnInit, OnDestroy {
                     this.kandidatenService.getMolStatistieken()
                         .pipe(distinctUntilChanged(), takeUntil(this.unsubscribe))
                         .subscribe(newStats => {
-                        this.uiService.statistieken$.next(newStats);
+                            this.uiService.statistieken$.next(Object.assign({}, newStats));
                     });
                 }
             });

@@ -76,13 +76,17 @@ export class AppComponent implements OnInit, OnDestroy {
 
                 return observableFrom([this.store.dispatch(new FetchPoulesInProgress()),
                     this.uitnodigingenService.getUitnodigingen().pipe(take(1))
-                        .subscribe(response => this.uiService.uitnodigingen$.next(response)),
+                        .subscribe(response => this.uiService.uitnodigingen$.next(Object.assign([...response]))),
 
-                    this.voorspellenService.getLaatsteVoorspelling().pipe(take(1)).subscribe(voorspelling => {
-                        this.uiService.huidigeVoorspelling$.next(voorspelling);
-                        this.uiService.voorspellingAfgerond$
-                            .next(voorspelling && acties.voorspellingaflevering === voorspelling.aflevering && !voorspelling.mol.afgevallen);
-                    }),
+                    this.voorspellenService.getLaatsteVoorspelling().pipe(distinctUntilChanged(), takeUntil(this.unsubscribe))
+                        .subscribe(voorspelling => {
+                            if (voorspelling) {
+                                console.log('huidigevoorspelling: ' + voorspelling.aflevering);
+                                this.uiService.huidigeVoorspelling$.next(Object.assign({}, voorspelling));
+                                this.uiService.voorspellingAfgerond$.next(
+                                    voorspelling && acties.voorspellingaflevering === voorspelling.aflevering && !voorspelling.mol.afgevallen);
+                            }
+                        }),
 
                     this.testService.getaantalOnbeantwoordeVragen().pipe(take(1)).subscribe(response => {
                         this.uiService.testAfgerond$.next(response.aantalOpenVragen === 0);
@@ -91,12 +95,12 @@ export class AppComponent implements OnInit, OnDestroy {
                     this.uiService.isLoading$.next(false),
                     this.voorspellenService.getAllVoorspellingen().pipe(take(1)).subscribe(response => {
                         if (response) {
-                            this.uiService.voorspellingen$.next(response);
+                            this.uiService.voorspellingen$.next(Object.assign([], response));
                         }
                     }),
 
                     this.testService.gettests().pipe(take(1)).subscribe(response => {
-                        this.uiService.tests$.next(response);
+                        this.uiService.tests$.next(Object.assign([], response));
                     }),
                 ]);
             } else {
@@ -107,11 +111,11 @@ export class AppComponent implements OnInit, OnDestroy {
             this.uiService.isLoading$.next(false);
         });
 
-        this.kandidatenService.getKandidaten().subscribe(response => this.uiService.kandidaten$.next(response));
+        this.kandidatenService.getKandidaten().subscribe(response => this.uiService.kandidaten$.next([...response]));
 
 
         this.kandidatenService.getMolStatistieken().pipe(takeUntil(this.unsubscribe)).subscribe(response => {
-            this.uiService.statistieken$.next(response);
+            this.uiService.statistieken$.next(Object.assign({}, response));
         });
 
     }

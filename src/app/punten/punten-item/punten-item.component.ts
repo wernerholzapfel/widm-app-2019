@@ -9,6 +9,7 @@ export class PuntenItemComponent implements OnInit {
 
     @Input() kandidaat: any;
     @Input() voorspellingsType: 'string';
+    @Input() aflevering: number;
 
     constructor() {
     }
