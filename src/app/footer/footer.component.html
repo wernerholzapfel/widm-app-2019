@@ -1,7 +1,12 @@
 <ion-header>
     <ion-toolbar color="dark">
-        <ion-buttons slot="start" *ngIf="router.url !== '/home'">
-            <ion-back-button text="" icon="md-arrow-back" defaultHref="home"></ion-back-button>
+        <ion-buttons slot="start">
+            <ion-back-button *ngIf="router.url !== '/home'" text="" icon="md-arrow-back"
+                             defaultHref="home"></ion-back-button>
+            <ion-button *ngIf="router.url === '/home'" (click)="showIntro()">
+                <ion-icon name="information-circle-outline"></ion-icon>
+            </ion-button>
+
         </ion-buttons>
         <ion-title>{{displayName}}</ion-title>
         <ion-buttons slot="end">

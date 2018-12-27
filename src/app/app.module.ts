@@ -33,6 +33,8 @@ import {PuntenModule} from './punten/punten.module';
 import {PuntenItemModule} from './punten/punten-item/punten-item.module';
 import {AvatarModule} from 'ng2-avatar';
 import {DeelnemerService} from './deelnemer.service';
+import {IntroModule} from './intro/intro.module';
+import {IonicStorageModule} from '@ionic/storage';
 
 @NgModule({
     declarations: [AppComponent],
@@ -49,9 +51,11 @@ import {DeelnemerService} from './deelnemer.service';
         TestModule,
         PuntenModule,
         PuntenItemModule,
+        IntroModule,
         AvatarModule.forRoot(),
         AngularFireModule.initializeApp(environment.firebase, 'angular-auth-firebase'),
         StoreModule.forRoot(reducers),
+        IonicStorageModule.forRoot(),
         StoreDevtoolsModule.instrument(),
         // StoreRouterConnectingModule,
         EffectsModule.forRoot([ActiesEffects, PoulesEffects])],

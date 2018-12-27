@@ -1,4 +1,5 @@
 export const navigation = {
+    intro: 'intro',
     home: 'home',
     voorspellen: 'voorspellen',
     dashboard: 'dashboard',

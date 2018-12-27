@@ -70,7 +70,7 @@
             <hr style="background-color: #25B973">
         </ion-card-header>
         <ion-card-content>
-            <ion-button [disabled]="isLoading" color="primary" expand="full"
+            <ion-button text-wrap [disabled]="isLoading" color="primary" expand="full"
                         *ngFor="let answer of question?.antwoorden; let i = index;"
                         (click)="selectAnswer(answer, question)">
                 {{i+1}}. {{answer.antwoord}}

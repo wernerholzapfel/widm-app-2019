@@ -32,6 +32,10 @@ export class FooterComponent implements OnInit, OnDestroy {
         this.navCtrl.navigateForward(`${navigation.home}`, {animated: true});
     }
 
+    showIntro() {
+        this.navCtrl.navigateForward(`${navigation.intro}`, {animated: true});
+    }
+
     logout() {
         this.authService.logout();
     }
