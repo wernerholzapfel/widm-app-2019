@@ -6,18 +6,18 @@ import {StatusBar} from '@ionic-native/status-bar/ngx';
 import {FetchActiesInProgress} from './store/acties/acties.actions';
 import {IAppState} from './store/store';
 import {select, Store} from '@ngrx/store';
-import {FetchPoulesInProgress, ResetPoules} from './store/poules/poules.actions';
 import {UitnodigingenService} from './services/api/uitnodigingen.service';
 import {UiService} from './services/app/ui.service';
 import {KandidatenService} from './services/api/kandidaten.service';
 import {VoorspellenService} from './services/api/voorspellen.service';
 import {AuthService} from './services/authentication/auth.service';
-import {from as observableFrom, Subject} from 'rxjs';
+import {forkJoin, of, Subject} from 'rxjs';
 import {getActies} from './store/acties/acties.reducer';
 import {TestService} from './services/api/test.service';
-import {distinctUntilChanged, map, take, takeUntil} from 'rxjs/operators';
+import {concatMap, distinctUntilChanged, take, takeUntil} from 'rxjs/operators';
 import {environment} from '../environments/environment';
 import {IActies} from './interface/IActies';
+import {FetchPoulesInProgress, ResetPoules} from './store/poules/poules.actions';
 
 @Component({
     selector: 'app-root',
@@ -65,50 +65,55 @@ export class AppComponent implements OnInit, OnDestroy {
 
         this.platform.resume.subscribe(() => {
             this.store.dispatch(new FetchActiesInProgress());
+            this.uitnodigingenService.getUitnodigingen().pipe(take(1))
+                .subscribe(response => this.uiService.uitnodigingen$.next(Object.assign([...response])));
         });
 
     }
 
     fetchNewData(acties) {
-        this.uiService.isLoading$.next(true);
-        this.authService.user$.pipe(distinctUntilChanged(), map(user => {
-            if (user) {
+        // this.uiService.isLoading$.next(true);
 
-                return observableFrom([this.store.dispatch(new FetchPoulesInProgress()),
-                    this.uitnodigingenService.getUitnodigingen().pipe(take(1))
-                        .subscribe(response => this.uiService.uitnodigingen$.next(Object.assign([...response]))),
+        // while there is a user try to fetch all of his data and add it to uiservice.
 
-                    this.voorspellenService.getLaatsteVoorspelling().pipe(distinctUntilChanged(), takeUntil(this.unsubscribe))
-                        .subscribe(voorspelling => {
-                            if (voorspelling) {
-                                console.log('huidigevoorspelling: ' + voorspelling.aflevering);
-                                this.uiService.huidigeVoorspelling$.next(Object.assign({}, voorspelling));
-                                this.uiService.voorspellingAfgerond$.next(
-                                    voorspelling && acties.voorspellingaflevering === voorspelling.aflevering && !voorspelling.mol.afgevallen);
-                            }
-                        }),
+        this.authService.user$.pipe(
+            distinctUntilChanged())
+            .pipe(
+                concatMap(user => {
+                    if (user) {
+                        return forkJoin(
+                            this.voorspellenService.getLaatsteVoorspelling().pipe(take(1)),
+                            this.testService.getaantalOnbeantwoordeVragen().pipe(take(1)),
+                            this.testService.gettests().pipe(take(1)),
+                            this.voorspellenService.getAllVoorspellingen().pipe(take(1)));
+                    } else {
+                        this.store.dispatch(new ResetPoules());
+                        this.uiService.huidigeVoorspelling$.next(null);
+                        this.uiService.voorspellingAfgerond$.next(true);
+                        this.uiService.tests$.next(null);
 
-                    this.testService.getaantalOnbeantwoordeVragen().pipe(take(1)).subscribe(response => {
-                        this.uiService.testAfgerond$.next(response.aantalOpenVragen === 0);
-                    }),
+                        this.uiService.testAfgerond$.next(true);
 
-                    this.uiService.isLoading$.next(false),
-                    this.voorspellenService.getAllVoorspellingen().pipe(take(1)).subscribe(response => {
-                        if (response) {
-                            this.uiService.voorspellingen$.next(Object.assign([], response));
-                        }
-                    }),
+                        this.uiService.isLoading$.next(false);
+                        return of([null, null, null, null]);
+                    }
+                }),
+                takeUntil(this.unsubscribe)).subscribe(([laatsteVoorspelling, onbeantwoordenvragen, testvragen, voorspellingen]) => {
+            if (laatsteVoorspelling && onbeantwoordenvragen && testvragen && voorspellingen) {
+                this.store.dispatch(new FetchPoulesInProgress());
 
-                    this.testService.gettests().pipe(take(1)).subscribe(response => {
-                        this.uiService.tests$.next(Object.assign([], response));
-                    }),
-                ]);
-            } else {
+                this.uiService.voorspellingen$.next(Object.assign([], voorspellingen));
+                this.uiService.huidigeVoorspelling$.next(Object.assign({}, laatsteVoorspelling));
+
+                this.uiService.voorspellingAfgerond$.next(
+                    laatsteVoorspelling && acties.voorspellingaflevering ===
+                    laatsteVoorspelling.aflevering && !laatsteVoorspelling.mol.afgevallen);
+
+                this.uiService.tests$.next(Object.assign([], testvragen));
+                this.uiService.testAfgerond$.next(onbeantwoordenvragen.aantalOpenVragen === 0);
+
                 this.uiService.isLoading$.next(false);
-                return observableFrom([this.store.dispatch(new ResetPoules())]);
             }
-        })).subscribe(response => {
-            this.uiService.isLoading$.next(false);
         });
 
         this.kandidatenService.getKandidaten().subscribe(response => this.uiService.kandidaten$.next([...response]));

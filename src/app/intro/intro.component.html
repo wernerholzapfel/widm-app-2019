@@ -4,7 +4,7 @@
             <ion-card color="secondary">
                 <ion-card-header>
                     <ion-card-title text-wrap>
-                        Wie is de molloot
+                        Wie is de Molloot?
                     </ion-card-title>
                     <hr style="background-color: #25B973">
                 </ion-card-header>
@@ -27,7 +27,7 @@
                 <ion-card-content>
                     Voor iedere aflevering voorspel je wie er die week gaat afvallen. Voor elke juist voorspelde
                     afvaller krijg je 20 punten. Daarnaast voorspel je de winnaar en natuurlijk de Mol. Valt jouw
-                    Mol af betekent dat 10 strafpunten, valt jouw winnaar af dan krijg je 5 strafpunten. Aan het
+                    Mol af, dan betekent dat 10 strafpunten. Valt jouw winnaar af, dan krijg je 5 strafpunten. Aan het
                     einde van het seizoen verdien je 20 punten per keer dat je de Mol goed hebt voorspeld en 10
                     punten voor elke keer dat je winnaar goed hebt voorspeld.
                 </ion-card-content>
@@ -43,11 +43,13 @@
                     <hr style="background-color: #25B973">
                 </ion-card-header>
                 <ion-card-content>
-                    Na elke aflevering krijg je 5 vragen over de Mol. Zo lang jouw antwoord waar kan zijn (de
+                    Na elke aflevering krijg je 5 vragen over de identiteit en het doen en laten van de Mol. Zo lang
+                    jouw antwoord waar kan zijn (de
                     betreffende kandidaat of kandidaten zitten nog in het spel) krijg je 10 punten per vraag.
                     Maximaal 50 punten per aflevering dus. Zodra gedurende het seizoen jouw antwoord in een eerdere
                     test niet meer waar kan zijn (de betreffende kandidaten zijn allemaal afgevallen), verandert dit
-                    in 0 punten. Naarmate het spel vordert zullen veel scores dus langzaamaan kelderen… Wie behoudt
+                    in 0 punten. Naarmate het spel vordert zullen veel scores dus langzaamaan kelderen… Wie weet de Mol
+                    te ontmaskeren en behoudt
                     de meeste punten?
                 </ion-card-content>
             </ion-card>
@@ -57,14 +59,14 @@
             <ion-card color="secondary">
                 <ion-card-header>
                     <ion-card-title text-wrap>
-                        Jouw voorspellingen
+                        Scores
                     </ion-card-title>
                     <hr style="background-color: #25B973">
                 </ion-card-header>
-
                 <ion-card-content>
-                    Op wie zat je ook al weer in aflevering 2? Dat kun je terugzien bij ‘jouw voorspellingen’. Je
-                    ziet hier ook wie er elke aflevering is afgevallen en hoeveel punten jou dat heeft opgeleverd.
+                    Wil je weten hoe je in voorgaande afleveringen hebt gescoord? Of terugkijken wat je in eerdere tests
+                    hebt ingevuld? Dat kan natuurlijk! Onder 'Scores' kun je precies je eigen spelverloop terug zien.
+
                 </ion-card-content>
             </ion-card>
         </ion-slide>
@@ -73,39 +75,24 @@
             <ion-card color="secondary">
                 <ion-card-header>
                     <ion-card-title text-wrap>
-                        Kijk je tests terug
+                        Poules
                     </ion-card-title>
                     <hr style="background-color: #25B973">
                 </ion-card-header>
+
                 <ion-card-content>
-                    Terugkijken wat je in eerdere tests hebt ingevuld? Dat kan natuurlijk! Je ziet dan ook meteen
-                    voor welke vragen je op dat moment 10 en voor welke je 0 punten hebt.
+                    Ga de strijd aan met je familie en vrienden! Je kunt aan zo veel poules meedoen als je wilt. Laat je
+                    uitnodigen voor een poule of start zelf een poule en nodig je vrienden en familie uit! Wie is de
+                    grootste molloot van allemaal?
                 </ion-card-content>
+                <ion-row no-padding justify-content-end>
+                    <ion-col>
+                        <ion-button expand="full" color="primary" (click)="goToHome()">Word de Molloot 2019
+                        </ion-button>
+                    </ion-col>
+                </ion-row>
             </ion-card>
         </ion-slide>
 
-        <ion-slide>
-            <ion-row>
-                <ion-col>
-                    <ion-card color="secondary">
-                        <ion-card-header>
-                            <ion-card-title text-wrap>
-                                De stand
-                            </ion-card-title>
-                            <hr style="background-color: #25B973">
-                        </ion-card-header>
-                        <ion-card-content>
-                            Het Molloten-scorebord: wie is de molloot der molloten?
-                        </ion-card-content>
-                        <ion-row no-padding justify-content-end>
-                            <ion-col>
-                                <ion-button expand="full" color="primary" (click)="goToHome()">Word de Molloot 2019
-                                </ion-button>
-                            </ion-col>
-                        </ion-row>
-                    </ion-card>
-                </ion-col>
-            </ion-row>
-        </ion-slide>
     </ion-slides>
 </ion-content>

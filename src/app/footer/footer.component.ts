@@ -23,7 +23,7 @@ export class FooterComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.store.pipe(takeUntil(this.unsubscribe), select(getDisplayname)).subscribe(displayName => {
+        this.store.pipe(select(getDisplayname), takeUntil(this.unsubscribe)).subscribe(displayName => {
             this.displayName = displayName;
         });
     }

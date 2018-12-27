@@ -26,11 +26,6 @@ export class FetchActiesFailure implements Action {
   constructor(public payload: any) {}
 }
 
-export class UpdateActiesInProgress implements Action {
-  readonly type = UPDATE_ACTIES_IN_PROGRESS;
-
-  constructor(public payload: IActies) {}
-}
 
 export class UpdateActiesSuccess implements Action {
   readonly type = UPDATE_ACTIES_SUCCESS;

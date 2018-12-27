@@ -19,9 +19,4 @@ export class ActiesService {
       map(res => <IActies>res));
   }
 
-  saveActies(actie: IActies): Observable<IActies> {
-    return this.httpClient.post(`${this.api}/acties`, actie).pipe(
-      map(res => <IActies>res));
-  }
-
 }

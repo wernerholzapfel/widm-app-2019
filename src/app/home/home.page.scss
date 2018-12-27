@@ -2,7 +2,7 @@
   --ion-background-color: #E7E5DF;
 
   @media screen and (max-height: 640px) {
-    ion-header {
+    .hide_on_small_device {
       display: none !important;
     }
   }

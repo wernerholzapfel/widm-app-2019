@@ -81,8 +81,8 @@ export class VoorspellenComponent implements OnInit, OnDestroy {
             });
 
         this.store.pipe(
-            takeUntil(this.unsubscribe),
-            select(getDeelnemerId))
+            select(getDeelnemerId),
+            takeUntil(this.unsubscribe))
             .subscribe(deelnemerId => {
                 if (deelnemerId) {
                     this.huidigeVoorspelling.deelnemer = {id: deelnemerId};

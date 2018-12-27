@@ -57,8 +57,8 @@ export class TestComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.isLoading = true;
         this.store.pipe(
-            takeUntil(this.unsubscribe),
-            select(getDeelnemerId))
+            select(getDeelnemerId),
+            takeUntil(this.unsubscribe))
             .subscribe(response => {
                 this.deelnemerId = response;
             });

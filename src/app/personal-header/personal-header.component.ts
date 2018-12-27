@@ -7,8 +7,9 @@ import {select, Store} from '@ngrx/store';
 import {getDeelnemerScore} from '../store/poules/poules.reducer';
 import {combineLatest, Observable, Subject} from 'rxjs';
 import {UiService} from '../services/app/ui.service';
-import {distinctUntilChanged, takeUntil} from 'rxjs/operators';
+import {switchMap, take, takeUntil} from 'rxjs/operators';
 import {KandidatenService} from '../services/api/kandidaten.service';
+import {AuthService} from '../services/authentication/auth.service';
 
 @Component({
     selector: 'app-personal-header',
@@ -34,6 +35,7 @@ export class PersonalHeaderComponent implements OnInit, OnDestroy {
                 private nativePageTransitions: NativePageTransitions,
                 private store: Store<IAppState>,
                 private uiService: UiService,
+                private authService: AuthService,
                 private kandidatenService: KandidatenService
     ) {
     }
@@ -46,8 +48,14 @@ export class PersonalHeaderComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.deelnemer$ = this.store.pipe(select(getDeelnemerScore));
 
-        combineLatest(this.uiService.statistieken$.pipe(distinctUntilChanged()),
-            this.uiService.huidigeVoorspelling$.pipe(distinctUntilChanged()))
+        this.uiService.huidigeVoorspelling$.pipe(takeUntil(this.unsubscribe), switchMap(() => {
+            return this.kandidatenService.getMolStatistieken().pipe(take(1));
+        })).subscribe(statistieken => {
+            this.uiService.statistieken$.next(statistieken);
+        });
+
+        combineLatest(this.uiService.statistieken$,
+            this.uiService.huidigeVoorspelling$)
             .pipe(takeUntil(this.unsubscribe))
             .subscribe(([statistieken, huidigevoorspelling]) => {
                 if (huidigevoorspelling) {
@@ -58,12 +66,6 @@ export class PersonalHeaderComponent implements OnInit, OnDestroy {
                 }
                 if (huidigevoorspelling && statistieken && statistieken.data.find(item => item.mol.id === huidigevoorspelling.mol.id)) {
                     this.molPercentage = statistieken.data.find(item => item.mol.id === huidigevoorspelling.mol.id).percentage;
-                } else if (huidigevoorspelling && huidigevoorspelling.mol && !huidigevoorspelling.mol.afgevallen && statistieken) {
-                    this.kandidatenService.getMolStatistieken()
-                        .pipe(distinctUntilChanged(), takeUntil(this.unsubscribe))
-                        .subscribe(newStats => {
-                            this.uiService.statistieken$.next(Object.assign({}, newStats));
-                    });
                 }
             });
 
