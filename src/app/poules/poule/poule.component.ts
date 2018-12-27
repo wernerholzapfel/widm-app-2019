@@ -48,7 +48,7 @@ export class PouleComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.unsubscribe.unsubscribe();
+        this.unsubscribe.next();
     }
 
     goToAddPoule() {

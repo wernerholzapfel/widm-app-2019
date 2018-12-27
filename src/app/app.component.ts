@@ -89,17 +89,17 @@ export class AppComponent implements OnInit, OnDestroy {
                     } else {
                         this.store.dispatch(new ResetPoules());
                         this.uiService.huidigeVoorspelling$.next(null);
-                        this.uiService.voorspellingAfgerond$.next(true);
                         this.uiService.tests$.next(null);
 
                         this.uiService.testAfgerond$.next(true);
+                        this.uiService.voorspellingAfgerond$.next(true);
 
                         this.uiService.isLoading$.next(false);
                         return of([null, null, null, null]);
                     }
                 }),
                 takeUntil(this.unsubscribe)).subscribe(([laatsteVoorspelling, onbeantwoordenvragen, testvragen, voorspellingen]) => {
-            if (laatsteVoorspelling && onbeantwoordenvragen && testvragen && voorspellingen) {
+            if (onbeantwoordenvragen && testvragen) { // todo andere kunnen null zijn indien 1e x.
                 this.store.dispatch(new FetchPoulesInProgress());
 
                 this.uiService.voorspellingen$.next(Object.assign([], voorspellingen));
@@ -155,6 +155,6 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.unsubscribe.unsubscribe();
+        this.unsubscribe.next();
     }
 }

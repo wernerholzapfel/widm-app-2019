@@ -1,5 +1,4 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {NativePageTransitions, NativeTransitionOptions} from '@ionic-native/native-page-transitions/ngx';
 import {navigation} from '../constants/navigation.constants';
 import {NavController} from '@ionic/angular';
 import {IAppState} from '../store/store';
@@ -21,18 +20,8 @@ export class PersonalHeaderComponent implements OnInit, OnDestroy {
     deelnemer$: Observable<any>;
     mol: any;
     molPercentage: number;
-    options: NativeTransitionOptions = {
-        direction: 'down',
-        duration: 1000,
-        slowdownfactor: -1,
-        iosdelay: 100,
-        androiddelay: 100,
-        fixedPixelsTop: 60,
-        fixedPixelsBottom: 0
-    };
 
     constructor(private navCtrl: NavController,
-                private nativePageTransitions: NativePageTransitions,
                 private store: Store<IAppState>,
                 private uiService: UiService,
                 private authService: AuthService,
@@ -41,7 +30,6 @@ export class PersonalHeaderComponent implements OnInit, OnDestroy {
     }
 
     goToVoorspelling() {
-        this.nativePageTransitions.slide(this.options);
         this.navCtrl.navigateForward(`${navigation.home}/${navigation.voorspellen}`);
     }
 
@@ -64,7 +52,10 @@ export class PersonalHeaderComponent implements OnInit, OnDestroy {
                     this.mol = null;
                     this.molPercentage = null;
                 }
-                if (huidigevoorspelling && statistieken && statistieken.data.find(item => item.mol.id === huidigevoorspelling.mol.id)) {
+                if (huidigevoorspelling &&
+                    huidigevoorspelling.mol &&
+                    statistieken &&
+                    statistieken.data.find(item => item.mol.id === huidigevoorspelling.mol.id)) {
                     this.molPercentage = statistieken.data.find(item => item.mol.id === huidigevoorspelling.mol.id).percentage;
                 }
             });
@@ -75,6 +66,6 @@ export class PersonalHeaderComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.unsubscribe.unsubscribe();
+        this.unsubscribe.next();
     }
 }

@@ -59,19 +59,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
     cardTextFunc(): string {
         if (this.acties) {
             if (this.testAfgerond && this.voorspellingAfgerond) {
-                return 'Je bent helemaal bij, je kan je voorspellingen nog wijzigen tot ' +
+                return 'Je bent helemaal bij. Je kunt je voorspellingen nog wijzigen tot ' +
                     this.formatDate(this.acties.voorspellingDeadlineDatetime);
             }
             if (this.testAfgerond && !this.voorspellingAfgerond) {
-                return 'Vergeet niet je voorspellingen op te slaan dit kan nog tot ' +
+                return 'Vergeet niet je voorspellingen te doen. Dit kan nog tot ' +
                     this.formatDate(this.acties.voorspellingDeadlineDatetime);
             }
             if (!this.testAfgerond && this.voorspellingAfgerond) {
-                return 'Vergeet niet de test te maken! dit kan nog tot ' +
+                return 'Vergeet niet de test te maken. Dit kan nog tot ' +
                     this.formatDate(this.acties.testDeadlineDatetime);
             }
             if (!this.testAfgerond && !this.voorspellingAfgerond) {
-                return 'Vergeet niet je test en voorspellingen in te vullen, dit kan nog tot ' +
+                return 'Vergeet niet de test en je voorspellingen in te vullen. Dit kan nog tot ' +
                     this.formatDate(this.acties.testDeadlineDatetime);
             } else {
                 return 'bezig met laden van gegevens';
@@ -103,7 +103,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.unsubscribe.unsubscribe();
+        this.unsubscribe.next();
     }
 
     fetchACties() {

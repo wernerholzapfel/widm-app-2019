@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {UiService} from '../services/app/ui.service';
-import {distinctUntilChanged, takeUntil} from 'rxjs/operators';
+import {takeUntil} from 'rxjs/operators';
 import {combineLatest, Subject} from 'rxjs';
 import {FormBuilder} from '@angular/forms';
 import {IAppState} from '../store/store';
@@ -45,7 +45,6 @@ export class VoorspellenComponent implements OnInit, OnDestroy {
         {type: 'winnaar', kandidaat: null},
         {type: 'afvaller', kandidaat: null}];
     unsubscribe: Subject<any> = new Subject();
-
     constructor(private uiService: UiService,
                 private formBuilder: FormBuilder,
                 private store: Store<IAppState>,
@@ -58,11 +57,11 @@ export class VoorspellenComponent implements OnInit, OnDestroy {
 
         this.header = 'Voorspellen';
 
+
         combineLatest(this.uiService.huidigeVoorspelling$,
-            this.store.pipe(select(getActies)),
-            this.uiService.statistieken$)
-            .pipe(distinctUntilChanged(), takeUntil(this.unsubscribe))
-            .subscribe(([huidigevoorspellingResponse, acties, statistieken]) => {
+            this.store.pipe(select(getActies)))
+            .pipe(takeUntil(this.unsubscribe))
+            .subscribe(([huidigevoorspellingResponse, acties]) => {
                 if (acties) {
                     this.huidigeVoorspelling.aflevering = acties.voorspellingaflevering ? acties.voorspellingaflevering : 1;
                 }
@@ -175,7 +174,7 @@ export class VoorspellenComponent implements OnInit, OnDestroy {
 
 
     ngOnDestroy() {
-        this.unsubscribe.unsubscribe();
+        this.unsubscribe.next();
     }
 }
 

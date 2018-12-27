@@ -8,7 +8,6 @@ import {StatusBar} from '@ionic-native/status-bar/ngx';
 
 import {AppComponent} from './app.component';
 import {AppRoutingModule} from './app-routing.module';
-import {NativePageTransitions} from '@ionic-native/native-page-transitions/ngx';
 import {HomePageModule} from './home/home.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AngularFireModule} from '@angular/fire';
@@ -62,7 +61,6 @@ import {IonicStorageModule} from '@ionic/storage';
     providers: [
         StatusBar,
         SplashScreen,
-        NativePageTransitions,
         ActiesService,
         PoulesService,
         AuthService,

@@ -44,6 +44,7 @@ export class TestComponent implements OnInit, OnDestroy {
     deadlineVerstreken: boolean;
     unsubscribe: Subject<void> = new Subject<void>();
     deelnemerId: string;
+    showDoneText = false;
 
     constructor(public navCtrl: NavController,
                 public testService: TestService,
@@ -114,7 +115,7 @@ export class TestComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.unsubscribe.unsubscribe();
+        this.unsubscribe.next();
     }
 
     nextSlide() {
@@ -141,6 +142,7 @@ export class TestComponent implements OnInit, OnDestroy {
                 });
             } else {
                 this.uiService.testAfgerond$.next(true);
+                this.showDoneText = true;
                 this.showeindschermFunc();
             }
         });

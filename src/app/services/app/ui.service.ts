@@ -18,8 +18,8 @@ export class UiService {
     uitnodigingen$: BehaviorSubject<any> = new BehaviorSubject([]);
     kandidaten$: BehaviorSubject<any> = new BehaviorSubject([]);
     huidigeVoorspelling$: BehaviorSubject<any> = new BehaviorSubject(null);
-    testAfgerond$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
-    voorspellingAfgerond$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+    testAfgerond$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(undefined);
+    voorspellingAfgerond$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(undefined);
 
     async presentToast(message: string, color: string = 'primary') {
         const toast = await this.toastCtrl.create({
