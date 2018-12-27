@@ -7,10 +7,12 @@ import {VoorspellenComponent} from './voorspellen/voorspellen.component';
 import {PuntenComponent} from './punten/punten.component';
 import {IntroComponent} from './intro/intro.component';
 import {IntroGuard} from './intro.guard';
+import {StatistiekenComponent} from './statistieken/statistieken.component';
 
 const routes: Routes = [
     {path: '', redirectTo: navigation.home, pathMatch: 'full'},
     {path: navigation.intro, component: IntroComponent},
+    {path: navigation.statistieken, component: StatistiekenComponent},
     {path: navigation.home, component: HomePage, canActivate: [IntroGuard]},
     {path: navigation.poules, loadChildren: './poules/poules.module#PoulesPageModule'},
     {path: navigation.punten, component: PuntenComponent},

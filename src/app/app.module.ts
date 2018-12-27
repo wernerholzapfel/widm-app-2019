@@ -34,6 +34,7 @@ import {AvatarModule} from 'ng2-avatar';
 import {DeelnemerService} from './deelnemer.service';
 import {IntroModule} from './intro/intro.module';
 import {IonicStorageModule} from '@ionic/storage';
+import {StatistiekenModule} from './statistieken/statistieken.module';
 
 @NgModule({
     declarations: [AppComponent],
@@ -51,6 +52,7 @@ import {IonicStorageModule} from '@ionic/storage';
         PuntenModule,
         PuntenItemModule,
         IntroModule,
+        StatistiekenModule,
         AvatarModule.forRoot(),
         AngularFireModule.initializeApp(environment.firebase, 'angular-auth-firebase'),
         StoreModule.forRoot(reducers),

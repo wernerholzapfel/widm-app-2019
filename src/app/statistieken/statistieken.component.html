@@ -1,0 +1,42 @@
+<ion-header>
+    <app-footer></app-footer>
+    <ion-toolbar color="dark">
+        <ion-grid class="no-padding">
+            <ion-row>
+                <ion-col class="justify-content-center">
+                    <img class="icon_avatar"
+                         src="/assets/logo.png">
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+    <ion-card color="secondary">
+        <ion-card-header>
+            <ion-card-title>
+                Statistieken
+            </ion-card-title>
+            <hr style="background-color: #25B973">
+        </ion-card-header>
+        <ion-card-content>
+            <ion-item lines="full" color="primary">
+                <ion-text text-wrap="">
+                    Mol verdenkingen
+                </ion-text>
+            </ion-item>
+            <ion-item lines="full" color="tertiary" *ngFor="let verdenking of statistieken">
+                <ion-avatar *ngIf="verdenking.mol" slot="start"
+                            class="item-avatar">
+                    <img [src]="verdenking?.mol.image_url">
+                </ion-avatar>
+                <ion-label text-wrap>
+                    <ion-text color="secondary">
+                        <h3>{{verdenking.mol.display_name}}</h3>
+                        <h3>{{verdenking.percentage}} %</h3>
+                    </ion-text>
+                </ion-label>
+            </ion-item>
+        </ion-card-content>
+    </ion-card>
+</ion-content>

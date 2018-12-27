@@ -1,6 +1,6 @@
 <ion-grid class="no-padding">
     <ion-row>
-        <ion-col align-self-center>
+        <ion-col align-self-center (click)="goToScores()">
             <ng-container *ngIf="(deelnemer$ | async) as deelnemer">
                 <h1 text-center>
                     {{deelnemer.totaalpunten}}
@@ -15,10 +15,10 @@
                     <img [ngClass]="{'mol_is_niet_afgevallen': !mol?.afgevallen, 'mol_is_afgevallen' : mol?.afgevallen}"
                          [src]="mol?.image_url">
                 </ion-avatar>
-            <img class="icon_avatar"
+            <img class="icon_avatar" *ngIf="!mol"
                  src="/assets/logo.png">
         </ion-col>
-        <ion-col align-self-center>
+        <ion-col align-self-center (click)="goToStatistieken()">
             <ng-container *ngIf="molPercentage">
                 <h1 text-center>
                     {{molPercentage}}%

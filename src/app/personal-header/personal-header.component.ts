@@ -33,6 +33,14 @@ export class PersonalHeaderComponent implements OnInit, OnDestroy {
         this.navCtrl.navigateForward(`${navigation.home}/${navigation.voorspellen}`);
     }
 
+    goToStatistieken() {
+        this.navCtrl.navigateForward(`${navigation.statistieken}`);
+    }
+
+    goToScores() {
+        this.navCtrl.navigateForward(`${navigation.punten}`);
+    }
+
     ngOnInit() {
         this.deelnemer$ = this.store.pipe(select(getDeelnemerScore));
 

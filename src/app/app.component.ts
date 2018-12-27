@@ -91,8 +91,8 @@ export class AppComponent implements OnInit, OnDestroy {
                         this.uiService.huidigeVoorspelling$.next(null);
                         this.uiService.tests$.next(null);
 
-                        this.uiService.testAfgerond$.next(true);
-                        this.uiService.voorspellingAfgerond$.next(true);
+                        this.uiService.testAfgerond$.next(undefined);
+                        this.uiService.voorspellingAfgerond$.next(undefined);
 
                         this.uiService.isLoading$.next(false);
                         return of([null, null, null, null]);
@@ -105,9 +105,12 @@ export class AppComponent implements OnInit, OnDestroy {
                 this.uiService.voorspellingen$.next(Object.assign([], voorspellingen));
                 this.uiService.huidigeVoorspelling$.next(Object.assign({}, laatsteVoorspelling));
 
-                this.uiService.voorspellingAfgerond$.next(
-                    laatsteVoorspelling && acties.voorspellingaflevering ===
-                    laatsteVoorspelling.aflevering && !laatsteVoorspelling.mol.afgevallen);
+                this.uiService.voorspellingAfgerond$.next(laatsteVoorspelling &&
+                    laatsteVoorspelling.afvaller &&
+                    laatsteVoorspelling.winnaar &&
+                    laatsteVoorspelling.mol &&
+                    acties.voorspellingaflevering === laatsteVoorspelling.aflevering &&
+                    !laatsteVoorspelling.mol.afgevallen);
 
                 this.uiService.tests$.next(Object.assign([], testvragen));
                 this.uiService.testAfgerond$.next(onbeantwoordenvragen.aantalOpenVragen === 0);
