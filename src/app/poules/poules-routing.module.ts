@@ -1,4 +1,3 @@
-
 import {RouterModule, Routes} from '@angular/router';
 import {NgModule} from '@angular/core';
 import {PoulesComponent} from './poules.component';
@@ -13,7 +12,7 @@ const routes: Routes = [
         path: '', component: PoulesComponent, children: [
             {path: '', component: PouleComponent},
             {path: navigation.poule, component: PouleComponent},
-            {path: navigation.adddeelnemer, component: AdddeelnemerComponent},
+            {path: `${navigation.adddeelnemer}/:pouleid`, component: AdddeelnemerComponent},
             {path: navigation.addpoule, component: AddpoulesComponent},
             {path: navigation.acceptinvite, component: AcceptInviteComponent}]
     }];

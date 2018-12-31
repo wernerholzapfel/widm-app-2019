@@ -46,11 +46,6 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.authService.user$.pipe(takeUntil(this.unsubscribe)).subscribe(response => {
-            console.log('user gewijzigd');
-            this.uiService.isLoading$.next(false);
-        });
-
         this.store.dispatch(new FetchActiesInProgress());
 
         this.store.pipe(select(getActies)).pipe(takeUntil(this.unsubscribe)).subscribe(response => {
@@ -60,6 +55,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
                 this.acties = response;
                 this.fetchNewData(response);
+            } else if (response && response.alwaysUpdate) {
+                this.store.dispatch(new FetchPoulesInProgress());
             }
         });
 
@@ -72,7 +69,7 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     fetchNewData(acties) {
-        // this.uiService.isLoading$.next(true);
+        this.uiService.isLoading$.next(true);
 
         // while there is a user try to fetch all of his data and add it to uiservice.
 

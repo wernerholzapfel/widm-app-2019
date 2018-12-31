@@ -9,6 +9,7 @@ import {DeelnemerService} from '../deelnemer.service';
 import {IAppState} from '../store/store';
 import {Store} from '@ngrx/store';
 import {FetchActiesInProgress, FetchActiesSuccess} from '../store/acties/acties.actions';
+import {environment} from '../../environments/environment';
 
 @Component({
     selector: 'app-login',
@@ -61,11 +62,14 @@ export class LoginComponent implements OnInit {
                         delete this.user.password;
                         this.deelnemerService.postDeelnemer({
                             display_name: this.signupForm.value.displayName,
-                          email: this.signupForm.value.email
+                            email: this.signupForm.value.email
                         }).subscribe(response => {
                             // set acties to null so data is reloaded on app.component when acties are succesfully fetched
                             this.store.dispatch(new FetchActiesSuccess(null));
                             this.store.dispatch(new FetchActiesInProgress());
+                            if (environment.production) {
+                                window['plugins'].OneSignal.sendTag('naam', this.signupForm.value.displayName);
+                            }
                         });
                         this.navCtrl.navigateForward(`${navigation.home}/${navigation.dashboard}`, {animated: true});
                     }

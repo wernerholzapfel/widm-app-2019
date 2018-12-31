@@ -163,8 +163,6 @@ export class VoorspellenComponent implements OnInit, OnDestroy {
             this.activeIndex = 0;
         }
         this.activeKandidaat = this.kandidaten[this.activeIndex];
-
-
     }
 
     private setSelectedState(voorspellingsType: string, state: boolean) {

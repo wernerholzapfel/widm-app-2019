@@ -13,13 +13,21 @@
             <ion-item lines="full" color="tertiary" *ngFor="let uitnodiging of uitnodigingen">
                 <ion-label text-wrap>
                     <ion-text>
-                        <h3>{{uitnodiging.poule.poule_name}}</h3>
+                        <h3>Je bent uitgenodigd door {{uitnodiging.poule.admins[0].display_name}} voor de
+                            {{uitnodiging.poule.poule_name}} poule</h3>
                     </ion-text>
-                    <ion-text>
-                        <p class="subtitle">{{uitnodiging.poule.admins[0].display_name}}
-                    </ion-text>
+                    <ion-row>
+                        <ion-col size="6">
+                            <ion-button expand="full" (click)="acceptInvite(uitnodiging)" color="primary">Doe mee
+                            </ion-button>
+                        </ion-col>
+                        <ion-col size="6">
+                            <ion-button expand="full" (click)="declineInvite(uitnodiging)" color="primary">Doe niet
+                                mee
+                            </ion-button>
+                        </ion-col>
+                    </ion-row>
                 </ion-label>
-                <ion-button (click)="acceptInvite(uitnodiging)" color="primary">Doe mee</ion-button>
             </ion-item>
         </ion-card-content>
     </ion-card>

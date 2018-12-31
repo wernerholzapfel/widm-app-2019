@@ -42,6 +42,13 @@ export class AcceptInviteComponent implements OnInit, OnDestroy {
         });
     }
 
+    declineInvite(uitnodiging: IUitnodigingResponse) {
+        this.uitnodigingenService.declineInvite({poule: {id: uitnodiging.poule.id}, uitnodigingId: uitnodiging.id}).subscribe(response => {
+            this.uiService.uitnodigingen$
+                .next(this.uitnodigingen.filter(item => item.id !== uitnodiging.id));
+        });
+    }
+
     ngOnDestroy() {
         this.unsubscribe.next();
     }

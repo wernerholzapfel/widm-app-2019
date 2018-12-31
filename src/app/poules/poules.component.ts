@@ -59,10 +59,6 @@ export class PoulesComponent implements OnInit, OnDestroy {
         this.poule_name = this.poules[this.activePouleIndex].poule_name;
     }
 
-    goToAddPoule() {
-        this.navCtrl.navigateForward(`${navigation.poules}/${navigation.addpoule}`);
-    }
-
     goToAcceptInvite() {
         this.navCtrl.navigateForward(`${navigation.poules}/${navigation.acceptinvite}`);
     }

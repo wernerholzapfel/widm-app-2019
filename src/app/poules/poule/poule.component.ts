@@ -42,9 +42,7 @@ export class PouleComponent implements OnInit, OnDestroy {
     }
 
     goToAddDeelnemer() {
-        this.navCtrl.navigateForward(`${navigation.poules}/${navigation.adddeelnemer}`);
-
-        // this.navCtrl.navigateForward(navigation.adddeelnemer, false, {relativeTo: this.route});
+        this.navCtrl.navigateForward(`${navigation.poules}/${navigation.adddeelnemer}/${this.activePoule.id}`);
     }
 
     ngOnDestroy() {
@@ -53,10 +51,6 @@ export class PouleComponent implements OnInit, OnDestroy {
 
     goToAddPoule() {
         this.navCtrl.navigateForward(`${navigation.poules}/${navigation.addpoule}`);
-    }
-
-    loggenmaar() {
-        console.log('klikerdeklik');
     }
 
 }

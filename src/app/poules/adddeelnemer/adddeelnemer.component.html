@@ -12,11 +12,21 @@
                     <ion-input required type="email" placeholder="email-adres" name="email" ngModel></ion-input>
                 </ion-item>
                 <div class="button-container">
-                    <ion-button [disabled]="!form.valid" [color]="form.valid ? 'primary' :'medium'" expand="full" type="submit">
+                    <ion-button [disabled]="!form.valid" [color]="form.valid ? 'primary' :'medium'" expand="full"
+                                type="submit">
                         Voeg toe
                     </ion-button>
                 </div>
             </form>
+            <div class="button-container">
+                <ion-item lines="full" color="primary" *ngIf="uitnodigingen?.length > 0">Uitgenodigd</ion-item>
+                <ion-item lines="full" color="tertiary" *ngFor="let uitnodiging of uitnodigingen">
+                    {{uitnodiging.uniqueIdentifier}}
+                    <ion-icon *ngIf="uitnodiging.isAccepted" color="primary" slot="end" name="checkmark"></ion-icon>
+                    <ion-icon *ngIf="uitnodiging.isDeclined" color="danger" slot="end" name="close"></ion-icon>
+                </ion-item>
+            </div>
+
         </ion-card-content>
     </ion-card>
 </ion-content>

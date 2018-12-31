@@ -6,7 +6,7 @@
                 <ion-col [size]="2" align-self-center>
                     <ion-row justify-content-center>
                         <ion-icon class="large-icon"
-                                  *ngIf="activePouleIndex > 0 && router.url !== '/poules/adddeelnemer'"
+                                  *ngIf="activePouleIndex > 0 && !router.url.startsWith('/poules/adddeelnemer')"
                                   name="arrow-back"
                                   (click)="activatePoule(activePouleIndex - 1)"></ion-icon>
                     </ion-row>
@@ -19,7 +19,7 @@
                 <ion-col [size]="2" align-self-center>
                     <ion-row justify-content-center>
                         <ion-icon class="large-icon"
-                                  *ngIf="activePouleIndex + 1 < numberOfPoules && router.url !== '/poules/adddeelnemer'"
+                                  *ngIf="activePouleIndex + 1 < numberOfPoules && !router.url.startsWith('/poules/adddeelnemer')"
                                   (click)="activatePoule(activePouleIndex + 1)"
                                   name="arrow-forward"></ion-icon>
                     </ion-row>
@@ -28,7 +28,8 @@
         </ion-grid>
     </ion-toolbar>
     <ion-toolbar *ngIf="uitnodigingen.length > 0 && router.url === '/poules/poule'">
-        <ion-button expand="full" color="primary" (click)="goToAcceptInvite()">Je hebt {{uitnodigingen.length}} uitnodigingen</ion-button>
+        <ion-button expand="full" color="primary" (click)="goToAcceptInvite()">Je hebt {{uitnodigingen.length}}
+            uitnodiging<span *ngIf="uitnodigingen.length > 1">en</span></ion-button>
     </ion-toolbar>
 </ion-header>
 <ion-content color="dark">
