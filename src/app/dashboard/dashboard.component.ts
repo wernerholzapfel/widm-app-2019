@@ -1,6 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {navigation} from '../constants/navigation.constants';
-import {NavController} from '@ionic/angular';
 import {AuthService} from '../services/authentication/auth.service';
 import {UiService} from '../services/app/ui.service';
 import {combineLatest, Subject} from 'rxjs';
@@ -9,6 +8,7 @@ import {getActies} from '../store/acties/acties.reducer';
 import {IAppState} from '../store/store';
 import {select, Store} from '@ngrx/store';
 import {FetchActiesInProgress} from '../store/acties/acties.actions';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'app-dashboard',
@@ -19,20 +19,12 @@ import {FetchActiesInProgress} from '../store/acties/acties.actions';
 export class DashboardComponent implements OnInit, OnDestroy {
     unsubscribe: Subject<any> = new Subject();
 
-    voorspellingBekend = false;
-    slideOpts = {
-        autoplay: false,
-        slidesPerView: 1.1,
-        spaceBetween: 10,
-        effect: 'flip'
-    };
-
     testAfgerond: boolean;
     voorspellingAfgerond: boolean;
     acties: any;
     cardText: string;
 
-    constructor(private navCtrl: NavController,
+    constructor(private router: Router,
                 public authService: AuthService,
                 public uiService: UiService,
                 private store: Store<IAppState>) {
@@ -87,19 +79,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     goToTest() {
-        this.navCtrl.navigateForward(`${navigation.test}`);
+        this.router.navigate([`${navigation.test}`]);
     }
 
     goToDisclaimer() {
-        this.navCtrl.navigateForward(`${navigation.punten}`);
+        this.router.navigate([`${navigation.punten}`]);
     }
 
     goToVoorspellen() {
-        this.navCtrl.navigateForward(`${navigation.voorspellen}`);
+        this.router.navigate([`${navigation.voorspellen}`]);
     }
 
     goToPoules() {
-        this.navCtrl.navigateForward(`${navigation.poules}/${navigation.poule}`);
+        this.router.navigate([`${navigation.poules}/${navigation.overview}`]);
     }
 
     ngOnDestroy() {

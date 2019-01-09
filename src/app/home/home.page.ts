@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {NavController} from '@ionic/angular';
 import {AuthService} from '../services/authentication/auth.service';
 import {select, Store} from '@ngrx/store';
 import {getDeelnemer} from '../store/poules/poules.reducer';
@@ -14,7 +13,7 @@ import {IAppState} from '../store/store';
 export class HomePage implements OnInit {
     deelnemer$: Observable<any>;
 
-    constructor(private navCtrl: NavController, public authService: AuthService, private store: Store<IAppState>) {
+    constructor(public authService: AuthService, private store: Store<IAppState>) {
     }
 
     ngOnInit() {

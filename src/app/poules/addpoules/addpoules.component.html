@@ -7,16 +7,24 @@
             <hr style="background-color: #25B973">
         </ion-card-header>
         <ion-card-content>
-            <form (ngSubmit)="createPoule()" #createPouleForm="ngForm">
-                <ion-item lines="full" color="tertiary">
-                    <ion-input required type="text" placeholder="Naam van de poule" name="name" ngModel></ion-input>
-                </ion-item>
-                <div class="button-container">
-                    <ion-button [disabled]="!createPouleForm.valid" [color]="createPouleForm.valid ? 'primary' :'medium'" expand="full" type="submit">
-                        Maak poule
-                    </ion-button>
-                </div>
-            </form>
+            <ion-text>
+                Start een poule en ga de strijd aan met je familie en vrienden. <br>
+                Nadat je een poule gestart bent, kun je deelnemers toevoegen door hun emailadressen in te voeren.
+                Er wordt geen uitnodiging verstuurd via mail.
+            </ion-text>
+            <div class="button-container">
+                <form (ngSubmit)="createPoule()" #createPouleForm="ngForm">
+                    <ion-item lines="full" color="tertiary">
+                        <ion-input required type="text" placeholder="Naam van de poule" name="name" ngModel></ion-input>
+                    </ion-item>
+                    <div class="button-container">
+                        <ion-button [disabled]="!createPouleForm.valid"
+                                    [color]="createPouleForm.valid ? 'primary' :'medium'" expand="full" type="submit">
+                            Maak poule
+                        </ion-button>
+                    </div>
+                </form>
+            </div>
         </ion-card-content>
     </ion-card>
 </ion-content>

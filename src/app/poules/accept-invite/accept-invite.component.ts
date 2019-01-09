@@ -4,10 +4,10 @@ import {IUitnodigingResponse, UitnodigingenService} from '../../services/api/uit
 import {takeUntil} from 'rxjs/operators';
 import {Subject} from 'rxjs';
 import {navigation} from '../../constants/navigation.constants';
-import {NavController} from '@ionic/angular';
 import {FetchPoulesInProgress} from '../../store/poules/poules.actions';
 import {IAppState} from '../../store/store';
 import {Store} from '@ngrx/store';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'app-accept-invite',
@@ -21,7 +21,7 @@ export class AcceptInviteComponent implements OnInit, OnDestroy {
 
     constructor(private uiService: UiService,
                 private uitnodigingenService: UitnodigingenService,
-                private navCtrl: NavController,
+                private router: Router,
                 private store: Store<IAppState>) {
     }
 
@@ -29,7 +29,7 @@ export class AcceptInviteComponent implements OnInit, OnDestroy {
         this.uiService.uitnodigingen$.pipe(takeUntil(this.unsubscribe)).subscribe(response => {
             this.uitnodigingen = response;
             if (this.uitnodigingen.length === 0) {
-                this.navCtrl.navigateForward(`${navigation.poules}/${navigation.poule}`, {animated: true});
+                this.router.navigate([`${navigation.poules}/${navigation.poule}`]);
             }
         });
     }

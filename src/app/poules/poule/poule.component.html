@@ -12,7 +12,8 @@
             <ion-card-content>
                 <div>
                     <ng-container *ngFor="let deelnemer of activePoule.deelnemers">
-                        <ion-item lines="full" [color]="deelnemer.id !== deelnemerId ? 'tertiary' : 'primary'"
+                        <ion-item lines="full"
+                                  [color]="deelnemer.id !== deelnemerId && deelnemer.deelnemerId !== deelnemerId ? 'tertiary' : 'primary'"
                                   (click)="deelnemer.showDetails = !deelnemer.showDetails">
                             <ion-avatar slot="start">
                                 <ngx-avatar size="40" bgColor="#000" borderColor="#25B973" fgColor="#25B973"
@@ -43,9 +44,6 @@
                         </ion-item-divider>
                     </ng-container>
                 </div>
-                <ion-button class="sublink" expand="full" color="tertiary" fill="clear" (click)="goToAddPoule()">Start
-                    nieuwe poule
-                </ion-button>
             </ion-card-content>
         </ng-container>
     </ion-card>

@@ -40,6 +40,10 @@ export class FooterComponent implements OnInit, OnDestroy {
         this.authService.logout();
     }
 
+    goBack() {
+        this.navCtrl.goBack();
+    }
+
     ngOnDestroy() {
         this.unsubscribe.next();
     }

@@ -1,7 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {UiService} from '../../services/app/ui.service';
-import {NavController} from '@ionic/angular';
 import {UitnodigingenService} from '../../services/api/uitnodigingen.service';
 import {switchMap, take} from 'rxjs/operators';
 import {ActivatedRoute} from '@angular/router';
@@ -20,7 +19,6 @@ export class AdddeelnemerComponent implements OnInit {
 
     constructor(private uitnodigingenService: UitnodigingenService,
                 private uiService: UiService,
-                private navCtrl: NavController,
                 private route: ActivatedRoute) {
     }
 

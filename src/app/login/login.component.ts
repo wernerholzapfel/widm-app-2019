@@ -2,7 +2,6 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
 import {NgForm} from '@angular/forms';
 import {AuthService} from '../services/authentication/auth.service';
-import {NavController} from '@ionic/angular';
 import {navigation} from '../constants/navigation.constants';
 import {UiService} from '../services/app/ui.service';
 import {DeelnemerService} from '../deelnemer.service';
@@ -28,7 +27,7 @@ export class LoginComponent implements OnInit {
     activeSegment = 'inschrijven';
 
     constructor(public authService: AuthService,
-                private router: Router, public navCtrl: NavController,
+                public router: Router,
                 private uiService: UiService, private deelnemerService: DeelnemerService, private store: Store<IAppState>) {
     }
     wachtwoordvergeten = false;
@@ -39,7 +38,7 @@ export class LoginComponent implements OnInit {
     signInWithEmail() {
         this.authService.signInRegular(this.loginForm.value.email, this.loginForm.value.password)
             .then((res) => {
-                this.navCtrl.navigateForward(`${navigation.home}/${navigation.dashboard}`, {animated: true});
+                this.router.navigate([`${navigation.home}/${navigation.dashboard}`, {animated: true}]);
             })
             .catch((err) => {
                 this.uiService.presentToast(err.message);
@@ -71,7 +70,7 @@ export class LoginComponent implements OnInit {
                                 window['plugins'].OneSignal.sendTag('naam', this.signupForm.value.displayName);
                             }
                         });
-                        this.navCtrl.navigateForward(`${navigation.home}/${navigation.dashboard}`, {animated: true});
+                        this.router.navigate([`${navigation.home}/${navigation.dashboard}`, {animated: true}]);
                     }
                 }
             )

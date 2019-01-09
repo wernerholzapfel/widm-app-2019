@@ -1,5 +1,5 @@
 <div *ngIf="(uiService.isLoading$ | async)" class="spinner">
-    <ion-spinner color="tertiary" name="bubbles"></ion-spinner>
+    <ion-spinner color="dark" name="crescent"></ion-spinner>
 </div>
 <ion-content class="dashboard-container grid-full"
              *ngIf="(authService.user$ | async) && !(uiService.isLoading$ | async)">

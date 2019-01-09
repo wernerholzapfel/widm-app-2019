@@ -1,6 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {navigation} from '../constants/navigation.constants';
-import {NavController} from '@ionic/angular';
 import {IAppState} from '../store/store';
 import {select, Store} from '@ngrx/store';
 import {getDeelnemerScore} from '../store/poules/poules.reducer';
@@ -9,6 +8,7 @@ import {UiService} from '../services/app/ui.service';
 import {switchMap, take, takeUntil} from 'rxjs/operators';
 import {KandidatenService} from '../services/api/kandidaten.service';
 import {AuthService} from '../services/authentication/auth.service';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'app-personal-header',
@@ -21,7 +21,7 @@ export class PersonalHeaderComponent implements OnInit, OnDestroy {
     mol: any;
     molPercentage: number;
 
-    constructor(private navCtrl: NavController,
+    constructor(private router: Router,
                 private store: Store<IAppState>,
                 private uiService: UiService,
                 private authService: AuthService,
@@ -30,15 +30,15 @@ export class PersonalHeaderComponent implements OnInit, OnDestroy {
     }
 
     goToVoorspelling() {
-        this.navCtrl.navigateForward(`${navigation.home}/${navigation.voorspellen}`);
+        this.router.navigateByUrl(`${navigation.home}/${navigation.voorspellen}`);
     }
 
     goToStatistieken() {
-        this.navCtrl.navigateForward(`${navigation.statistieken}`);
+        this.router.navigateByUrl(`${navigation.statistieken}`);
     }
 
     goToScores() {
-        this.navCtrl.navigateForward(`${navigation.punten}`);
+        this.router.navigateByUrl(`${navigation.punten}`);
     }
 
     ngOnInit() {

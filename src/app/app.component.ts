@@ -18,6 +18,7 @@ import {concatMap, distinctUntilChanged, take, takeUntil} from 'rxjs/operators';
 import {environment} from '../environments/environment';
 import {IActies} from './interface/IActies';
 import {FetchPoulesInProgress, ResetPoules} from './store/poules/poules.actions';
+import {PoulesService} from './services/api/poules.service';
 
 @Component({
     selector: 'app-root',
@@ -39,6 +40,7 @@ export class AppComponent implements OnInit, OnDestroy {
         private kandidatenService: KandidatenService,
         private voorspellenService: VoorspellenService,
         private authService: AuthService,
+        private pouleService: PoulesService,
         private testService: TestService
     ) {
         this.initializeApp();
@@ -47,6 +49,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.store.dispatch(new FetchActiesInProgress());
+        this.uitnodigingenService.getUitnodigingen().pipe(take(1))
+            .subscribe(response => this.uiService.uitnodigingen$.next(Object.assign([...response])));
 
         this.store.pipe(select(getActies)).pipe(takeUntil(this.unsubscribe)).subscribe(response => {
             if (response && JSON.stringify(response) !== JSON.stringify(this.acties)) {
@@ -72,7 +76,6 @@ export class AppComponent implements OnInit, OnDestroy {
         this.uiService.isLoading$.next(true);
 
         // while there is a user try to fetch all of his data and add it to uiservice.
-
         this.authService.user$.pipe(
             distinctUntilChanged())
             .pipe(
@@ -82,7 +85,8 @@ export class AppComponent implements OnInit, OnDestroy {
                             this.voorspellenService.getLaatsteVoorspelling().pipe(take(1)),
                             this.testService.getaantalOnbeantwoordeVragen().pipe(take(1)),
                             this.testService.gettests().pipe(take(1)),
-                            this.voorspellenService.getAllVoorspellingen().pipe(take(1)));
+                            this.voorspellenService.getAllVoorspellingen().pipe(take(1)),
+                            this.pouleService.getKlassement().pipe(take(1)));
                     } else {
                         this.store.dispatch(new ResetPoules());
                         this.uiService.huidigeVoorspelling$.next(null);
@@ -95,8 +99,8 @@ export class AppComponent implements OnInit, OnDestroy {
                         return of([null, null, null, null]);
                     }
                 }),
-                takeUntil(this.unsubscribe)).subscribe(([laatsteVoorspelling, onbeantwoordenvragen, testvragen, voorspellingen]) => {
-            if (onbeantwoordenvragen && testvragen) { // todo andere kunnen null zijn indien 1e x.
+                takeUntil(this.unsubscribe)).subscribe(([laatsteVoorspelling, onbeantwoordenvragen, testvragen, voorspellingen, stand]) => {
+            if (onbeantwoordenvragen && testvragen && stand) { // todo andere kunnen null zijn indien 1e x.
                 this.store.dispatch(new FetchPoulesInProgress());
 
                 this.uiService.voorspellingen$.next(Object.assign([], voorspellingen));
@@ -113,6 +117,11 @@ export class AppComponent implements OnInit, OnDestroy {
                 this.uiService.testAfgerond$.next(onbeantwoordenvragen.aantalOpenVragen === 0);
 
                 this.uiService.isLoading$.next(false);
+                if (stand.data.length > 0) {
+                    this.uiService.poules$.next([{id: 0, poule_name: 'Algemene stand', deelnemers: stand.data, admins: []},
+                        ...this.uiService.poules$.getValue()]);
+                    this.uiService.activePouleIndex$.next(0);
+                }
             }
         });
 

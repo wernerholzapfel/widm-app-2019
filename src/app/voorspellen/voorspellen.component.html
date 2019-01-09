@@ -6,7 +6,7 @@
                 <ion-row>
                     <ion-col align-self-center>
                         <ion-row justify-content-center>
-                            <ion-button fill="clear" [disabled]="isBusy"
+                            <ion-button fill="clear" [disabled]="isBusy || deadlineVerstreken"
                                         *ngIf="activeIndex > 0 && selectKandidaat"
                                         (click)="activateKandidaat(activeIndex - 1)">
                                 <ion-icon color="tertiary" slot="icon-only" class="large-icon"
@@ -25,7 +25,7 @@
                     </ion-col>
                     <ion-col align-self-center>
                         <ion-row justify-content-center>
-                            <ion-button fill="clear" [disabled]="isBusy"
+                            <ion-button fill="clear" [disabled]="isBusy || deadlineVerstreken"
                                         *ngIf="activeIndex + 1 < numberOfKandidaten && selectKandidaat"
                                         (click)="activateKandidaat(activeIndex + 1)">
                                 <ion-icon color="tertiary" slot="icon-only" class="large-icon"
@@ -75,21 +75,25 @@
                                 <ion-skeleton-text></ion-skeleton-text>
                             </ion-text>
                         </ion-label>
-                        <ion-button no-padding fill="clear" [disabled]="isBusy" *ngIf="!voorspelling.selected"
+                        <ion-button no-padding fill="clear" [disabled]="isBusy || deadlineVerstreken"
+                                    *ngIf="!voorspelling.selected"
                                     (click)="editKandidaat(voorspelling.type)" size="small">
                             <ion-icon color="secondary" slot="icon-only" name="md-create"></ion-icon>
                         </ion-button>
-                        <ion-button no-padding fill="clear" [disabled]="isBusy" *ngIf="voorspelling.selected"
+                        <ion-button no-padding fill="clear" [disabled]="isBusy || deadlineVerstreken"
+                                    *ngIf="voorspelling.selected"
                                     (click)="cancelEditKandidaat(voorspelling.type)" size="small">
                             <ion-icon color="secondary" slot="icon-only" name="undo"></ion-icon>
                         </ion-button>
-                        <ion-button no-padding fill="clear" [disabled]="isBusy" *ngIf="voorspelling.selected"
+                        <ion-button no-padding fill="clear" [disabled]="isBusy || deadlineVerstreken"
+                                    *ngIf="voorspelling.selected"
                                     (click)="saveKandidaat(voorspelling.type)" size="small">
                             <ion-icon color="secondary" slot="icon-only" name="ios-save"></ion-icon>
                         </ion-button>
                     </ion-item>
                 </div>
-                <ion-button [disabled]="isBusy" color="primary" expand="full" (click)="submitVoorspellingen(true)">
+                <ion-button [disabled]="isBusy || deadlineVerstreken" color="primary" expand="full"
+                            (click)="submitVoorspellingen(true)">
                     Opslaan
                 </ion-button>
             </ion-card-content>

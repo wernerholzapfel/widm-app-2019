@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {NavController} from '@ionic/angular';
 import {navigation} from '../constants/navigation.constants';
 import {Storage} from '@ionic/storage';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'app-intro',
@@ -10,7 +10,7 @@ import {Storage} from '@ionic/storage';
 })
 export class IntroComponent implements OnInit {
 
-    constructor(public navCtrl: NavController, public storage: Storage) {
+    constructor(public router: Router, public storage: Storage) {
     }
 
     ngOnInit() {
@@ -23,6 +23,6 @@ export class IntroComponent implements OnInit {
                 error => console.error('Error storing item', error)
             );
 
-        this.navCtrl.navigateRoot(`${navigation.home}`);
+        this.router.navigate([`${navigation.home}`]);
     }
 }

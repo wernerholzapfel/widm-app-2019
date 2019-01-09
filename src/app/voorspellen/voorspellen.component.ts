@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {UiService} from '../services/app/ui.service';
-import {takeUntil} from 'rxjs/operators';
+import {delay, takeUntil, tap} from 'rxjs/operators';
 import {combineLatest, Subject} from 'rxjs';
 import {FormBuilder} from '@angular/forms';
 import {IAppState} from '../store/store';
@@ -40,11 +40,14 @@ export class VoorspellenComponent implements OnInit, OnDestroy {
     numberOfKandidaten: number;
     huidigeVoorspelling: VoorspellingsBody = {};
     isBusy = false;
+    deadlineVerstreken: boolean;
+
     voorspellingsLijst: { type: string; kandidaat?: IKandidaat, selected?: boolean }[] = [
         {type: 'mol', kandidaat: null},
         {type: 'winnaar', kandidaat: null},
         {type: 'afvaller', kandidaat: null}];
     unsubscribe: Subject<any> = new Subject();
+
     constructor(private uiService: UiService,
                 private formBuilder: FormBuilder,
                 private store: Store<IAppState>,
@@ -54,9 +57,7 @@ export class VoorspellenComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-
         this.header = 'Voorspellen';
-
 
         combineLatest(this.uiService.huidigeVoorspelling$,
             this.store.pipe(select(getActies)))
@@ -92,6 +93,27 @@ export class VoorspellenComponent implements OnInit, OnDestroy {
             this.activeKandidaat = this.kandidaten[0];
             this.numberOfKandidaten = this.kandidaten.length;
         });
+
+        let dt = 15000;
+
+        this.store.pipe(select(getActies),
+            tap(acties => {
+                if (acties) {
+                    console.log('ik zit in de tap');
+                    this.deadlineVerstreken = acties.voorspellingDeadlineDatetime <= new Date().toISOString();
+                    dt = new Date(acties.voorspellingDeadlineDatetime).getTime();
+                    console.log(dt - new Date().getTime());
+                }
+            }),
+            delay(dt - new Date().getTime()),
+            takeUntil(this.unsubscribe))
+            .subscribe(acties => {
+                console.log('delayed subscription');
+                if (acties) {
+                    this.deadlineVerstreken = acties.voorspellingDeadlineDatetime <= new Date().toISOString();
+                    this.uiService.presentToast(`De deadline voor aflevering ${acties.voorspellingaflevering} is verstreken`);
+                }
+            });
     }
 
     activateKandidaat(newIndex) {

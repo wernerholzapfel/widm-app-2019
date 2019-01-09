@@ -8,6 +8,7 @@ export const navigation = {
     test: 'test',
     punten: 'punten',
     poule: 'poule',
+    overview: 'overview',
     addpoule: 'addpoule',
     acceptinvite: 'acceptinvite',
     adddeelnemer: 'adddeelnemer',
