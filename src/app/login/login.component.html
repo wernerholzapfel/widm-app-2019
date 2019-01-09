@@ -70,7 +70,8 @@
                     </ion-input>
                 </ion-item>
                 <div class="button-container">
-                    <ion-button expand="full" [color]="loginForm.valid ? 'primary' :'medium'" (click)="sendPasswordResetEmail()"
+                    <ion-button expand="full" [color]="user.email ? 'primary' :'medium'"
+                                (click)="sendPasswordResetEmail()"
                                 [disabled]="!user.email">Reset wachtwoord
                     </ion-button>
                 </div>
