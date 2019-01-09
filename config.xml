@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.wernerholzapfel.mollotenapp" version="2.3.0" xmlns="http://www.w3.org/ns/widgets">
+<widget id="com.wernerholzapfel.mollotenapp" version="2.4.0" xmlns="http://www.w3.org/ns/widgets">
     <name>Molloot</name>
     <description>Wie is de molloot 2019</description>
     <author email="werner.holzapfel@gmail.com" href="http://ionicframework.com/">Werner Holzapfel</author>
