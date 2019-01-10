@@ -48,7 +48,7 @@ export class VoorspellenComponent implements OnInit, OnDestroy {
         {type: 'afvaller', kandidaat: null}];
     unsubscribe: Subject<any> = new Subject();
 
-    constructor(private uiService: UiService,
+    constructor(public uiService: UiService,
                 private formBuilder: FormBuilder,
                 private store: Store<IAppState>,
                 private voorspellenService: VoorspellenService,
@@ -67,8 +67,6 @@ export class VoorspellenComponent implements OnInit, OnDestroy {
                     this.huidigeVoorspelling.aflevering = acties.voorspellingaflevering ? acties.voorspellingaflevering : 1;
                 }
                 if (huidigevoorspellingResponse && acties) {
-                    console.log('voorspellingaflevering: ' + acties.voorspellingaflevering);
-                    console.log('huidigevoorspelling: ' + huidigevoorspellingResponse.aflevering);
                     this.huidigeVoorspelling = Object.assign({}, huidigevoorspellingResponse);
                     this.huidigeVoorspelling.aflevering = acties.voorspellingaflevering ? acties.voorspellingaflevering : 1;
                     if (acties.voorspellingaflevering !== huidigevoorspellingResponse.aflevering) {
