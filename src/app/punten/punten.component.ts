@@ -44,7 +44,6 @@ export class PuntenComponent implements OnInit, OnDestroy {
                     afvaller: Object.assign(voorspelling.afvaller,
                         {punten: this.calculatieService.determineAfvallerPunten(voorspelling.afvaller, voorspelling.aflevering)}),
                 }));
-                console.log(this.voorspellingen);
             }
         });
     }

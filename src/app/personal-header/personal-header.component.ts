@@ -2,10 +2,10 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {navigation} from '../constants/navigation.constants';
 import {IAppState} from '../store/store';
 import {select, Store} from '@ngrx/store';
-import {getDeelnemerScore} from '../store/poules/poules.reducer';
-import {combineLatest, Observable, Subject} from 'rxjs';
+import {getDeelnemerId} from '../store/poules/poules.reducer';
+import {combineLatest, forkJoin, of, Subject} from 'rxjs';
 import {UiService} from '../services/app/ui.service';
-import {switchMap, take, takeUntil} from 'rxjs/operators';
+import {skipWhile, switchMap, take, takeUntil} from 'rxjs/operators';
 import {KandidatenService} from '../services/api/kandidaten.service';
 import {AuthService} from '../services/authentication/auth.service';
 import {Router} from '@angular/router';
@@ -17,9 +17,9 @@ import {Router} from '@angular/router';
 })
 export class PersonalHeaderComponent implements OnInit, OnDestroy {
     unsubscribe: Subject<void> = new Subject<void>();
-    deelnemer$: Observable<any>;
     mol: any;
     molPercentage: number;
+    deelnemerPunten: number;
 
     constructor(private router: Router,
                 private store: Store<IAppState>,
@@ -30,7 +30,7 @@ export class PersonalHeaderComponent implements OnInit, OnDestroy {
     }
 
     goToVoorspelling() {
-        this.router.navigateByUrl(`${navigation.home}/${navigation.voorspellen}`);
+        this.roter.navigateByUrl(`${navigation.home}/${navigation.voorspellen}`);
     }
 
     goToStatistieken() {
@@ -42,12 +42,32 @@ export class PersonalHeaderComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.deelnemer$ = this.store.pipe(select(getDeelnemerScore));
 
-        this.uiService.huidigeVoorspelling$.pipe(takeUntil(this.unsubscribe), switchMap(() => {
-            return this.kandidatenService.getMolStatistieken().pipe(take(1));
+        forkJoin(
+            this.store.pipe(select(getDeelnemerId)).pipe(skipWhile(response => response === undefined), take(1)),
+            this.uiService.poules$.pipe(skipWhile(response => response.length === 0), take(1)))
+            .pipe(takeUntil(this.unsubscribe))
+            .subscribe(([deelnemerId, poules]) => {
+                if (deelnemerId && poules) {
+                    if (poules[0] && poules[0].deelnemers && deelnemerId) {
+                        const deelnemerInList = poules[0].deelnemers.find(item => item.id === deelnemerId);
+                        this.deelnemerPunten = deelnemerInList ? deelnemerInList.totaalpunten : null;
+                    } else {
+                        return null;
+                    }
+                }
+            });
+
+        this.uiService.huidigeVoorspelling$.pipe(takeUntil(this.unsubscribe), switchMap((huidigeVoorspelling) => {
+            if (huidigeVoorspelling) {
+                return this.kandidatenService.getMolStatistieken().pipe(take(1));
+            } else {
+                return of(null);
+            }
         })).subscribe(statistieken => {
-            this.uiService.statistieken$.next(statistieken);
+            if (statistieken) {
+                this.uiService.statistieken$.next(statistieken);
+            }
         });
 
         combineLatest(this.uiService.statistieken$,

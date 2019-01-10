@@ -66,17 +66,28 @@ export class PoulesComponent implements OnInit, OnDestroy {
                 if (deelnemer && deelnemer.id) {
                     this.deelnemerId = deelnemer.id;
                     if (deelnemer.poules.length > 0) {
-                        if (this.klassement) {
-                            this.uiService.poules$.next([this.klassement, ...deelnemer.poules]);
-                        }
                         const eigenKlassement = deelnemer.poules.reduce((accumulator, currentValue) => {
                             return [...currentValue.deelnemers, ...accumulator];
                         }, []);
-                        this.uiService.poules$.next([{
-                            poule_name: 'Persoonlijke stand',
-                            deelnemers: this.transformDeelnemers(eigenKlassement),
-                            admins: []
-                        }, ...deelnemer.poules]);
+                        if (deelnemer.poules.length > 0) {
+                            this.uiService.poules$.next([
+                                {
+                                    ...this.klassement,
+                                    deelnemers: this.klassement.deelnemers // todo aantal bepalen
+                                },
+                                {
+                                    poule_name: 'Persoonlijke stand',
+                                    deelnemers: this.transformDeelnemers(eigenKlassement),
+                                    admins: []
+                                },
+                                ...deelnemer.poules]);
+                        } else {
+                            this.uiService.poules$.next([
+                                {
+                                    ...this.klassement,
+                                    deelnemers: this.klassement.deelnemers // todo aantal bepalen
+                                }]);
+                        }
 
                         this.uiService.activePouleIndex$.next(0);
                     }

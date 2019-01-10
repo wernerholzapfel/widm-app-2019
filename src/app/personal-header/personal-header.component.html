@@ -1,9 +1,9 @@
 <ion-grid class="no-padding">
     <ion-row>
         <ion-col align-self-center (click)="goToScores()">
-            <ng-container *ngIf="(deelnemer$ | async) as deelnemer">
+            <ng-container *ngIf="deelnemerPunten > -1">
                 <h1 text-center>
-                    {{deelnemer.totaalpunten}}
+                    {{deelnemerPunten}}
                 </h1>
                 <h3 class="subtitle" text-center>
                     punten

@@ -49,8 +49,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.store.dispatch(new FetchActiesInProgress());
-        this.uitnodigingenService.getUitnodigingen().pipe(take(1))
-            .subscribe(response => this.uiService.uitnodigingen$.next(Object.assign([...response])));
 
         this.store.pipe(select(getActies)).pipe(takeUntil(this.unsubscribe)).subscribe(response => {
             if (response && JSON.stringify(response) !== JSON.stringify(this.acties)) {
@@ -60,16 +58,37 @@ export class AppComponent implements OnInit, OnDestroy {
                 this.acties = response;
                 this.fetchNewData(response);
             } else if (response && response.alwaysUpdate) {
-                this.store.dispatch(new FetchPoulesInProgress());
+                this.fetchUitnodigingen();
             }
         });
 
         this.platform.resume.subscribe(() => {
             this.store.dispatch(new FetchActiesInProgress());
-            this.uitnodigingenService.getUitnodigingen().pipe(take(1))
-                .subscribe(response => this.uiService.uitnodigingen$.next(Object.assign([...response])));
         });
 
+    }
+
+
+    fetchUitnodigingen() {
+        this.authService.user$.pipe(
+            distinctUntilChanged())
+            .pipe(
+                concatMap(user => {
+                    if (user) {
+                        this.store.dispatch(new FetchPoulesInProgress());
+                        return forkJoin(this.uitnodigingenService.getUitnodigingen().pipe(take(1)),
+                            this.kandidatenService.getMolStatistieken().pipe(take(1)));
+                    } else {
+                        return of([null, null]);
+                    }
+                }),
+                takeUntil(this.unsubscribe))
+            .subscribe(([uitnodigingen, statistieken]) => {
+                if (uitnodigingen && statistieken) {
+                    this.uiService.uitnodigingen$.next(Object.assign([...uitnodigingen]));
+                    this.uiService.statistieken$.next(Object.assign({}, statistieken));
+                }
+            });
     }
 
     fetchNewData(acties) {
@@ -86,7 +105,8 @@ export class AppComponent implements OnInit, OnDestroy {
                             this.testService.getaantalOnbeantwoordeVragen().pipe(take(1)),
                             this.testService.gettests().pipe(take(1)),
                             this.voorspellenService.getAllVoorspellingen().pipe(take(1)),
-                            this.pouleService.getKlassement().pipe(take(1)));
+                            this.pouleService.getKlassement().pipe(take(1)),
+                            this.uitnodigingenService.getUitnodigingen().pipe(take(1)));
                     } else {
                         this.store.dispatch(new ResetPoules());
                         this.uiService.huidigeVoorspelling$.next(null);
@@ -96,42 +116,40 @@ export class AppComponent implements OnInit, OnDestroy {
                         this.uiService.voorspellingAfgerond$.next(undefined);
 
                         this.uiService.isLoading$.next(false);
-                        return of([null, null, null, null]);
+                        return of([null, null, null, null, null]);
                     }
                 }),
-                takeUntil(this.unsubscribe)).subscribe(([laatsteVoorspelling, onbeantwoordenvragen, testvragen, voorspellingen, stand]) => {
-            if (onbeantwoordenvragen && testvragen && stand) { // todo andere kunnen null zijn indien 1e x.
-                this.store.dispatch(new FetchPoulesInProgress());
+                takeUntil(this.unsubscribe))
+            .subscribe(([laatsteVoorspelling, onbeantwoordenvragen, testvragen, voorspellingen, stand, uitnodigingen]) => {
+                if (onbeantwoordenvragen && testvragen && stand) { // todo andere kunnen null zijn indien 1e x.
+                    this.store.dispatch(new FetchPoulesInProgress());
 
-                this.uiService.voorspellingen$.next(Object.assign([], voorspellingen));
-                this.uiService.huidigeVoorspelling$.next(Object.assign({}, laatsteVoorspelling));
+                    this.uiService.voorspellingen$.next(Object.assign([], voorspellingen));
+                    this.uiService.huidigeVoorspelling$.next(Object.assign({}, laatsteVoorspelling));
 
-                this.uiService.voorspellingAfgerond$.next(laatsteVoorspelling &&
-                    laatsteVoorspelling.afvaller &&
-                    laatsteVoorspelling.winnaar &&
-                    laatsteVoorspelling.mol &&
-                    acties.voorspellingaflevering === laatsteVoorspelling.aflevering &&
-                    !laatsteVoorspelling.mol.afgevallen);
+                    this.uiService.voorspellingAfgerond$.next(laatsteVoorspelling &&
+                        laatsteVoorspelling.afvaller &&
+                        laatsteVoorspelling.winnaar &&
+                        laatsteVoorspelling.mol &&
+                        acties.voorspellingaflevering === laatsteVoorspelling.aflevering &&
+                        !laatsteVoorspelling.mol.afgevallen);
 
-                this.uiService.tests$.next(Object.assign([], testvragen));
-                this.uiService.testAfgerond$.next(onbeantwoordenvragen.aantalOpenVragen === 0);
+                    this.uiService.tests$.next(Object.assign([], testvragen));
+                    this.uiService.testAfgerond$.next(onbeantwoordenvragen.aantalOpenVragen === 0);
 
-                this.uiService.isLoading$.next(false);
-                if (stand.data.length > 0) {
-                    this.uiService.poules$.next([{id: 0, poule_name: 'Algemene stand', deelnemers: stand.data, admins: []},
-                        ...this.uiService.poules$.getValue()]);
-                    this.uiService.activePouleIndex$.next(0);
+                    this.uiService.isLoading$.next(false);
+                    if (stand.data.length > 0) {
+                        this.uiService.poules$.next([{id: 0, poule_name: 'Algemene stand', deelnemers: stand.data, admins: []},
+                            ...this.uiService.poules$.getValue()]);
+                        this.uiService.activePouleIndex$.next(0);
+                    }
                 }
-            }
-        });
+                if (uitnodigingen) {
+                    this.uiService.uitnodigingen$.next(Object.assign([...uitnodigingen]));
+                }
+            });
 
         this.kandidatenService.getKandidaten().subscribe(response => this.uiService.kandidaten$.next([...response]));
-
-
-        this.kandidatenService.getMolStatistieken().pipe(takeUntil(this.unsubscribe)).subscribe(response => {
-            this.uiService.statistieken$.next(Object.assign({}, response));
-        });
-
     }
 
     initializeApp() {

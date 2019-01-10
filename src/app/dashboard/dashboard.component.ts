@@ -98,7 +98,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.unsubscribe.next();
     }
 
-    fetchACties() {
+    fetchActies() {
         this.store.dispatch(new FetchActiesInProgress());
     }
 

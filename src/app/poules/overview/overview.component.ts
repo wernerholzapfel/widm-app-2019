@@ -46,8 +46,9 @@ export class OverviewComponent implements OnInit, OnDestroy {
     }
 
     determinePositionFromUser(poule: any): number {
-        if (poule && poule.deelnemers) {
-            return poule.deelnemers.find(deelnemer => deelnemer.id === this.deelnemerId).positie;
+        if (poule && poule.deelnemers && this.deelnemerId) {
+            const deelnemerInList = poule.deelnemers.find(deelnemer => deelnemer.id === this.deelnemerId);
+            return deelnemerInList ? deelnemerInList.positie : null;
         } else {
             return null;
         }
