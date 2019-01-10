@@ -30,7 +30,7 @@ export class PersonalHeaderComponent implements OnInit, OnDestroy {
     }
 
     goToVoorspelling() {
-        this.roter.navigateByUrl(`${navigation.home}/${navigation.voorspellen}`);
+        this.router.navigateByUrl(`${navigation.home}/${navigation.voorspellen}`);
     }
 
     goToStatistieken() {
