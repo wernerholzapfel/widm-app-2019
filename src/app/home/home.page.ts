@@ -1,8 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AuthService} from '../services/authentication/auth.service';
-import {select, Store} from '@ngrx/store';
-import {getDeelnemer} from '../store/poules/poules.reducer';
-import {Observable} from 'rxjs';
+import {Store} from '@ngrx/store';
 import {IAppState} from '../store/store';
 
 @Component({
@@ -10,13 +8,14 @@ import {IAppState} from '../store/store';
     templateUrl: 'home.page.html',
     styleUrls: ['home.page.scss']
 })
-export class HomePage implements OnInit {
-    deelnemer$: Observable<any>;
+export class HomePage implements OnInit, OnDestroy {
 
     constructor(public authService: AuthService, private store: Store<IAppState>) {
     }
 
     ngOnInit() {
-        this.deelnemer$ = this.store.pipe(select(getDeelnemer));
+    }
+
+    ngOnDestroy() {
     }
 }

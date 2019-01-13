@@ -139,7 +139,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
                     this.uiService.isLoading$.next(false);
                     if (stand.data.length > 0) {
-                        this.uiService.poules$.next([{id: 0, poule_name: 'Algemene stand', deelnemers: stand.data, admins: []},
+                        this.uiService.poules$.next([{id: 0, poule_name: 'Top 25', deelnemers: stand.data, admins: []},
                             ...this.uiService.poules$.getValue()]);
                         this.uiService.activePouleIndex$.next(0);
                     }
@@ -183,5 +183,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.unsubscribe.next();
+        this.unsubscribe.complete();
     }
 }

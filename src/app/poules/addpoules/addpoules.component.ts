@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {PoulesService} from '../../services/api/poules.service';
 import {UiService} from '../../services/app/ui.service';
@@ -9,13 +9,14 @@ import {IAppState} from '../../store/store';
 import {getDeelnemerId} from '../../store/poules/poules.reducer';
 import {FetchPoulesInProgress} from '../../store/poules/poules.actions';
 import {Router} from '@angular/router';
+import {takeUntil} from 'rxjs/operators';
 
 @Component({
     selector: 'app-addpoules',
     templateUrl: './addpoules.component.html',
     styleUrls: ['./addpoules.component.scss']
 })
-export class AddpoulesComponent implements OnInit {
+export class AddpoulesComponent implements OnInit, OnDestroy {
     @ViewChild('createPouleForm') createPouleForm: NgForm;
     unsubscribe: Subject<void> = new Subject<void>();
     deelnemerId: string;
@@ -27,7 +28,7 @@ export class AddpoulesComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.store.pipe(select(getDeelnemerId)).subscribe(response => {
+        this.store.pipe(select(getDeelnemerId)).pipe(takeUntil(this.unsubscribe)).subscribe(response => {
             this.deelnemerId = response;
         });
     }
@@ -47,5 +48,10 @@ export class AddpoulesComponent implements OnInit {
             this.router.navigate([`${navigation.poules}/${navigation.poule}`]);
             }
         );
+    }
+
+    ngOnDestroy() {
+        this.unsubscribe.next();
+        this.unsubscribe.complete();
     }
 }

@@ -58,8 +58,8 @@ export class TestComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.isLoading = true;
         this.store.pipe(
-            select(getDeelnemerId),
-            takeUntil(this.unsubscribe))
+            select(getDeelnemerId))
+            .pipe(takeUntil(this.unsubscribe))
             .subscribe(response => {
                 this.deelnemerId = response;
             });
@@ -116,6 +116,7 @@ export class TestComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.unsubscribe.next();
+        this.unsubscribe.complete();
     }
 
     nextSlide() {

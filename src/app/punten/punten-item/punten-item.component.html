@@ -1,10 +1,11 @@
 <ion-item lines="full" color="tertiary">
     <ion-avatar slot="start" [ngClass]="{'afgevallen': kandidaat?.afgevallen && kandidaat.aflevering == aflevering}">
-        <img [src]="kandidaat?.image_url">
+        <img *ngIf="kandidaat?.image_url" [src]="kandidaat?.image_url">
     </ion-avatar>
     <ion-label text-wrap>
         <ion-text>De {{voorspellingsType | titlecase}}:
-            <h3>{{kandidaat?.display_name}}</h3>
+            <h3 *ngIf="kandidaat">{{kandidaat?.display_name}}</h3>
+            <h3 *ngIf="!kandidaat.display_name">Geen voorspelling</h3>
         </ion-text>
     </ion-label>
     <ion-text>

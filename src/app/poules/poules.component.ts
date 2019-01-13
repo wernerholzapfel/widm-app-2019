@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {IAppState} from '../store/store';
 import {getDeelnemer} from '../store/poules/poules.reducer';
-import {Observable, Subject} from 'rxjs';
+import {Subject} from 'rxjs';
 import {IPoule} from '../interface/IPoules';
 import {Router} from '@angular/router';
 import {distinctUntilChanged, takeUntil} from 'rxjs/operators';
@@ -19,7 +19,6 @@ import {CalculatieService} from '../calculatie.service';
 })
 export class PoulesComponent implements OnInit, OnDestroy {
 
-    deelnemer$: Observable<any>;
     unsubscribe = new Subject<void>();
     poules: any[] = [];
     positie: number;
@@ -38,8 +37,6 @@ export class PoulesComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.deelnemer$ = this.store.pipe(select(getDeelnemer));
-
         this.uiService.poules$.pipe(takeUntil(this.unsubscribe)).subscribe(response => {
             if (response) {
                 this.klassement = response.find(poule => {
@@ -61,7 +58,7 @@ export class PoulesComponent implements OnInit, OnDestroy {
             this.uitnodigingen = response;
         });
 
-        this.deelnemer$.pipe(takeUntil(this.unsubscribe))
+        this.store.pipe(select(getDeelnemer)).pipe(takeUntil(this.unsubscribe))
             .subscribe(deelnemer => {
                 if (deelnemer && deelnemer.id) {
                     this.deelnemerId = deelnemer.id;
@@ -73,7 +70,7 @@ export class PoulesComponent implements OnInit, OnDestroy {
                             this.uiService.poules$.next([
                                 {
                                     ...this.klassement,
-                                    deelnemers: this.klassement.deelnemers // todo aantal bepalen
+                                    deelnemers: this.determineDeelnemers(this.klassement.deelnemers)
                                 },
                                 {
                                     poule_name: 'Persoonlijke stand',
@@ -85,7 +82,7 @@ export class PoulesComponent implements OnInit, OnDestroy {
                             this.uiService.poules$.next([
                                 {
                                     ...this.klassement,
-                                    deelnemers: this.klassement.deelnemers // todo aantal bepalen
+                                    deelnemers: this.determineDeelnemers(this.klassement.deelnemers)
                                 }]);
                         }
 
@@ -93,6 +90,15 @@ export class PoulesComponent implements OnInit, OnDestroy {
                     }
                 }
             });
+    }
+
+    determineDeelnemers(deelnemers: any[]) {
+        const top25 = deelnemers.slice(0, 25);
+        if (top25.find(item => item.id === this.deelnemerId)) {
+            return top25;
+        } else {
+            return [...top25, deelnemers.find(item => item.id === this.deelnemerId)];
+        }
     }
 
     transformDeelnemers(arr) {
@@ -133,5 +139,6 @@ export class PoulesComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.unsubscribe.next();
+        this.unsubscribe.complete();
     }
 }

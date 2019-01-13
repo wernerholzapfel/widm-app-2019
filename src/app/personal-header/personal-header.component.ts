@@ -95,5 +95,6 @@ export class PersonalHeaderComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.unsubscribe.next();
+        this.unsubscribe.complete();
     }
 }

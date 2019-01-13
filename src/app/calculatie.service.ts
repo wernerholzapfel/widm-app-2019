@@ -9,19 +9,19 @@ export class CalculatieService {
     }
 
     determineMolPunten(mol: any, aflevering: number) {
-        return mol.mol ? molPunten : mol.afgevallen && mol.aflevering === aflevering ? molStrafpunten : 0;
+        return mol && mol.mol ? molPunten : mol && mol.afgevallen && mol.aflevering === aflevering ? molStrafpunten : 0;
     }
 
     determineWinnaarPunten(winnaar: any, aflevering: number) {
-        return winnaar.winner ? winnaarPunten : winnaar.afgevallen && winnaar.aflevering === aflevering ? winnaarStrafpunten : 0;
+        return winnaar && winnaar.winner ? winnaarPunten : winnaar && winnaar.afgevallen && winnaar.aflevering === aflevering ? winnaarStrafpunten : 0;
     }
 
     determineAfvallerPunten(afvaller: any, aflevering: number) {
-        return afvaller.afgevallen && afvaller.aflevering === aflevering ? afvallerPunten : 0;
+        return afvaller && afvaller.afgevallen && afvaller.aflevering === aflevering ? afvallerPunten : 0;
     }
 
     determineTestPunten(test: any) {
-        return (test.antwoord && !test.antwoord.is_niet_meer_mogelijk_sinds) ? vragenPunten : 0;
+        return (test && test.antwoord && !test.antwoord.is_niet_meer_mogelijk_sinds) ? vragenPunten : 0;
     }
 
     calculatePosition(deelnemer, index, deelnemers) {

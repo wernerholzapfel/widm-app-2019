@@ -21,7 +21,8 @@
                                     <ion-row>
                                         <ion-col>
                                             <h3>{{poule.poule_name}}</h3>
-                                            <h3>{{poule.deelnemers.length}} deelnemers</h3>
+                                            <h3 *ngIf="poule.id !== 0">{{poule.deelnemers.length}} deelnemers</h3>
+                                            <h3 *ngIf="poule.id === 0">&nbsp;</h3>
                                         </ion-col>
                                     </ion-row>
                                 </ion-text>

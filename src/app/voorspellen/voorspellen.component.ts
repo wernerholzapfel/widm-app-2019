@@ -94,19 +94,16 @@ export class VoorspellenComponent implements OnInit, OnDestroy {
 
         let dt = 15000;
 
-        this.store.pipe(select(getActies),
+        this.store.pipe(select(getActies)).pipe(
             tap(acties => {
                 if (acties) {
-                    console.log('ik zit in de tap');
                     this.deadlineVerstreken = acties.voorspellingDeadlineDatetime <= new Date().toISOString();
                     dt = new Date(acties.voorspellingDeadlineDatetime).getTime();
-                    console.log(dt - new Date().getTime());
                 }
             }),
             delay(dt - new Date().getTime()),
             takeUntil(this.unsubscribe))
             .subscribe(acties => {
-                console.log('delayed subscription');
                 if (acties) {
                     this.deadlineVerstreken = acties.voorspellingDeadlineDatetime <= new Date().toISOString();
                     this.uiService.presentToast(`De deadline voor aflevering ${acties.voorspellingaflevering} is verstreken`);
@@ -193,6 +190,7 @@ export class VoorspellenComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.unsubscribe.next();
+        this.unsubscribe.complete();
     }
 }
 

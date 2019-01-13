@@ -50,14 +50,14 @@ export class PoulesEffects {
                             voorspellingen: deelnemer.voorspellingen
                                 .map(voorspelling => ({
                                     ...voorspelling,
-                                    mol: Object.assign(voorspelling.mol,
+                                    mol: Object.assign({}, ...voorspelling.mol,
                                         {punten: this.calculatieService.determineMolPunten(voorspelling.mol, voorspelling.aflevering)}),
-                                    winnaar: Object.assign(voorspelling.winnaar,
+                                    winnaar: Object.assign({}, ...voorspelling.winnaar,
                                         {
                                             punten:
                                                 this.calculatieService.determineWinnaarPunten(voorspelling.winnaar, voorspelling.aflevering)
                                         }),
-                                    afvaller: Object.assign(voorspelling.afvaller,
+                                    afvaller: Object.assign({}, ...voorspelling.afvaller,
                                         {
                                             punten:
                                                 this.calculatieService.determineAfvallerPunten(voorspelling.afvaller, voorspelling.aflevering)
