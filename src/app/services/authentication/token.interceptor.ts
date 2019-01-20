@@ -11,7 +11,6 @@ export class TokenInterceptor implements HttpInterceptor {
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-        // todo asks codereview
         return this.authService.isLoggedIn()
             .pipe(switchMap((value) => {
                 if (value) {

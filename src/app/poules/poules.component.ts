@@ -5,7 +5,7 @@ import {getDeelnemer} from '../store/poules/poules.reducer';
 import {Subject} from 'rxjs';
 import {IPoule} from '../interface/IPoules';
 import {Router} from '@angular/router';
-import {distinctUntilChanged, takeUntil} from 'rxjs/operators';
+import {takeUntil} from 'rxjs/operators';
 import {UiService} from '../services/app/ui.service';
 import {navigation} from '../constants/navigation.constants';
 import {IUitnodigingResponse} from '../services/api/uitnodigingen.service';
@@ -47,7 +47,7 @@ export class PoulesComponent implements OnInit, OnDestroy {
             }
         });
 
-        this.uiService.activePouleIndex$.pipe(distinctUntilChanged(), takeUntil(this.unsubscribe)).subscribe(response => {
+        this.uiService.activePouleIndex$.pipe(takeUntil(this.unsubscribe)).subscribe(response => {
             if (response !== null) {
                 this.activePouleIndex = response;
                 this.activatePoule(response);
@@ -66,28 +66,26 @@ export class PoulesComponent implements OnInit, OnDestroy {
                         const eigenKlassement = deelnemer.poules.reduce((accumulator, currentValue) => {
                             return [...currentValue.deelnemers, ...accumulator];
                         }, []);
-                        if (deelnemer.poules.length > 0) {
-                            this.uiService.poules$.next([
-                                {
-                                    ...this.klassement,
-                                    deelnemers: this.determineDeelnemers(this.klassement.deelnemers)
-                                },
-                                {
-                                    poule_name: 'Persoonlijke stand',
-                                    deelnemers: this.transformDeelnemers(eigenKlassement),
-                                    admins: []
-                                },
-                                ...deelnemer.poules]);
-                        } else {
-                            this.uiService.poules$.next([
-                                {
-                                    ...this.klassement,
-                                    deelnemers: this.determineDeelnemers(this.klassement.deelnemers)
-                                }]);
-                        }
-
-                        this.uiService.activePouleIndex$.next(0);
+                        this.uiService.poules$.next([
+                            {
+                                ...this.klassement,
+                                deelnemers: this.determineDeelnemers(this.klassement.deelnemers)
+                            },
+                            {
+                                poule_name: 'Persoonlijke stand',
+                                deelnemers: this.transformDeelnemers(eigenKlassement),
+                                admins: []
+                            },
+                            ...deelnemer.poules]);
+                    } else {
+                        this.uiService.poules$.next([
+                            {
+                                ...this.klassement,
+                                deelnemers: this.determineDeelnemers(this.klassement.deelnemers)
+                            }]);
                     }
+
+                    this.uiService.activePouleIndex$.next(0);
                 }
             });
     }
@@ -116,9 +114,11 @@ export class PoulesComponent implements OnInit, OnDestroy {
         const nieuweDeelnemersLijst = Array.from(it);
         return nieuweDeelnemersLijst
             .sort((a, b) => b.totaalpunten - a.totaalpunten)
-            .map((deelnemer, index, deelnemers) => Object.assign(deelnemer, {
-                positie: this.calculatieService.calculatePosition(deelnemer, index, deelnemers)
-            }));
+            .reduce((accumulator, currentValue, index) => {
+                return [...accumulator, Object.assign({}, currentValue, {
+                    positie: this.calculatieService.calculatePosition(currentValue, index, accumulator)
+                })];
+            }, []);
     }
 
     activatePoule(newPouleIndex) {

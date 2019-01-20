@@ -20,6 +20,7 @@ export class AddpoulesComponent implements OnInit, OnDestroy {
     @ViewChild('createPouleForm') createPouleForm: NgForm;
     unsubscribe: Subject<void> = new Subject<void>();
     deelnemerId: string;
+    isLoading: boolean;
 
     constructor(private poulesService: PoulesService,
                 private uiService: UiService,
@@ -34,6 +35,7 @@ export class AddpoulesComponent implements OnInit, OnDestroy {
     }
 
     createPoule() {
+        this.isLoading = true;
         console.log(this.createPouleForm);
         const currentUser = {id: this.deelnemerId};
         console.log(currentUser);
@@ -44,8 +46,12 @@ export class AddpoulesComponent implements OnInit, OnDestroy {
         }).subscribe(response => {
                 // todo add to redux store
                 this.uiService.presentToast(`Poule ${this.createPouleForm.value.name} aangemaakt`);
+                this.isLoading = false;
                 this.store.dispatch(new FetchPoulesInProgress());
-            this.router.navigate([`${navigation.poules}/${navigation.poule}`]);
+                this.router.navigate([`${navigation.poules}/${navigation.poule}`]);
+            }, error1 => {
+                this.isLoading = false;
+                this.uiService.presentToast(`Er is iets misgegaan bij het aanmaken van de poule`);
             }
         );
     }

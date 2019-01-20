@@ -39,6 +39,7 @@ export class FooterComponent implements OnInit, OnDestroy {
     }
 
     logout() {
+        this.goToLogin();
         this.authService.logout();
     }
 

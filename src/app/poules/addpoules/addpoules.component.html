@@ -18,7 +18,7 @@
                         <ion-input required type="text" placeholder="Naam van de poule" name="name" ngModel></ion-input>
                     </ion-item>
                     <div class="button-container">
-                        <ion-button [disabled]="!createPouleForm.valid"
+                        <ion-button [disabled]="!createPouleForm.valid && isLoading"
                                     [color]="createPouleForm.valid ? 'primary' :'medium'" expand="full" type="submit">
                             Maak poule
                         </ion-button>
