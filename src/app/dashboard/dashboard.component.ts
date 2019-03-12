@@ -9,6 +9,7 @@ import {IAppState} from '../store/store';
 import {select, Store} from '@ngrx/store';
 import {FetchActiesInProgress} from '../store/acties/acties.actions';
 import {Router} from '@angular/router';
+import {IActies} from '../interface/IActies';
 
 @Component({
     selector: 'app-dashboard',
@@ -21,7 +22,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     testAfgerond: boolean;
     voorspellingAfgerond: boolean;
-    acties: any;
+    acties: IActies;
     cardText: string;
 
     constructor(private router: Router,
@@ -49,7 +50,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     cardTextFunc(): string {
-        if (this.acties) {
+        if (this.acties && !this.acties.isSeasonFinished) {
             if (this.testAfgerond && this.voorspellingAfgerond) {
                 return 'Je bent helemaal bij. Je kunt je voorspellingen nog wijzigen tot ' +
                     this.formatDate(this.acties.voorspellingDeadlineDatetime);
@@ -68,6 +69,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
             } else {
                 return 'bezig met laden van gegevens';
             }
+        } else if (this.acties && this.acties.isSeasonFinished) {
+            return 'Het Wie is de Mol seizoen zit erop. Bedankt voor het meespelen!';
         }
     }
 

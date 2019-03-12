@@ -5,4 +5,5 @@ export interface IActies {
     testDeadlineDatetime?: string;
     voorspellingDeadlineDatetime?: string;
     alwaysUpdate?: boolean;
+    isSeasonFinished?: boolean;
 }

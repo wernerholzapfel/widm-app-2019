@@ -91,7 +91,9 @@ export class AppComponent implements OnInit, OnDestroy {
             });
     }
 
-    fetchNewData(acties) {
+    fetchNewData(acties: IActies) {
+        this.uiService.isSeasonFinished$.next(acties.isSeasonFinished);
+
         this.uiService.isLoading$.next(true);
 
         // while there is a user try to fetch all of his data and add it to uiservice.
@@ -127,15 +129,16 @@ export class AppComponent implements OnInit, OnDestroy {
                     this.uiService.voorspellingen$.next(Object.assign([], voorspellingen));
                     this.uiService.huidigeVoorspelling$.next(Object.assign({}, laatsteVoorspelling));
 
-                    this.uiService.voorspellingAfgerond$.next(laatsteVoorspelling &&
+                    this.uiService.voorspellingAfgerond$.next((laatsteVoorspelling &&
                         laatsteVoorspelling.afvaller &&
                         laatsteVoorspelling.winnaar &&
                         laatsteVoorspelling.mol &&
                         acties.voorspellingaflevering === laatsteVoorspelling.aflevering &&
-                        !laatsteVoorspelling.mol.afgevallen);
+                        !laatsteVoorspelling.mol.afgevallen) ||
+                        acties.isSeasonFinished);
 
                     this.uiService.tests$.next(Object.assign([], testvragen));
-                    this.uiService.testAfgerond$.next(onbeantwoordenvragen.aantalOpenVragen === 0);
+                    this.uiService.testAfgerond$.next(onbeantwoordenvragen.aantalOpenVragen === 0 || acties.isSeasonFinished);
 
                     this.uiService.isLoading$.next(false);
                     if (stand.data.length > 0) {

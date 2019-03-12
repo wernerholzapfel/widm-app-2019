@@ -12,6 +12,7 @@ export class UiService {
 
     poules$: BehaviorSubject<any[]> = new BehaviorSubject([]);
     isLoading$: BehaviorSubject<boolean> = new BehaviorSubject(true);
+    isSeasonFinished$: BehaviorSubject<boolean> = new BehaviorSubject(false);
     activePoule$: BehaviorSubject<any> = new BehaviorSubject(null);
     activePouleIndex$: BehaviorSubject<number> = new BehaviorSubject(null);
     tests$: BehaviorSubject<any[]> = new BehaviorSubject(null);
