@@ -27,6 +27,12 @@ export class PoulesService {
             map(res => <IPoules>res));
     }
 
+    getKlassement(): Observable<{ data: any[] }> {
+        return this.httpClient.get(`${this.api}/standen`).pipe(
+            map(res => <{ data: any[] }>res));
+    }
+
+
     createPoule(body: ICreatePoule): Observable<ICreatePoule> {
         return this.httpClient.post(`${this.api}/poules/create`, body).pipe(
             map(res => <ICreatePoule>res));

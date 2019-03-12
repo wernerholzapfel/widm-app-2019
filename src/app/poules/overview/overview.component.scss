@@ -1,0 +1,15 @@
+@import '../../../theme/variables';
+
+:host {
+  .sublink {
+    text-align: center;
+    font-size: 14px;
+  }
+
+  ion-card-content {
+    display: grid;
+    align-content: space-between;
+    padding-bottom: 16px;
+    min-height: calc(100vh - 128px - 44px - 30px - 84px - #{$safe-area-inset-top} - #{$safe-area-inset-bottom});
+  }
+}

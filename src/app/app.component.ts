@@ -6,18 +6,19 @@ import {StatusBar} from '@ionic-native/status-bar/ngx';
 import {FetchActiesInProgress} from './store/acties/acties.actions';
 import {IAppState} from './store/store';
 import {select, Store} from '@ngrx/store';
-import {FetchPoulesInProgress, ResetPoules} from './store/poules/poules.actions';
 import {UitnodigingenService} from './services/api/uitnodigingen.service';
 import {UiService} from './services/app/ui.service';
 import {KandidatenService} from './services/api/kandidaten.service';
 import {VoorspellenService} from './services/api/voorspellen.service';
 import {AuthService} from './services/authentication/auth.service';
-import {from as observableFrom, Subject} from 'rxjs';
+import {forkJoin, of, Subject} from 'rxjs';
 import {getActies} from './store/acties/acties.reducer';
 import {TestService} from './services/api/test.service';
-import {distinctUntilChanged, map, take, takeUntil} from 'rxjs/operators';
+import {concatMap, distinctUntilChanged, take, takeUntil} from 'rxjs/operators';
 import {environment} from '../environments/environment';
 import {IActies} from './interface/IActies';
+import {FetchPoulesInProgress, ResetPoules} from './store/poules/poules.actions';
+import {PoulesService} from './services/api/poules.service';
 
 @Component({
     selector: 'app-root',
@@ -39,6 +40,7 @@ export class AppComponent implements OnInit, OnDestroy {
         private kandidatenService: KandidatenService,
         private voorspellenService: VoorspellenService,
         private authService: AuthService,
+        private pouleService: PoulesService,
         private testService: TestService
     ) {
         this.initializeApp();
@@ -46,11 +48,6 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.authService.user$.pipe(takeUntil(this.unsubscribe)).subscribe(response => {
-            console.log('user gewijzigd');
-            this.uiService.isLoading$.next(false);
-        });
-
         this.store.dispatch(new FetchActiesInProgress());
 
         this.store.pipe(select(getActies)).pipe(takeUntil(this.unsubscribe)).subscribe(response => {
@@ -60,6 +57,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
                 this.acties = response;
                 this.fetchNewData(response);
+            } else if (response && response.alwaysUpdate) {
+                this.fetchUitnodigingen();
             }
         });
 
@@ -69,56 +68,96 @@ export class AppComponent implements OnInit, OnDestroy {
 
     }
 
-    fetchNewData(acties) {
+
+    fetchUitnodigingen() {
+        this.authService.user$.pipe(
+            distinctUntilChanged())
+            .pipe(
+                concatMap(user => {
+                    if (user) {
+                        this.store.dispatch(new FetchPoulesInProgress());
+                        return forkJoin(this.uitnodigingenService.getUitnodigingen().pipe(take(1)),
+                            this.kandidatenService.getMolStatistieken().pipe(take(1)));
+                    } else {
+                        return of([null, null]);
+                    }
+                }),
+                takeUntil(this.unsubscribe))
+            .subscribe(([uitnodigingen, statistieken]) => {
+                if (uitnodigingen && statistieken) {
+                    this.uiService.uitnodigingen$.next(Object.assign([...uitnodigingen]));
+                    this.uiService.statistieken$.next(Object.assign({}, statistieken));
+                }
+            });
+    }
+
+    fetchNewData(acties: IActies) {
+        this.uiService.isSeasonFinished$.next(acties.isSeasonFinished);
+
         this.uiService.isLoading$.next(true);
-        this.authService.user$.pipe(distinctUntilChanged(), map(user => {
-            if (user) {
 
-                return observableFrom([this.store.dispatch(new FetchPoulesInProgress()),
-                    this.uitnodigingenService.getUitnodigingen().pipe(take(1))
-                        .subscribe(response => this.uiService.uitnodigingen$.next(response)),
+        // while there is a user try to fetch all of his data and add it to uiservice.
+        this.authService.user$.pipe(
+            distinctUntilChanged())
+            .pipe(
+                concatMap(user => {
+                    if (user) {
+                        return forkJoin(
+                            this.voorspellenService.getLaatsteVoorspelling().pipe(take(1)),
+                            this.testService.getaantalOnbeantwoordeVragen().pipe(take(1)),
+                            this.testService.gettests().pipe(take(1)),
+                            this.voorspellenService.getAllVoorspellingen().pipe(take(1)),
+                            this.pouleService.getKlassement().pipe(take(1)),
+                            this.uitnodigingenService.getUitnodigingen().pipe(take(1)));
+                    } else {
+                        this.store.dispatch(new ResetPoules());
+                        this.uiService.huidigeVoorspelling$.next(null);
+                        this.uiService.tests$.next(null);
 
-                    this.voorspellenService.getLaatsteVoorspelling().pipe(take(1)).subscribe(voorspelling => {
-                        this.uiService.huidigeVoorspelling$.next(voorspelling);
-                        this.uiService.voorspellingAfgerond$
-                            .next(voorspelling && acties.voorspellingaflevering === voorspelling.aflevering);
-                    }),
+                        this.uiService.testAfgerond$.next(undefined);
+                        this.uiService.voorspellingAfgerond$.next(undefined);
 
-                    this.testService.getaantalOnbeantwoordeVragen().pipe(take(1)).subscribe(response => {
-                        this.uiService.testAfgerond$.next(response.aantalOpenVragen === 0);
-                    }),
+                        this.uiService.isLoading$.next(false);
+                        return of([null, null, null, null, null]);
+                    }
+                }),
+                takeUntil(this.unsubscribe))
+            .subscribe(([laatsteVoorspelling, onbeantwoordenvragen, testvragen, voorspellingen, stand, uitnodigingen]) => {
+                if (onbeantwoordenvragen && testvragen && stand) { // todo andere kunnen null zijn indien 1e x.
+                    this.store.dispatch(new FetchPoulesInProgress());
 
-                    this.uiService.isLoading$.next(false),
-                    this.voorspellenService.getAllVoorspellingen().pipe(take(1)).subscribe(response => {
-                        if (response) {
-                            this.uiService.voorspellingen$.next(response);
-                        }
-                    }),
+                    this.uiService.voorspellingen$.next(Object.assign([], voorspellingen));
+                    this.uiService.huidigeVoorspelling$.next(Object.assign({}, laatsteVoorspelling));
 
-                    this.testService.gettests().pipe(take(1)).subscribe(response => {
-                        this.uiService.tests$.next(response);
-                    }),
-                ]);
-            } else {
-                this.uiService.isLoading$.next(false);
-                return observableFrom([this.store.dispatch(new ResetPoules())]);
-            }
-        })).subscribe(response => {
-            this.uiService.isLoading$.next(false);
-        });
+                    this.uiService.voorspellingAfgerond$.next((laatsteVoorspelling &&
+                        laatsteVoorspelling.afvaller &&
+                        laatsteVoorspelling.winnaar &&
+                        laatsteVoorspelling.mol &&
+                        acties.voorspellingaflevering === laatsteVoorspelling.aflevering &&
+                        !laatsteVoorspelling.mol.afgevallen) ||
+                        acties.isSeasonFinished);
 
-        this.kandidatenService.getKandidaten().subscribe(response => this.uiService.kandidaten$.next(response));
+                    this.uiService.tests$.next(Object.assign([], testvragen));
+                    this.uiService.testAfgerond$.next(onbeantwoordenvragen.aantalOpenVragen === 0 || acties.isSeasonFinished);
 
+                    this.uiService.isLoading$.next(false);
+                    if (stand.data.length > 0) {
+                        this.uiService.poules$.next([{id: 0, poule_name: 'Top 25', deelnemers: stand.data, admins: []},
+                            ...this.uiService.poules$.getValue()]);
+                        this.uiService.activePouleIndex$.next(0);
+                    }
+                }
+                if (uitnodigingen) {
+                    this.uiService.uitnodigingen$.next(Object.assign([...uitnodigingen]));
+                }
+            });
 
-        this.kandidatenService.getMolStatistieken().pipe(takeUntil(this.unsubscribe)).subscribe(response => {
-            this.uiService.statistieken$.next(response);
-        });
-
+        this.kandidatenService.getKandidaten().subscribe(response => this.uiService.kandidaten$.next([...response]));
     }
 
     initializeApp() {
         this.platform.ready().then(() => {
-            this.statusBar.styleDefault();
+            this.statusBar.styleLightContent();
             this.splashScreen.hide();
 
             // OneSignal Code start:
@@ -136,7 +175,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
             if (environment.production) {
                 window['plugins'].OneSignal
-                    .startInit('c9e91d07-f6c6-480b-a9ac-8322418085f8')
+                    .startInit('c9e91d07-f6c6-480b-a9ac-8322418085f8', 'molloot-8de9b')
                     .handleNotificationOpened(notificationOpenedCallback)
                     .handleNotificationReceived(handleNotificationReceived)
                     .endInit();
@@ -146,6 +185,7 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.unsubscribe.unsubscribe();
+        this.unsubscribe.next();
+        this.unsubscribe.complete();
     }
 }

@@ -1,6 +1,8 @@
+@import '../../theme/variables';
+
 :host {
   ion-card {
     margin-top: 0;
-    min-height: calc(100vh - 128px - 44px - 30px);
+    min-height: calc(100vh - 128px - 44px - 30px - #{$safe-area-inset-top} - #{$safe-area-inset-bottom});
   }
 }

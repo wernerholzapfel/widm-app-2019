@@ -1,5 +1,5 @@
 import {from as observableFrom, of as observableOf} from 'rxjs';
-import {catchError, map, switchMap, take} from 'rxjs/operators';
+import {catchError, concatMap, map, take} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
 import {Actions, Effect, ofType} from '@ngrx/effects';
 import {
@@ -20,11 +20,14 @@ export class PoulesEffects {
     @Effect()
     fetchPoulesInProgress$ = this.actions$.pipe(
         ofType<FetchPoulesInProgress>(FETCH_POULES_IN_PROGRESS),
-        switchMap((action) => {
+        concatMap((action) => {
             return this.poulesService
                 .getPoules().pipe(take(1),
-                        switchMap(response =>
-                        observableOf(new CalculatePoules(response))
+                    concatMap(response => {
+                            if (response) {
+                                return observableOf(new CalculatePoules(response));
+                            }
+                        }
                     ),
                     catchError(err =>
                         observableFrom([
@@ -34,7 +37,7 @@ export class PoulesEffects {
         }));
 
     @Effect()
-    calculatePoules = this.actions$.pipe(
+    calculatePoules$ = this.actions$.pipe(
         ofType<CalculatePoules>(CALCULATE_POULES),
         map(action => ({
             ...action.payload,
@@ -47,12 +50,18 @@ export class PoulesEffects {
                             voorspellingen: deelnemer.voorspellingen
                                 .map(voorspelling => ({
                                     ...voorspelling,
-                                    mol: Object.assign(voorspelling.mol,
+                                    mol: Object.assign({}, ...voorspelling.mol,
                                         {punten: this.calculatieService.determineMolPunten(voorspelling.mol, voorspelling.aflevering)}),
-                                    winnaar: Object.assign(voorspelling.winnaar,
-                                        {punten: this.calculatieService.determineWinnaarPunten(voorspelling.winnaar, voorspelling.aflevering)}),
-                                    afvaller: Object.assign(voorspelling.afvaller,
-                                        {punten: this.calculatieService.determineAfvallerPunten(voorspelling.afvaller, voorspelling.aflevering)}),
+                                    winnaar: Object.assign({}, ...voorspelling.winnaar,
+                                        {
+                                            punten:
+                                                this.calculatieService.determineWinnaarPunten(voorspelling.winnaar, voorspelling.aflevering)
+                                        }),
+                                    afvaller: Object.assign({}, ...voorspelling.afvaller,
+                                        {
+                                            punten:
+                                                this.calculatieService.determineAfvallerPunten(voorspelling.afvaller, voorspelling.aflevering)
+                                        }),
                                 })),
                             tests: deelnemer.tests
                                 .map(test => ({
@@ -90,7 +99,7 @@ export class PoulesEffects {
                         }))
                 }))
         })),
-        switchMap(response => observableOf(new FetchPoulesSuccess(response))),
+        concatMap(response => observableOf(new FetchPoulesSuccess(response))),
         catchError(err =>
             observableFrom([
                 new FetchPoulesFailure(err),

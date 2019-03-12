@@ -1,10 +1,6 @@
-import {Component, OnInit} from '@angular/core';
-import {NavController} from '@ionic/angular';
-import {navigation} from '../constants/navigation.constants';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AuthService} from '../services/authentication/auth.service';
-import {select, Store} from '@ngrx/store';
-import {getDeelnemer} from '../store/poules/poules.reducer';
-import {Observable} from 'rxjs';
+import {Store} from '@ngrx/store';
 import {IAppState} from '../store/store';
 
 @Component({
@@ -12,35 +8,14 @@ import {IAppState} from '../store/store';
     templateUrl: 'home.page.html',
     styleUrls: ['home.page.scss']
 })
-export class HomePage implements OnInit {
-    showToolbar = true;
-    deelnemer$: Observable<any>;
+export class HomePage implements OnInit, OnDestroy {
 
-    constructor(private navCtrl: NavController, public authService: AuthService, private store: Store<IAppState>) {
+    constructor(public authService: AuthService, private store: Store<IAppState>) {
     }
 
     ngOnInit() {
-        this.deelnemer$ = this.store.pipe(select(getDeelnemer));
     }
 
-    getState(outlet) {
-        return outlet.isActivated ? outlet.activatedRoute : '';
+    ngOnDestroy() {
     }
-
-    goToVoorspelling() {
-        this.navCtrl.navigateForward(`${navigation.home}/${navigation.voorspellen}`, true);
-    }
-
-    goToDashboard() {
-        this.navCtrl.navigateForward(`${navigation.home}/${navigation.dashboard}`, true);
-    }
-
-    goToPoule() {
-        this.navCtrl.navigateForward(`${navigation.home}/${navigation.poules}`, true);
-    }
-
-    goToTest() {
-        this.navCtrl.navigateForward(`${navigation.home}/${navigation.poules}`, true);
-    }
-
 }

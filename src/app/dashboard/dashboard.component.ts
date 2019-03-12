@@ -1,6 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {navigation} from '../constants/navigation.constants';
-import {NavController} from '@ionic/angular';
 import {AuthService} from '../services/authentication/auth.service';
 import {UiService} from '../services/app/ui.service';
 import {combineLatest, Subject} from 'rxjs';
@@ -9,6 +8,8 @@ import {getActies} from '../store/acties/acties.reducer';
 import {IAppState} from '../store/store';
 import {select, Store} from '@ngrx/store';
 import {FetchActiesInProgress} from '../store/acties/acties.actions';
+import {Router} from '@angular/router';
+import {IActies} from '../interface/IActies';
 
 @Component({
     selector: 'app-dashboard',
@@ -19,20 +20,12 @@ import {FetchActiesInProgress} from '../store/acties/acties.actions';
 export class DashboardComponent implements OnInit, OnDestroy {
     unsubscribe: Subject<any> = new Subject();
 
-    voorspellingBekend = false;
-    slideOpts = {
-        autoplay: false,
-        slidesPerView: 1.1,
-        spaceBetween: 10,
-        effect: 'flip'
-    };
-
     testAfgerond: boolean;
     voorspellingAfgerond: boolean;
-    acties: any;
+    acties: IActies;
     cardText: string;
 
-    constructor(private navCtrl: NavController,
+    constructor(private router: Router,
                 public authService: AuthService,
                 public uiService: UiService,
                 private store: Store<IAppState>) {
@@ -57,25 +50,27 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     cardTextFunc(): string {
-        if (this.acties) {
+        if (this.acties && !this.acties.isSeasonFinished) {
             if (this.testAfgerond && this.voorspellingAfgerond) {
-                return 'Je bent helemaal bij, je kan je voorspellingen nog wijzigen tot ' +
+                return 'Je bent helemaal bij. Je kunt je voorspellingen nog wijzigen tot ' +
                     this.formatDate(this.acties.voorspellingDeadlineDatetime);
             }
             if (this.testAfgerond && !this.voorspellingAfgerond) {
-                return 'Vergeet niet je voorspellingen op te slaan dit kan nog tot ' +
+                return 'Vergeet niet je voorspellingen te doen. Dit kan nog tot ' +
                     this.formatDate(this.acties.voorspellingDeadlineDatetime);
             }
             if (!this.testAfgerond && this.voorspellingAfgerond) {
-                return 'Vergeet niet de test te maken! dit kan nog tot ' +
+                return 'Vergeet niet de test te maken. Dit kan nog tot ' +
                     this.formatDate(this.acties.testDeadlineDatetime);
             }
             if (!this.testAfgerond && !this.voorspellingAfgerond) {
-                return 'Vergeet niet je test en voorspellingen in te vullen, dit kan nog tot ' +
+                return 'Vergeet niet de test en je voorspellingen in te vullen. Dit kan nog tot ' +
                     this.formatDate(this.acties.testDeadlineDatetime);
             } else {
                 return 'bezig met laden van gegevens';
             }
+        } else if (this.acties && this.acties.isSeasonFinished) {
+            return 'Het Wie is de Mol seizoen zit erop. Bedankt voor het meespelen!';
         }
     }
 
@@ -87,26 +82,27 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     goToTest() {
-        this.navCtrl.navigateForward(`${navigation.test}`);
+        this.router.navigate([`${navigation.test}`]);
     }
 
     goToDisclaimer() {
-        this.navCtrl.navigateForward(`${navigation.punten}`);
+        this.router.navigate([`${navigation.punten}`]);
     }
 
     goToVoorspellen() {
-        this.navCtrl.navigateForward(`${navigation.voorspellen}`);
+        this.router.navigate([`${navigation.voorspellen}`]);
     }
 
     goToPoules() {
-        this.navCtrl.navigateForward(`${navigation.poules}/${navigation.poule}`);
+        this.router.navigate([`${navigation.poules}/${navigation.overview}`]);
     }
 
     ngOnDestroy() {
-        this.unsubscribe.unsubscribe();
+        this.unsubscribe.next();
+        this.unsubscribe.complete();
     }
 
-    fetchACties() {
+    fetchActies() {
         this.store.dispatch(new FetchActiesInProgress());
     }
 

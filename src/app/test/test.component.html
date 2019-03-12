@@ -1,4 +1,5 @@
 <ion-header>
+    <app-footer></app-footer>
     <ion-toolbar color="dark">
         <ion-grid class="no-padding">
             <ion-row>
@@ -21,21 +22,21 @@
 </ion-header>
 <ion-content>
     <div *ngIf="isLoading" class="spinner">
-        <ion-spinner name="bubbles"></ion-spinner>
+        <ion-spinner name="dots"></ion-spinner>
     </div>
 
-    <ion-grid *ngIf="showgeentestscherm">
+    <ion-grid *ngIf="showgeentestscherm && !isLoading">
         <ion-row align-items-center>
             <ion-card color='secondary'>
                 <ion-card-content>
-                    De 1e test verschijnt na aflevering 1.
-                    Heb je je notificaties ingeschakeld dan krijg je een notificatie wanneer de test beschikbaar is.
+                    De eerste test verschijnt na aflevering 1.
+                    Als je notificaties hebt ingeschakeld, dan krijg je een melding wanneer de test beschikbaar is.
                 </ion-card-content>
             </ion-card>
         </ion-row>
     </ion-grid>
 
-    <ion-grid *ngIf="showeindeseizoenscherm">
+    <ion-grid *ngIf="showeindeseizoenscherm && !isLoading">
         <ion-row align-items-center>
             <ion-card color='secondary'>
                 <ion-card-content>
@@ -48,26 +49,35 @@
     <ion-grid *ngIf="showstartscherm && !isLoading">
         <ion-row align-items-center>
             <ion-card color='secondary'>
-                <ion-card-header text-wrap>
-                    Wanneer je de test start gaat de teller lopen. Je hebt 20 seconden om iedere vraag te
-                    beantwoorden.<br>
-                    Succes!
+                <ion-card-header>
+                    <ion-card-title text-wrap>
+                        Het is tijd voor de test
+                    </ion-card-title>
                     <hr style="background-color: #25B973">
                 </ion-card-header>
                 <ion-card-content>
-                    <ion-button color="primary" expand="full" (click)="nextSlide()">Start de test!</ion-button>
+                    Beantwoord 5 vragen over de identiteit en het doen en laten van de Mol.
+                    Zodra je op ‘start de test!’ klikt, gaat de timer lopen. Je hebt voor elke vraag 20 seconden om deze
+                    te beantwoorden.<br>
+                    Succes!
                 </ion-card-content>
+                <ion-button [disabled]="isLoading" color="primary" expand="full" (click)="nextSlide()">
+                    Start de test!
+                </ion-button>
             </ion-card>
         </ion-row>
     </ion-grid>
 
-    <ion-card color='secondary' class="testscherm" *ngIf="showtestscherm">
+    <ion-card color='secondary' class="testscherm" *ngIf="showtestscherm && !isLoading">
         <ion-card-header class="vragen-header" text-wrap>
-            {{question?.vraag}}
+            <h2 text-wrap>
+                {{question?.vraag}}
+            </h2>
             <hr style="background-color: #25B973">
         </ion-card-header>
         <ion-card-content>
-            <ion-button color="primary" expand="full" *ngFor="let answer of question?.antwoorden; let i = index;"
+            <ion-button text-wrap [disabled]="isLoading" color="primary" expand="full"
+                        *ngFor="let answer of question?.antwoorden; let i = index;"
                         (click)="selectAnswer(answer, question)">
                 {{i+1}}. {{answer.antwoord}}
             </ion-button>
@@ -75,17 +85,21 @@
         </ion-card-content>
     </ion-card>
 
-    <ion-grid *ngIf="showeindscherm">
+    <ion-grid *ngIf="showeindscherm && !isLoading">
         <ion-card color='secondary'>
             <ion-card-header text-wrap>
                 <ion-card-title>
-                   De test
+                    Jouw antwoorden
                 </ion-card-title>
                 <hr style="background-color: #25B973">
             </ion-card-header>
             <ion-card-content *ngIf="testAntwoorden?.length > 0">
-                <ion-item color="primary">Aflevering {{aflevering}}</ion-item>
-                <ion-item color="tertiary" *ngFor="let testAntwoord of testAntwoorden; let i = index;">
+                <div class="bottom-padding" *ngIf="showDoneText">
+                    Goed gedaan, je hebt de test afgerond. Hieronder zie je jouw antwoorden. Jouw antwoorden op de
+                    vorige tests kun je terugkijken bij 'scores'.
+                </div>
+                <ion-item lines="full" color="primary">Aflevering {{aflevering}}</ion-item>
+                <ion-item lines="full" color="tertiary" *ngFor="let testAntwoord of testAntwoorden; let i = index;">
                     <ion-label text-wrap>
                         <ion-text>
                             <div>
@@ -101,8 +115,3 @@
         </ion-card>
     </ion-grid>
 </ion-content>
-
-<ion-footer color="dark" *ngIf="showeindscherm || showstartscherm || showgeentestscherm || showeindeseizoenscherm">
-    <!--<ion-button (click)="goBack()" expand="full" color="primary">Keer terug naar het menu</ion-button>-->
-    <app-footer></app-footer>
-</ion-footer>

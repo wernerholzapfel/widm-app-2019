@@ -1,0 +1,44 @@
+<ion-content>
+    <ion-card color="secondary">
+        <ion-card-header>
+            <ion-card-title>
+                Poule overzicht
+            </ion-card-title>
+            <hr style="background-color: #25B973">
+        </ion-card-header>
+        <ng-container>
+            <ion-card-content>
+                <div *ngIf="poules.length > 0">
+                    <ion-item lines="full" color="primary">Poules</ion-item>
+                    <ng-container *ngFor="let poule of poules; let i = index">
+                        <ion-item lines="full" color="tertiary" (click)="navigateToPoule(poule, i)">
+                            <ion-avatar slot="start">
+                                <ngx-avatar size="40" bgColor="#000" borderColor="#25B973" fgColor="#25B973"
+                                            [value]="determinePositionFromUser(poule)"></ngx-avatar>
+                            </ion-avatar>
+                            <ion-label text-wrap>
+                                <ion-text>
+                                    <ion-row>
+                                        <ion-col>
+                                            <h3>{{poule?.poule_name}}</h3>
+                                            <h3 *ngIf="poule?.id !== 0">{{poule?.deelnemers?.length}} deelnemers</h3>
+                                            <h3 *ngIf="poule?.id === 0">&nbsp;</h3>
+                                        </ion-col>
+                                    </ion-row>
+                                </ion-text>
+                            </ion-label>
+                        </ion-item>
+                    </ng-container>
+                </div>
+                <div *ngIf="poules.length === 0">
+                    <ion-text>
+                        Start een poule en ga de strijd aan met je familie en vrienden.
+                    </ion-text>
+                </div>
+                <ion-button class="sublink" expand="full" color="tertiary" fill="clear" (click)="goToAddPoule()">Start
+                    nieuwe poule
+                </ion-button>
+            </ion-card-content>
+        </ng-container>
+    </ion-card>
+</ion-content>

@@ -8,7 +8,6 @@ import {StatusBar} from '@ionic-native/status-bar/ngx';
 
 import {AppComponent} from './app.component';
 import {AppRoutingModule} from './app-routing.module';
-import {NativePageTransitions} from '@ionic-native/native-page-transitions/ngx';
 import {HomePageModule} from './home/home.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AngularFireModule} from '@angular/fire';
@@ -33,6 +32,9 @@ import {PuntenModule} from './punten/punten.module';
 import {PuntenItemModule} from './punten/punten-item/punten-item.module';
 import {AvatarModule} from 'ng2-avatar';
 import {DeelnemerService} from './deelnemer.service';
+import {IntroModule} from './intro/intro.module';
+import {IonicStorageModule} from '@ionic/storage';
+import {StatistiekenModule} from './statistieken/statistieken.module';
 
 @NgModule({
     declarations: [AppComponent],
@@ -49,16 +51,18 @@ import {DeelnemerService} from './deelnemer.service';
         TestModule,
         PuntenModule,
         PuntenItemModule,
+        IntroModule,
+        StatistiekenModule,
         AvatarModule.forRoot(),
         AngularFireModule.initializeApp(environment.firebase, 'angular-auth-firebase'),
         StoreModule.forRoot(reducers),
+        IonicStorageModule.forRoot(),
         StoreDevtoolsModule.instrument(),
         // StoreRouterConnectingModule,
         EffectsModule.forRoot([ActiesEffects, PoulesEffects])],
     providers: [
         StatusBar,
         SplashScreen,
-        NativePageTransitions,
         ActiesService,
         PoulesService,
         AuthService,

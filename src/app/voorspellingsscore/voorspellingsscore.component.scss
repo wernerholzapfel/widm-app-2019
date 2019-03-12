@@ -1,0 +1,10 @@
+:host {
+  ion-avatar {
+    &.afgevallen {
+      background: darkred;
+    }
+    &.volgenderonde {
+      background: darkgreen;
+    }
+  }
+}

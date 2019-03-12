@@ -1,8 +1,9 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {UiService} from '../../services/app/ui.service';
-import {NavController} from '@ionic/angular';
 import {UitnodigingenService} from '../../services/api/uitnodigingen.service';
+import {switchMap, take} from 'rxjs/operators';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
     selector: 'app-adddeelnemer',
@@ -13,24 +14,33 @@ export class AdddeelnemerComponent implements OnInit {
 
     @ViewChild('form') form: NgForm;
 
-    constructor(private uitnodigingenService: UitnodigingenService, private uiService: UiService, private navCtrl: NavController) {
+    pouleId: string;
+    uitnodigingen: any[];
+
+    constructor(private uitnodigingenService: UitnodigingenService,
+                private uiService: UiService,
+                private route: ActivatedRoute) {
     }
 
     ngOnInit() {
-        // todo show list of invitations for poule
+        this.route.params.pipe(switchMap(params => {
+            this.pouleId = params['pouleid'];
+            return this.uitnodigingenService.getUitnodigingenByPoule(params['pouleid']).pipe(take(1));
+        })).subscribe(response => {
+            this.uitnodigingen = response.sort((a, b) => {
+                return a.isDeclined - b.isDeclined || a.isAccepted - b.isAccepted;
+            });
+        });
     }
 
 
     addDeelnemer() {
-        const currentUser = {id: this.uiService.activePoule$.getValue()};
-        console.log(currentUser);
         this.uitnodigingenService.addDeelnemer({
-            poule: {id: this.uiService.activePoule$.getValue().id},
+            poule: {id: this.pouleId},
             uniqueIdentifier: this.form.value.email
         }).subscribe(() => {
-                // this.uiService.showToast(`${this.form.value.email} uitgenodigd`);
+            this.uitnodigingen = [{uniqueIdentifier: this.form.value.email}, ...this.uitnodigingen];
                 this.form.reset();
-                // todo add to storage?
             }
         );
     }

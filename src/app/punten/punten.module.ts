@@ -7,6 +7,7 @@ import {IonicModule} from '@ionic/angular';
 import {PuntenItemModule} from './punten-item/punten-item.module';
 import {PersonalHeaderModule} from '../personal-header/personal-header.module';
 import {AvatarModule} from 'ng2-avatar';
+import {VoorspellingsscoreModule} from '../voorspellingsscore/voorspellingsscore.module';
 
 @NgModule({
     declarations: [PuntenComponent],
@@ -18,7 +19,8 @@ import {AvatarModule} from 'ng2-avatar';
         FooterModule,
         PuntenItemModule,
         IonicModule,
-        AvatarModule
+        AvatarModule,
+        VoorspellingsscoreModule,
     ],
     exports: [PuntenComponent]
 })

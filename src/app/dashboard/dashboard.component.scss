@@ -1,6 +1,5 @@
+@import "../../theme/variables";
 :host {
-
-  --ion-background-color: #E7E5DF;
 
   .large-icon {
     font-size: 36px;
@@ -14,7 +13,7 @@
     align-items: center;
     justify-content: center;
     // header - border - padding - padding / aantal rijen - header van individuele kaart - padding-bottom
-    height: calc(((100vh - 128px - 44px - 60px) / 3) - 66px);
+    height: calc(((100vh - 128px - 44px - 60px) / 3) - 66px - #{$safe-area-inset-bottom});
     padding-top: 0;
     padding-bottom: 36px; // optisch is card content onder groene lijn, maar officieel is dat onderdeel van header, dus hier er afgehaald
     margin-top: 0;

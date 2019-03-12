@@ -1,8 +1,15 @@
-<ion-footer>
+<ion-header>
     <ion-toolbar color="dark">
-        <ion-buttons slot="start" *ngIf="router.url !== '/home'">
-            <ion-back-button defaultHref="home"></ion-back-button>
+        <ion-buttons slot="start">
+            <ion-button *ngIf="router.url !== '/home'"
+                        (click)="goBack()">
+                <ion-icon name="md-arrow-back"></ion-icon>
+            </ion-button>
+            <ion-button *ngIf="router.url === '/home'" (click)="showIntro()">
+                <ion-icon name="information-circle-outline"></ion-icon>
+            </ion-button>
         </ion-buttons>
+        <ion-title text-center>{{displayName}}</ion-title>
         <ion-buttons slot="end">
             <ion-button *ngIf="!(authService.user$ | async)" (click)="goToLogin()">
                 <ion-icon name="log-in"></ion-icon>
@@ -12,4 +19,4 @@
             </ion-button>
         </ion-buttons>
     </ion-toolbar>
-</ion-footer>
+</ion-header>

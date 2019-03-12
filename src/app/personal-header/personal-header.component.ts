@@ -1,14 +1,14 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {NativePageTransitions, NativeTransitionOptions} from '@ionic-native/native-page-transitions/ngx';
 import {navigation} from '../constants/navigation.constants';
-import {NavController} from '@ionic/angular';
 import {IAppState} from '../store/store';
 import {select, Store} from '@ngrx/store';
-import {getDeelnemerScore} from '../store/poules/poules.reducer';
-import {combineLatest, Observable, Subject} from 'rxjs';
+import {getDeelnemerId} from '../store/poules/poules.reducer';
+import {combineLatest, forkJoin, of, Subject} from 'rxjs';
 import {UiService} from '../services/app/ui.service';
-import {distinctUntilChanged, takeUntil} from 'rxjs/operators';
+import {skipWhile, switchMap, take, takeUntil} from 'rxjs/operators';
 import {KandidatenService} from '../services/api/kandidaten.service';
+import {AuthService} from '../services/authentication/auth.service';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'app-personal-header',
@@ -17,37 +17,61 @@ import {KandidatenService} from '../services/api/kandidaten.service';
 })
 export class PersonalHeaderComponent implements OnInit, OnDestroy {
     unsubscribe: Subject<void> = new Subject<void>();
-    deelnemer$: Observable<any>;
     mol: any;
     molPercentage: number;
-    options: NativeTransitionOptions = {
-        direction: 'down',
-        duration: 1000,
-        slowdownfactor: -1,
-        iosdelay: 100,
-        androiddelay: 100,
-        fixedPixelsTop: 60,
-        fixedPixelsBottom: 0
-    };
+    deelnemerPunten: number;
 
-    constructor(private navCtrl: NavController,
-                private nativePageTransitions: NativePageTransitions,
+    constructor(private router: Router,
                 private store: Store<IAppState>,
                 private uiService: UiService,
+                private authService: AuthService,
                 private kandidatenService: KandidatenService
     ) {
     }
 
     goToVoorspelling() {
-        this.nativePageTransitions.slide(this.options);
-        this.navCtrl.navigateForward(`${navigation.home}/${navigation.voorspellen}`);
+        this.router.navigateByUrl(`${navigation.home}/${navigation.voorspellen}`);
+    }
+
+    goToStatistieken() {
+        this.router.navigateByUrl(`${navigation.statistieken}`);
+    }
+
+    goToScores() {
+        this.router.navigateByUrl(`${navigation.punten}`);
     }
 
     ngOnInit() {
-        this.deelnemer$ = this.store.pipe(select(getDeelnemerScore));
 
-        combineLatest(this.uiService.statistieken$.pipe(distinctUntilChanged()),
-            this.uiService.huidigeVoorspelling$.pipe(distinctUntilChanged()))
+        forkJoin(
+            this.store.pipe(select(getDeelnemerId)).pipe(skipWhile(response => response === undefined), take(1)),
+            this.uiService.poules$.pipe(skipWhile(response => response.length === 0), take(1)))
+            .pipe(takeUntil(this.unsubscribe))
+            .subscribe(([deelnemerId, poules]) => {
+                if (deelnemerId && poules) {
+                    if (poules[0] && poules[0].deelnemers && deelnemerId) {
+                        const deelnemerInList = poules[0].deelnemers.find(item => item.id === deelnemerId);
+                        this.deelnemerPunten = deelnemerInList ? deelnemerInList.totaalpunten : null;
+                    } else {
+                        return null;
+                    }
+                }
+            });
+
+        this.uiService.huidigeVoorspelling$.pipe(takeUntil(this.unsubscribe), switchMap((huidigeVoorspelling) => {
+            if (huidigeVoorspelling) {
+                return this.kandidatenService.getMolStatistieken().pipe(take(1));
+            } else {
+                return of(null);
+            }
+        })).subscribe(statistieken => {
+            if (statistieken) {
+                this.uiService.statistieken$.next(statistieken);
+            }
+        });
+
+        combineLatest(this.uiService.statistieken$,
+            this.uiService.huidigeVoorspelling$)
             .pipe(takeUntil(this.unsubscribe))
             .subscribe(([statistieken, huidigevoorspelling]) => {
                 if (huidigevoorspelling) {
@@ -56,14 +80,11 @@ export class PersonalHeaderComponent implements OnInit, OnDestroy {
                     this.mol = null;
                     this.molPercentage = null;
                 }
-                if (huidigevoorspelling && statistieken && statistieken.data.find(item => item.mol.id === huidigevoorspelling.mol.id)) {
+                if (huidigevoorspelling &&
+                    huidigevoorspelling.mol &&
+                    statistieken &&
+                    statistieken.data.find(item => item.mol.id === huidigevoorspelling.mol.id)) {
                     this.molPercentage = statistieken.data.find(item => item.mol.id === huidigevoorspelling.mol.id).percentage;
-                } else if (huidigevoorspelling && statistieken) {
-                    this.kandidatenService.getMolStatistieken()
-                        .pipe(distinctUntilChanged(), takeUntil(this.unsubscribe))
-                        .subscribe(newStats => {
-                        this.uiService.statistieken$.next(newStats);
-                    });
                 }
             });
 
@@ -73,6 +94,7 @@ export class PersonalHeaderComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.unsubscribe.unsubscribe();
+        this.unsubscribe.next();
+        this.unsubscribe.complete();
     }
 }

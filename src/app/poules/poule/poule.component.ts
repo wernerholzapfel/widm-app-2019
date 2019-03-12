@@ -2,8 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {UiService} from '../../services/app/ui.service';
 import {takeUntil} from 'rxjs/operators';
 import {combineLatest, Subject} from 'rxjs';
-import {NavController} from '@ionic/angular';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {navigation} from '../../constants/navigation.constants';
 import {getDeelnemerId} from '../../store/poules/poules.reducer';
 import {select, Store} from '@ngrx/store';
@@ -19,9 +18,10 @@ export class PouleComponent implements OnInit, OnDestroy {
     activePoule: any;
     isPouleAdmin: boolean;
     deelnemerId: string;
+    showDetails = false;
 
     constructor(private uiService: UiService,
-                private navCtrl: NavController,
+                private router: Router,
                 private route: ActivatedRoute,
                 private store: Store<IAppState>) {
     }
@@ -41,17 +41,12 @@ export class PouleComponent implements OnInit, OnDestroy {
     }
 
     goToAddDeelnemer() {
-        this.navCtrl.navigateForward(`${navigation.poules}/${navigation.adddeelnemer}`);
-
-        // this.navCtrl.navigateForward(navigation.adddeelnemer, false, {relativeTo: this.route});
+        this.router.navigateByUrl(`${navigation.poules}/${navigation.adddeelnemer}/${this.activePoule.id}`);
     }
 
     ngOnDestroy() {
-        this.unsubscribe.unsubscribe();
-    }
-
-    goToAddPoule() {
-        this.navCtrl.navigateForward(`${navigation.poules}/${navigation.addpoule}`);
+        this.unsubscribe.next();
+        this.unsubscribe.complete();
     }
 
 }

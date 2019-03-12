@@ -10,6 +10,7 @@ import {AdddeelnemerModule} from './adddeelnemer/adddeelnemer.module';
 import {AddpoulesModule} from './addpoules/addpoules.module';
 import {AcceptInviteModule} from './accept-invite/accept-invite.module';
 import {FooterModule} from '../footer/footer.module';
+import {OverviewModule} from './overview/overview.module';
 
 @NgModule({
     declarations: [PoulesComponent],
@@ -22,6 +23,7 @@ import {FooterModule} from '../footer/footer.module';
         FooterModule,
         AdddeelnemerModule,
         AddpoulesModule,
+        OverviewModule,
         AcceptInviteModule,
         PoulesRoutingModule,
     ],

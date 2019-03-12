@@ -44,6 +44,7 @@ export class TestComponent implements OnInit, OnDestroy {
     deadlineVerstreken: boolean;
     unsubscribe: Subject<void> = new Subject<void>();
     deelnemerId: string;
+    showDoneText = false;
 
     constructor(public navCtrl: NavController,
                 public testService: TestService,
@@ -57,8 +58,8 @@ export class TestComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.isLoading = true;
         this.store.pipe(
-            takeUntil(this.unsubscribe),
             select(getDeelnemerId))
+            .pipe(takeUntil(this.unsubscribe))
             .subscribe(response => {
                 this.deelnemerId = response;
             });
@@ -114,7 +115,8 @@ export class TestComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.unsubscribe.unsubscribe();
+        this.unsubscribe.next();
+        this.unsubscribe.complete();
     }
 
     nextSlide() {
@@ -132,6 +134,7 @@ export class TestComponent implements OnInit, OnDestroy {
                 this.timer = source.subscribe((x) => {
                     this.countdown--;
                 }, (err) => {
+                    this.isLoading = false;
                     console.log('Error: ' + err);
                 }, () => {
                     console.log('next slide');
@@ -140,6 +143,7 @@ export class TestComponent implements OnInit, OnDestroy {
                 });
             } else {
                 this.uiService.testAfgerond$.next(true);
+                this.showDoneText = true;
                 this.showeindschermFunc();
             }
         });
@@ -151,6 +155,9 @@ export class TestComponent implements OnInit, OnDestroy {
     }
 
     selectAnswer(answer, question) {
+        this.isLoading = true;
+        this.timer.unsubscribe();
+
         const request: any = {
             'aflevering': question.aflevering,
             'vraag': {id: question.id},
@@ -164,7 +171,6 @@ export class TestComponent implements OnInit, OnDestroy {
 
         this.postTestSub = this.testService.saveAnswer(request).subscribe(response => {
             this.postTestSub.unsubscribe();
-            this.timer.unsubscribe();
             this.countdown = 0;
             this.nextSlide();
         }, (err => {
@@ -217,16 +223,15 @@ export class TestComponent implements OnInit, OnDestroy {
     }
 
     showeindschermFunc() {
-        this.isLoading = false;
-        this.showtestscherm = false;
-        this.showstartscherm = false;
-        this.showeindscherm = true;
-        this.showgeentestscherm = false;
-        this.showeindeseizoenscherm = false;
-
         this.testService.getanswers()
             .pipe(takeUntil(this.unsubscribe))
             .subscribe(response => {
+                this.isLoading = false;
+                this.showtestscherm = false;
+                this.showstartscherm = false;
+                this.showeindscherm = true;
+                this.showgeentestscherm = false;
+                this.showeindeseizoenscherm = false;
                 this.testAntwoorden = response;
                 this.aflevering = response[0].aflevering;
                 if (environment.production) {
