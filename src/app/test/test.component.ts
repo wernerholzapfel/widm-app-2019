@@ -105,7 +105,7 @@ export class TestComponent implements OnInit, OnDestroy {
                     text: 'Terug',
                     handler: () => {
                         alert.dismiss().then(() => {
-                            this.navCtrl.goBack();
+                            this.navCtrl.back();
                         });
                     }
                 }
@@ -151,7 +151,7 @@ export class TestComponent implements OnInit, OnDestroy {
 
 
     goBack() {
-        this.navCtrl.goBack();
+        this.navCtrl.back();
     }
 
     selectAnswer(answer, question) {
