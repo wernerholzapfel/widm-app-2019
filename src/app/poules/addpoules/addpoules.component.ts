@@ -17,7 +17,7 @@ import {takeUntil} from 'rxjs/operators';
     styleUrls: ['./addpoules.component.scss']
 })
 export class AddpoulesComponent implements OnInit, OnDestroy {
-    @ViewChild('createPouleForm') createPouleForm: NgForm;
+    @ViewChild('createPouleForm', {static: false}) createPouleForm: NgForm;
     unsubscribe: Subject<void> = new Subject<void>();
     deelnemerId: string;
     isLoading: boolean;
@@ -36,9 +36,7 @@ export class AddpoulesComponent implements OnInit, OnDestroy {
 
     createPoule() {
         this.isLoading = true;
-        console.log(this.createPouleForm);
         const currentUser = {id: this.deelnemerId};
-        console.log(currentUser);
         this.poulesService.createPoule({
             poule_name: this.createPouleForm.value.name,
             deelnemers: [currentUser],

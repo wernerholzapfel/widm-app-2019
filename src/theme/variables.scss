@@ -2,39 +2,38 @@
 // http://ionicframework.com/docs/theming/
 $safe-area-inset-top: env(safe-area-inset-top);
 $safe-area-inset-bottom: env(safe-area-inset-bottom);
-$green: #25B973;
+$green: --ion-color-primary;
 $tertiary: #E7E5DF;
 
 /** Ionic CSS Variables **/
 :root {
   /* Set the background of the entire app */
-  --ion-background-color: #222428;
-  //--ion-background-color: #E7E5DF;
+  --ion-background-color: var(--ion-color-secondary);
 
   /* Set the font family of the entire app */
   --ion-font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Roboto", sans-serif;
 
 /* Set text color of the entire app */
-  --ion-color-primary: #25B973;
-  --ion-color-primary-rgb: 37, 185, 115;
+  --ion-color-primary: #FCAB10;
+  --ion-color-primary-rgb: 252, 171, 16;
   --ion-color-primary-contrast: #000000;
   --ion-color-primary-contrast-rgb: 0, 0, 0;
-  --ion-color-primary-shade: #21a365;
-  --ion-color-primary-tint: #3bc081;
+  --ion-color-primary-shade: #de960e;
+  --ion-color-primary-tint: #fcb328;
 
-  --ion-color-secondary: #393E41;
-  --ion-color-secondary-rgb: 57, 62, 65;
+  --ion-color-secondary: #1F2421;
+  --ion-color-secondary-rgb: 31, 36, 33;
   --ion-color-secondary-contrast: #ffffff;
   --ion-color-secondary-contrast-rgb: 255, 255, 255;
-  --ion-color-secondary-shade: #323739;
-  --ion-color-secondary-tint: #4d5154;
+  --ion-color-secondary-shade: #1b201d;
+  --ion-color-secondary-tint: #353a37;
 
-  --ion-color-tertiary: #E7E5DF;
-  --ion-color-tertiary-rgb: 231, 229, 223;
+  --ion-color-tertiary: #DCE1DE;
+  --ion-color-tertiary-rgb: 220, 225, 222;
   --ion-color-tertiary-contrast: #000000;
   --ion-color-tertiary-contrast-rgb: 0, 0, 0;
-  --ion-color-tertiary-shade: #cbcac4;
-  --ion-color-tertiary-tint: #e9e8e2;
+  --ion-color-tertiary-shade: #c2c6c3;
+  --ion-color-tertiary-tint: #e0e4e1;
 
   --ion-color-success: #0cab4a;
   --ion-color-success-rgb: 12, 171, 74;
@@ -87,8 +86,8 @@ $tertiary: #E7E5DF;
 
 ion-segment-button {
   --indicator-color: rgba(255,255,255,0.1);
-  --indicator-color-checked: #25B973;
-  --color-checked: #E7E5DF;
-  --color: #E7E5DF;
-  --ion-text-color-rgb: #E7E5DF;
+  --indicator-color-checked: var(--ion-color-primary);
+  --color-checked: var(--ion-color-light);
+  --color: var(--ion-color-light);
+  --ion-text-color-rgb: var(--ion-color-light);
 }

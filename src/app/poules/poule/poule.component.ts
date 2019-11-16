@@ -28,7 +28,7 @@ export class PouleComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
 
-        combineLatest(this.uiService.activePoule$, this.store.pipe(select(getDeelnemerId)))
+        combineLatest([this.uiService.activePoule$, this.store.pipe(select(getDeelnemerId))])
             .pipe(takeUntil(this.unsubscribe))
             .subscribe(
                 ([activePoule, deelnemerId]) => {

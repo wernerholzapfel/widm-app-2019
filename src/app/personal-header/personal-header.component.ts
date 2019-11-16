@@ -38,7 +38,7 @@ export class PersonalHeaderComponent implements OnInit, OnDestroy {
     }
 
     goToScores() {
-        this.router.navigateByUrl(`${navigation.punten}`);
+        this.router.navigate(['punten']);
     }
 
     ngOnInit() {

@@ -1,11 +1,11 @@
-<ion-grid class="no-padding">
+<ion-grid class="ion-no-padding">
     <ion-row>
-        <ion-col align-self-center (click)="goToScores()">
+        <ion-col class="ion-align-self-center" (click)="goToScores()">
             <ng-container *ngIf="deelnemerPunten > -1">
-                <h1 text-center>
+                <h1 class="ion-text-center">
                     {{deelnemerPunten}}
                 </h1>
-                <h3 class="subtitle" text-center>
+                <h3 class="subtitle ion-text-center">
                     punten
                 </h3>
             </ng-container>
@@ -18,12 +18,12 @@
             <img class="icon_avatar" *ngIf="!mol"
                  src="/assets/logo.png">
         </ion-col>
-        <ion-col align-self-center (click)="goToStatistieken()">
+        <ion-col class="ion-align-self-center" (click)="goToStatistieken()">
             <ng-container *ngIf="molPercentage">
-                <h1 text-center>
+                <h1 class="ion-text-center">
                     {{molPercentage}}%
                 </h1>
-                <h3 class="subtitle" text-center>
+                <h3 class="subtitle ion-text-center">
                     verdacht
                 </h3>
             </ng-container>

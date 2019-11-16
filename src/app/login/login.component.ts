@@ -16,8 +16,8 @@ import {environment} from '../../environments/environment';
     styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-    @ViewChild('loginForm') loginForm: NgForm;
-    @ViewChild('signupForm') signupForm: NgForm;
+    @ViewChild('loginForm', {static: false}) loginForm: NgForm;
+    @ViewChild('signupForm', {static: false}) signupForm: NgForm;
     user = {
         email: '',
         password: '',

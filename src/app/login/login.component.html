@@ -1,4 +1,4 @@
-    <ion-card color="dark" *ngIf="!wachtwoordvergeten">
+<ion-card color="secondary" *ngIf="!wachtwoordvergeten">
         <ion-card-header>
             <ion-segment color="tertiary" (ionChange)="segmentChanged($event)">
                 <ion-segment-button value="inschrijven" [checked]="activeSegment === 'inschrijven'">
@@ -13,7 +13,7 @@
             <div *ngIf="!(authService.user$ | async) && activeSegment === 'inloggen'">
                 <form (ngSubmit)="signInWithEmail()" #loginForm="ngForm">
                     <ion-item lines="full" color="primary">
-                        <ion-text text-wrap>Inloggen</ion-text>
+                        <ion-text class="ion-text-wrap">Inloggen</ion-text>
                     </ion-item>
                     <ion-item lines="full">
                         <ion-input required type="email" placeholder="Emailadres" name="email" ngModel></ion-input>
@@ -33,7 +33,7 @@
             <div *ngIf="activeSegment === 'inschrijven'">
                 <form (ngSubmit)="signUpRegular()" #signupForm="ngForm">
                     <ion-item lines="full" color="primary">
-                       <ion-text text-wrap>Inschrijven</ion-text>
+                        <ion-text class="ion-text-wrap">Inschrijven</ion-text>
                     </ion-item>
                     <ion-item lines="full">
                         <ion-input required type="email" placeholder="Emailadres" name="email" ngModel></ion-input>
@@ -55,7 +55,7 @@
         </ion-card-content>
     </ion-card>
 
-    <ion-card color="dark" *ngIf="wachtwoordvergeten" label="wachtwoord vergeten">
+<ion-card color="secondary" *ngIf="wachtwoordvergeten" label="wachtwoord vergeten">
         <ion-card-header>
             <ion-label>
                 <h2>

@@ -4,14 +4,14 @@
             <ion-card-title>
                 Uitnodigingen
             </ion-card-title>
-            <hr style="background-color: #25B973">
+            <hr class="primary_line">
         </ion-card-header>
         <ion-card-content>
             <ion-item lines="full" color="primary">
-                <ion-text text-wrap>Uitnodigingen</ion-text>
+                <ion-text class="ion-text-wrap">Uitnodigingen</ion-text>
             </ion-item>
             <ion-item lines="full" color="tertiary" *ngFor="let uitnodiging of uitnodigingen">
-                <ion-label text-wrap>
+                <ion-label class="ion-text-wrap">
                     <ion-text>
                         <h3>Je bent uitgenodigd door {{uitnodiging.poule.admins[0].display_name}} voor de
                             {{uitnodiging.poule.poule_name}} poule</h3>

@@ -1,16 +1,16 @@
 <div *ngIf="(uiService.isLoading$ | async)" class="spinner">
-    <ion-spinner color="dark" name="crescent"></ion-spinner>
+    <ion-spinner color="secondary" name="crescent"></ion-spinner>
 </div>
 <ion-content class="dashboard-container grid-full"
              *ngIf="(authService.user$ | async) && !(uiService.isLoading$ | async)">
     <ion-row>
         <ion-col class="cell-1 full">
-            <ion-card color="dark" (click)="fetchActies()">
+            <ion-card color="secondary" (click)="fetchActies()">
                 <ion-card-header>
                     <ion-card-subtitle>
-                        De Molloot 2019
+                        De Molloot 2020
                     </ion-card-subtitle>
-                    <hr style="background-color: #25B973">
+                    <hr class="primary_line">
                 </ion-card-header>
                 <ion-card-content>
                     {{cardText}}
@@ -18,12 +18,12 @@
             </ion-card>
         </ion-col>
         <ion-col class="cell-2">
-            <ion-card color="dark" href="#" (click)="goToTest()" tappable>
+            <ion-card color="secondary" (click)="goToTest()" tappable>
                 <ion-card-header>
                     <ion-card-subtitle>
                         Test
                     </ion-card-subtitle>
-                    <hr style="background-color: #25B973">
+                    <hr class="primary_line">
                 </ion-card-header>
                 <ion-card-content>
                     <ion-icon [color]="(uiService.testAfgerond$ | async) ? 'tertiary' : 'primary'" name="clock"
@@ -32,12 +32,12 @@
             </ion-card>
         </ion-col>
         <ion-col class="cell-3">
-            <ion-card color="dark" href="#" (click)="goToPoules()" tappable>
+            <ion-card color="secondary" (click)="goToPoules()" tappable>
                 <ion-card-header>
                     <ion-card-subtitle>
                         Poules
                     </ion-card-subtitle>
-                    <hr style="background-color: #25B973">
+                    <hr class="primary_line">
                 </ion-card-header>
                 <ion-card-content>
                     <ion-icon name="trophy" style="font-size: 48px;" (click)="goToPoules()"></ion-icon>
@@ -45,12 +45,12 @@
             </ion-card>
         </ion-col>
         <ion-col class="cell-4">
-            <ion-card color="dark" href="#" (click)="goToVoorspellen()" tappable>
+            <ion-card color="secondary" (click)="goToVoorspellen()" tappable>
                 <ion-card-header>
                     <ion-card-subtitle>
                         Voorspellen
                     </ion-card-subtitle>
-                    <hr style="background-color: #25B973">
+                    <hr class="primary_line">
                 </ion-card-header>
                 <ion-card-content>
                     <ion-icon [color]="(uiService.voorspellingAfgerond$ | async) ? 'tertiary' : 'primary'"
@@ -59,12 +59,12 @@
             </ion-card>
         </ion-col>
         <ion-col class="cell-5">
-            <ion-card color="dark" href="#" (click)="goToDisclaimer()" tappable>
+            <ion-card color="secondary" (click)="goToDisclaimer()" tappable>
                 <ion-card-header>
                     <ion-card-subtitle>
                         Scores
                     </ion-card-subtitle>
-                    <hr style="background-color: #25B973">
+                    <hr class="primary_line">
                 </ion-card-header>
                 <ion-card-content>
                     <ion-icon name="podium" style="font-size: 48px;"></ion-icon>
@@ -76,15 +76,15 @@
 <ion-content *ngIf="!(authService.user$ | async) && !(uiService.isLoading$ | async)">
     <ion-row>
         <ion-col class="cell-1 full">
-            <ion-card color="dark">
+            <ion-card color="secondary">
                 <ion-card-header>
                     <ion-card-subtitle>
-                        De Molloot 2019
+                        De Molloot 2020
                     </ion-card-subtitle>
-                    <hr style="background-color: #25B973">
+                    <hr class="primary_line">
                 </ion-card-header>
                 <ion-card-content>
-                    Voor de Molloot 2019 heb je een nieuw account nodig. Heb je al een account voor de Molloot 2019? Log
+                    Voor de Molloot 2020 heb je een nieuw account nodig. Heb je al een account voor de Molloot 2020? Log
                     dan meteen in.
                 </ion-card-content>
             </ion-card>

@@ -4,7 +4,7 @@
             <ion-card-title>
                 Poule overzicht
             </ion-card-title>
-            <hr style="background-color: #25B973">
+            <hr class="primary_line">
         </ion-card-header>
         <ng-container>
             <ion-card-content>
@@ -13,10 +13,10 @@
                     <ng-container *ngFor="let poule of poules; let i = index">
                         <ion-item lines="full" color="tertiary" (click)="navigateToPoule(poule, i)">
                             <ion-avatar slot="start">
-                                <ngx-avatar size="40" bgColor="#000" borderColor="#25B973" fgColor="#25B973"
+                                <ngx-avatar size="40" bgColor="#FCAB10" borderColor="#FCAB10" fgColor="#1F2421"
                                             [value]="determinePositionFromUser(poule)"></ngx-avatar>
                             </ion-avatar>
-                            <ion-label text-wrap>
+                            <ion-label class="ion-text-wrap">
                                 <ion-text>
                                     <ion-row>
                                         <ion-col>

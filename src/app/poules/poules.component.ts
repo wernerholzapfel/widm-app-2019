@@ -42,7 +42,7 @@ export class PoulesComponent implements OnInit, OnDestroy {
                 this.klassement = response.find(poule => {
                     return poule.id === 0;
                 });
-                this.numberOfPoules = response.length;
+                this.numberOfPoules = response.length - 1;
                 this.poules = response;
             }
         });
@@ -58,7 +58,8 @@ export class PoulesComponent implements OnInit, OnDestroy {
             this.uitnodigingen = response;
         });
 
-        this.store.pipe(select(getDeelnemer)).pipe(takeUntil(this.unsubscribe))
+        this.store.pipe(select(getDeelnemer))
+            .pipe(takeUntil(this.unsubscribe))
             .subscribe(deelnemer => {
                 if (deelnemer && deelnemer.id) {
                     this.deelnemerId = deelnemer.id;
@@ -85,7 +86,7 @@ export class PoulesComponent implements OnInit, OnDestroy {
                             }]);
                     }
 
-                    this.uiService.activePouleIndex$.next(0);
+                    this.uiService.activePouleIndex$.next(this.numberOfPoules);
                 }
             });
     }
@@ -111,7 +112,7 @@ export class PoulesComponent implements OnInit, OnDestroy {
             }
         });
         const it = nieuweLijst.values();
-        const nieuweDeelnemersLijst = Array.from(it);
+        const nieuweDeelnemersLijst: any[] = Array.from(it);
         return nieuweDeelnemersLijst
             .sort((a, b) => b.totaalpunten - a.totaalpunten)
             .reduce((accumulator, currentValue, index) => {

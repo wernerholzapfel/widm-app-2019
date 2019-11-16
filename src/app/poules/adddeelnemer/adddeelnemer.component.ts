@@ -12,7 +12,7 @@ import {ActivatedRoute} from '@angular/router';
 })
 export class AdddeelnemerComponent implements OnInit {
 
-    @ViewChild('form') form: NgForm;
+    @ViewChild('form', {static: false}) form: NgForm;
 
     pouleId: string;
     uitnodigingen: any[];

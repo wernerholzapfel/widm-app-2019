@@ -20,26 +20,20 @@ import {environment} from '../../environments/environment';
 
 export class TestComponent implements OnInit, OnDestroy {
 
-    @ViewChild('slides') slides: any;
+    @ViewChild('slides', {static: false}) slides: any;
     countdown = 20;
     timer: any;
-    score = 0;
     aflevering: number;
     question: any;
     testSub: Subscription;
     postTestSub: Subscription;
-    answer: any;
-    laatsteAfleveringSub: Subscription;
-    currentAfleveringSub: Subscription;
     testAntwoorden: any[];
-    laatsteaflevering = 0;
     showstartscherm = false;
     showeindeseizoenscherm = false;
     showtestscherm = false;
     showeindscherm = false;
     showgeentestscherm = false;
     isLoading: boolean;
-    actieSub: Subscription;
     acties: IActies;
     deadlineVerstreken: boolean;
     unsubscribe: Subject<void> = new Subject<void>();
@@ -64,8 +58,8 @@ export class TestComponent implements OnInit, OnDestroy {
                 this.deelnemerId = response;
             });
 
-        combineLatest(this.store.pipe(select(getActies)),
-            this.testService.gettest())
+        combineLatest([this.store.pipe(select(getActies)),
+            this.testService.gettest()])
             .pipe(takeUntil(this.unsubscribe))
             .subscribe(([response, testvragen]) => {
                 if (response && testvragen) {

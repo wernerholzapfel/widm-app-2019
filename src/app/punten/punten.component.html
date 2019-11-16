@@ -1,6 +1,6 @@
 <ion-header>
     <app-footer></app-footer>
-    <ion-toolbar color="dark">
+    <ion-toolbar color="secondary">
         <app-personal-header></app-personal-header>
     </ion-toolbar>
 </ion-header>
@@ -15,7 +15,7 @@
                     Tests
                 </ion-segment-button>
             </ion-segment>
-            <hr style="background-color: #25B973">
+            <hr class="primary_line">
         </ion-card-header>
         <ion-card-content>
             <div *ngIf="activeSegment === 'voorspellingen'">
@@ -24,7 +24,7 @@
                         Voorspellingen
                     </ion-item>
                     <ion-item lines="full" color="tertiary">
-                        <ion-label text-wrap>
+                        <ion-label class="ion-text-wrap">
                             <ion-text>Er zijn nog geen punten bekend voor je voorspellingen</ion-text>
                         </ion-label>
                     </ion-item>
@@ -37,7 +37,7 @@
                         Testuitslagen
                     </ion-item>
                     <ion-item lines="full" color="tertiary">
-                        <ion-label text-wrap>
+                        <ion-label class="ion-text-wrap">
                             <ion-text>Er zijn nog geen punten bekend voor je test</ion-text>
                         </ion-label>
                     </ion-item>
@@ -49,7 +49,7 @@
                         </ion-item>
                         <ion-item lines="full" lines="full" color="tertiary" *ngFor="let test of aflevering"
                                   [ngClass]="{'afgevallen': kandidaat?.afgevallen}">
-                            <ion-label text-wrap>
+                            <ion-label class="ion-text-wrap">
                                 <ion-text>
                                     <h3>{{test?.vraag?.vraag}}</h3>
                                     <ion-text>

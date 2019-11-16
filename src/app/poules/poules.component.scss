@@ -2,10 +2,10 @@
 
 :host {
   ::ng-deep {
-    ion-card {
-      margin-top: 0;
-      min-height: calc(100vh - 128px - 44px - 30px - #{$safe-area-inset-top} - #{$safe-area-inset-bottom});
-    }
+    //ion-card {
+    //  margin-top: 0;
+    //  min-height: calc(100vh - 128px - 44px - 30px - #{$safe-area-inset-top} - #{$safe-area-inset-bottom});
+    //}
   }
   ion-icon.large-icon {
     font-size: 36px;

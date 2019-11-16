@@ -12,7 +12,7 @@ import {HomePageModule} from './home/home.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AngularFireModule} from '@angular/fire';
 import {environment} from '../environments/environment';
-import {HTTP_INTERCEPTORS} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {TokenInterceptor} from './services/authentication/token.interceptor';
 import {ActiesEffects} from './store/acties/acties.effects';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
@@ -45,6 +45,7 @@ import {StatistiekenModule} from './statistieken/statistieken.module';
         AppRoutingModule,
         BrowserAnimationsModule,
         HomePageModule,
+        HttpClientModule,
         PoulesPageModule,
         DisclaimerModule,
         FooterModule,
