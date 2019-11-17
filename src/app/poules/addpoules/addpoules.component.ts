@@ -7,7 +7,7 @@ import {Subject} from 'rxjs';
 import {select, Store} from '@ngrx/store';
 import {IAppState} from '../../store/store';
 import {getDeelnemerId} from '../../store/poules/poules.reducer';
-import {FetchPoulesInProgress} from '../../store/poules/poules.actions';
+import {AddPouleSuccess} from '../../store/poules/poules.actions';
 import {Router} from '@angular/router';
 import {takeUntil} from 'rxjs/operators';
 
@@ -45,7 +45,7 @@ export class AddpoulesComponent implements OnInit, OnDestroy {
                 // todo add to redux store
                 this.uiService.presentToast(`Poule ${this.createPouleForm.value.name} aangemaakt`);
                 this.isLoading = false;
-                this.store.dispatch(new FetchPoulesInProgress());
+            this.store.dispatch(new AddPouleSuccess(response));
                 this.router.navigate([`${navigation.poules}/${navigation.poule}`]);
             }, error1 => {
                 this.isLoading = false;

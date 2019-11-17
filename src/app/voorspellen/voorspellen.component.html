@@ -1,7 +1,7 @@
 <ng-container *ngIf="huidigeVoorspelling.aflevering">
     <ion-header>
         <app-footer></app-footer>
-        <ion-toolbar color="secondary">
+        <ion-toolbar color="dark">
             <ion-grid class="ion-no-padding">
                 <ion-row>
                     <ion-col class="ion-align-self-center">
@@ -99,7 +99,7 @@
                     </div>
                 </div>
                 <ion-button [disabled]="isBusy || deadlineVerstreken" color="primary" expand="full"
-                            (click)="submitVoorspellingen(true)">
+                            (click)="submitVoorspellingen(true, null)">
                     Opslaan
                 </ion-button>
             </ion-card-content>

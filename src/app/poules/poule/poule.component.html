@@ -16,7 +16,9 @@
                                   [color]="deelnemer.id !== deelnemerId && deelnemer.deelnemerId !== deelnemerId ? 'tertiary' : 'primary'"
                                   (click)="deelnemer.showDetails = !deelnemer.showDetails">
                             <ion-avatar slot="start">
-                                <ngx-avatar size="40" bgColor="#FCAB10" borderColor="#FCAB10" fgColor="#1F2421"
+                                <ngx-avatar size="40" bgColor="#25B973"
+                                            [borderColor]="deelnemer.id !== deelnemerId && deelnemer.deelnemerId !== deelnemerId ? '#25B973' : '#222428'"
+                                            fgColor="#1F2421"
                                             [value]="deelnemer.positie"></ngx-avatar>
                             </ion-avatar>
                             <ion-label class="ion-text-wrap">

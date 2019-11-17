@@ -1,6 +1,6 @@
 <ion-header>
     <app-footer></app-footer>
-    <ion-toolbar color="secondary">
+    <ion-toolbar color="dark">
         <app-personal-header></app-personal-header>
     </ion-toolbar>
 </ion-header>
@@ -47,8 +47,7 @@
                         <ion-item color="primary">
                             Test aflevering {{aflevering[0]?.aflevering}}
                         </ion-item>
-                        <ion-item lines="full" lines="full" color="tertiary" *ngFor="let test of aflevering"
-                                  [ngClass]="{'afgevallen': kandidaat?.afgevallen}">
+                        <ion-item lines="full" lines="full" color="tertiary" *ngFor="let test of aflevering">
                             <ion-label class="ion-text-wrap">
                                 <ion-text>
                                     <h3>{{test?.vraag?.vraag}}</h3>

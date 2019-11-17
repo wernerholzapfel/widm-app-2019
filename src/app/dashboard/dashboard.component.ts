@@ -24,6 +24,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     voorspellingAfgerond: boolean;
     acties: IActies;
     cardText: string;
+    uitnodigingen: any[];
 
     constructor(private router: Router,
                 public authService: AuthService,
@@ -37,7 +38,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         const voorspellingAfgerond$ = this.uiService.voorspellingAfgerond$;
         const acties$ = this.store.pipe(select(getActies));
 
-        combineLatest(testAfgerond$, voorspellingAfgerond$, acties$).pipe(takeUntil(this.unsubscribe))
+        combineLatest([testAfgerond$, voorspellingAfgerond$, acties$]).pipe(takeUntil(this.unsubscribe))
             .subscribe(([testAfgerond, voorspellingAfgerond, acties]) => {
                 if (testAfgerond !== undefined && voorspellingAfgerond !== undefined && acties) {
                     this.testAfgerond = testAfgerond;

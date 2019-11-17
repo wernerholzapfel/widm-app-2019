@@ -107,7 +107,7 @@ export class AppComponent implements OnInit, OnDestroy {
                             this.testService.getaantalOnbeantwoordeVragen().pipe(take(1)),
                             this.testService.gettests().pipe(take(1)),
                             this.voorspellenService.getAllVoorspellingen().pipe(take(1)),
-                            this.pouleService.getKlassement().pipe(take(1)),
+                            // this.pouleService.getKlassement().pipe(take(1)),
                             this.uitnodigingenService.getUitnodigingen().pipe(take(1)));
                     } else {
                         this.store.dispatch(new ResetPoules());
@@ -122,8 +122,8 @@ export class AppComponent implements OnInit, OnDestroy {
                     }
                 }),
                 takeUntil(this.unsubscribe))
-            .subscribe(([laatsteVoorspelling, onbeantwoordenvragen, testvragen, voorspellingen, stand, uitnodigingen]) => {
-                if (onbeantwoordenvragen && testvragen && stand) { // todo andere kunnen null zijn indien 1e x.
+            .subscribe(([laatsteVoorspelling, onbeantwoordenvragen, testvragen, voorspellingen, uitnodigingen]) => {
+                if (onbeantwoordenvragen && testvragen) { // todo andere kunnen null zijn indien 1e x.
                     this.store.dispatch(new FetchPoulesInProgress());
 
                     this.uiService.voorspellingen$.next(Object.assign([], voorspellingen));
@@ -141,11 +141,6 @@ export class AppComponent implements OnInit, OnDestroy {
                     this.uiService.testAfgerond$.next(onbeantwoordenvragen.aantalOpenVragen === 0 || acties.isSeasonFinished);
 
                     this.uiService.isLoading$.next(false);
-                    if (stand.data.length > 0) {
-                        this.uiService.poules$.next([{id: 0, poule_name: 'Top 25', deelnemers: stand.data, admins: []},
-                            ...this.uiService.poules$.getValue()]);
-                        this.uiService.activePouleIndex$.next(0);
-                    }
                 }
                 if (uitnodigingen) {
                     this.uiService.uitnodigingen$.next(Object.assign([...uitnodigingen]));

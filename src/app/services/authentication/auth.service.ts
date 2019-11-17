@@ -6,7 +6,7 @@ import {AngularFireAuth} from '@angular/fire/auth';
 import {UiService} from '../app/ui.service';
 import {IAppState} from '../../store/store';
 import {Store} from '@ngrx/store';
-import {ResetPoules} from '../../store/poules/poules.actions';
+import {ResetPoules, SetPouleActive} from '../../store/poules/poules.actions';
 
 @Injectable()
 export class AuthService {
@@ -42,9 +42,9 @@ export class AuthService {
             .then(response => {
                 this.store.dispatch(new ResetPoules());
                 this.uiService.huidigeVoorspelling$.next(null);
-                this.uiService.activePouleIndex$.next(null);
-                this.uiService.poules$.next(null);
-                this.uiService.activePoule$.next(null);
+                // this.uiService.activePouleIndex$.next(null); // todo poules
+                // this.uiService.poules$.next(null); // todo empty store
+                this.store.dispatch(new SetPouleActive(null));
             });
     }
 

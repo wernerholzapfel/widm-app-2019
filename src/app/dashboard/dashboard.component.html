@@ -40,7 +40,8 @@
                     <hr class="primary_line">
                 </ion-card-header>
                 <ion-card-content>
-                    <ion-icon name="trophy" style="font-size: 48px;" (click)="goToPoules()"></ion-icon>
+                    <ion-icon [color]="(uiService.uitnodigingen$ | async)?.length > 0 ? 'primary' : 'tertiary'"
+                              name="trophy" style="font-size: 48px;" (click)="goToPoules()"></ion-icon>
                 </ion-card-content>
             </ion-card>
         </ion-col>

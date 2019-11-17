@@ -1,6 +1,6 @@
 <ion-header>
     <app-footer></app-footer>
-    <ion-toolbar color="secondary">
+    <ion-toolbar color="dark">
         <ion-grid class="ion-no-padding">
             <ion-row>
                 <ion-col [size]="2" class="ion-align-self-center">
@@ -13,7 +13,7 @@
                 </ion-col>
                 <ion-col class="ion-align-self-center">
                     <ion-row class="ion-justify-content-center">
-                        <div class="eigen-avatar">#{{positie ? positie : 0}}</div>
+                        <div class="eigen-avatar" (click)="goToOverview()">#{{positie ? positie : 0}}</div>
                     </ion-row>
                 </ion-col>
                 <ion-col [size]="2" class="ion-align-self-center">
@@ -27,7 +27,7 @@
             </ion-row>
         </ion-grid>
     </ion-toolbar>
-    <ion-toolbar *ngIf="uitnodigingen.length > 0 && router.url === '/poules/overview'">
+    <ion-toolbar *ngIf="uitnodigingen.length > 0 && router.url === '/poules/overview'" color="dark">
         <ion-button expand="full" color="primary" (click)="goToAcceptInvite()">Je hebt {{uitnodigingen.length}}
             uitnodiging<span *ngIf="uitnodigingen.length > 1">en</span></ion-button>
     </ion-toolbar>

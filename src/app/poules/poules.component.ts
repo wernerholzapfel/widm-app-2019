@@ -1,9 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {IAppState} from '../store/store';
-import {getDeelnemer} from '../store/poules/poules.reducer';
-import {Subject} from 'rxjs';
-import {IPoule} from '../interface/IPoules';
+import {getActivePoule, getAllPoules, getDeelnemerId, getPositionInActivePoule} from '../store/poules/poules.reducer';
+import {combineLatest, Subject} from 'rxjs';
 import {Router} from '@angular/router';
 import {takeUntil} from 'rxjs/operators';
 import {UiService} from '../services/app/ui.service';
@@ -11,6 +10,8 @@ import {navigation} from '../constants/navigation.constants';
 import {IUitnodigingResponse} from '../services/api/uitnodigingen.service';
 import {PoulesService} from '../services/api/poules.service';
 import {CalculatieService} from '../calculatie.service';
+import {SetPouleActive} from '../store/poules/poules.actions';
+import {PouleHelperService} from '../poule-helper.service';
 
 @Component({
     selector: 'app-poules',
@@ -27,30 +28,27 @@ export class PoulesComponent implements OnInit, OnDestroy {
     numberOfPoules = 0;
     poule_name: string;
     uitnodigingen: IUitnodigingResponse[];
-    klassement: IPoule;
 
     constructor(private store: Store<IAppState>,
                 public router: Router,
                 private uiService: UiService,
                 private pouleService: PoulesService,
-                private calculatieService: CalculatieService) {
+                private calculatieService: CalculatieService,
+                private pouleHelper: PouleHelperService) {
     }
 
     ngOnInit() {
-        this.uiService.poules$.pipe(takeUntil(this.unsubscribe)).subscribe(response => {
-            if (response) {
-                this.klassement = response.find(poule => {
-                    return poule.id === 0;
-                });
-                this.numberOfPoules = response.length - 1;
-                this.poules = response;
-            }
-        });
 
-        this.uiService.activePouleIndex$.pipe(takeUntil(this.unsubscribe)).subscribe(response => {
-            if (response !== null) {
-                this.activePouleIndex = response;
-                this.activatePoule(response);
+        combineLatest([
+            this.store.pipe(select(getDeelnemerId)),
+            this.store.pipe(select(getAllPoules)),
+            this.store.pipe(select(getActivePoule))])
+            .pipe(takeUntil(this.unsubscribe)).subscribe(([deelnemerId, poules, activePoule]) => {
+            if (deelnemerId && poules && activePoule) {
+                this.deelnemerId = deelnemerId;
+                this.poules = poules;
+                this.numberOfPoules = this.poules.length;
+                this.activePouleIndex = this.poules.findIndex(p => p.id === activePoule.id);
             }
         });
 
@@ -58,45 +56,19 @@ export class PoulesComponent implements OnInit, OnDestroy {
             this.uitnodigingen = response;
         });
 
-        this.store.pipe(select(getDeelnemer))
-            .pipe(takeUntil(this.unsubscribe))
-            .subscribe(deelnemer => {
-                if (deelnemer && deelnemer.id) {
-                    this.deelnemerId = deelnemer.id;
-                    if (deelnemer.poules.length > 0) {
-                        const eigenKlassement = deelnemer.poules.reduce((accumulator, currentValue) => {
-                            return [...currentValue.deelnemers, ...accumulator];
-                        }, []);
-                        this.uiService.poules$.next([
-                            {
-                                ...this.klassement,
-                                deelnemers: this.determineDeelnemers(this.klassement.deelnemers)
-                            },
-                            {
-                                poule_name: 'Persoonlijke stand',
-                                deelnemers: this.transformDeelnemers(eigenKlassement),
-                                admins: []
-                            },
-                            ...deelnemer.poules]);
-                    } else {
-                        this.uiService.poules$.next([
-                            {
-                                ...this.klassement,
-                                deelnemers: this.determineDeelnemers(this.klassement.deelnemers)
-                            }]);
-                    }
+        this.store.pipe(select(getPositionInActivePoule))
+            .pipe(takeUntil(this.unsubscribe)).subscribe((positie) => {
+            this.positie = positie;
+        });
 
-                    this.uiService.activePouleIndex$.next(this.numberOfPoules);
-                }
-            });
     }
 
-    determineDeelnemers(deelnemers: any[]) {
+    determineDeelnemers(deelnemers: any[], deelnemerId: string) {
         const top25 = deelnemers.slice(0, 25);
-        if (top25.find(item => item.id === this.deelnemerId)) {
+        if (top25.find(item => item.id === deelnemerId)) {
             return top25;
         } else {
-            return [...top25, deelnemers.find(item => item.id === this.deelnemerId)];
+            return [...top25, deelnemers.find(item => item.id === deelnemerId)];
         }
     }
 
@@ -124,18 +96,17 @@ export class PoulesComponent implements OnInit, OnDestroy {
 
     activatePoule(newPouleIndex) {
         this.activePouleIndex = newPouleIndex;
-        this.uiService.activePoule$.next(this.poules[this.activePouleIndex]);
-        if (this.deelnemerId) {
-            this.positie = this.poules[this.activePouleIndex].deelnemers.find(d => d.id === this.deelnemerId).positie;
-        } else {
-            this.positie = 0;
-        }
-
+        this.store.dispatch(new SetPouleActive(this.poules[this.activePouleIndex]));
         this.poule_name = this.poules[this.activePouleIndex].poule_name;
     }
 
     goToAcceptInvite() {
         this.router.navigateByUrl(`${navigation.poules}/${navigation.acceptinvite}`);
+    }
+
+    goToOverview() {
+        this.router.navigateByUrl(`${navigation.poules}/${navigation.overview}`);
+
     }
 
     ngOnDestroy() {
