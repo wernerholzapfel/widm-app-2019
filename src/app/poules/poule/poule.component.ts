@@ -41,12 +41,13 @@ export class PouleComponent implements OnInit, OnDestroy {
     }
 
     goToAddDeelnemer() {
-        this.router.navigateByUrl(`${navigation.poules}/${navigation.adddeelnemer}/${this.activePoule.id}`);
+        this.router.navigateByUrl(`${navigation.poules}/${navigation.adddeelnemer}`);
     }
 
     goToAddPoule() {
         this.router.navigateByUrl(`${navigation.poules}/${navigation.addpoule}`);
     }
+
     ngOnDestroy() {
         this.unsubscribe.next();
         this.unsubscribe.complete();

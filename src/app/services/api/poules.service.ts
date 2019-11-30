@@ -8,6 +8,7 @@ import {HttpClient} from '@angular/common/http';
 
 
 export interface ICreatePoule {
+    id?: string;
     poule_name: string;
     deelnemers: { id: string }[];
     admins: { id: string }[];

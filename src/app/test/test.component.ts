@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {combineLatest, Subject, Subscription, timer} from 'rxjs';
 import {take, takeUntil} from 'rxjs/operators';
 
-import {AlertController, NavController, ToastController} from '@ionic/angular';
+import {AlertController, NavController, Platform} from '@ionic/angular';
 import {UiService} from '../services/app/ui.service';
 import {TestService} from '../services/api/test.service';
 import {IActies} from '../interface/IActies';
@@ -10,7 +10,7 @@ import {getActies} from '../store/acties/acties.reducer';
 import {IAppState} from '../store/store';
 import {select, Store} from '@ngrx/store';
 import {getDeelnemerId} from '../store/poules/poules.reducer';
-import {environment} from '../../environments/environment';
+import {OneSignal} from '@ionic-native/onesignal/ngx';
 
 @Component({
     selector: 'app-test',
@@ -44,8 +44,9 @@ export class TestComponent implements OnInit, OnDestroy {
                 public testService: TestService,
                 public alertCtrl: AlertController,
                 private uiService: UiService,
-                private store: Store<IAppState>,
-                public toastCtrl: ToastController) {
+                private oneSignal: OneSignal,
+                private platform: Platform,
+                private store: Store<IAppState>) {
 
     }
 
@@ -227,9 +228,11 @@ export class TestComponent implements OnInit, OnDestroy {
                 this.showgeentestscherm = false;
                 this.showeindeseizoenscherm = false;
                 this.testAntwoorden = response;
-                this.aflevering = response[0].aflevering;
-                if (environment.production) {
-                    window['plugins'].OneSignal.sendTag('laatstIngevuldeTest', response[0].aflevering);
+                if (response.length > 0) {
+                    this.aflevering = response[0].aflevering;
+                    if (this.platform.is('cordova')) {
+                        this.oneSignal.sendTag('laatstIngevuldeTest', response[0].aflevering.toString());
+                    }
                 }
             });
     }

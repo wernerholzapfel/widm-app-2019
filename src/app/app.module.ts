@@ -35,6 +35,8 @@ import {DeelnemerService} from './deelnemer.service';
 import {IntroModule} from './intro/intro.module';
 import {IonicStorageModule} from '@ionic/storage';
 import {StatistiekenModule} from './statistieken/statistieken.module';
+import {SocialSharing} from '@ionic-native/social-sharing/ngx';
+import {OneSignal} from '@ionic-native/onesignal/ngx';
 
 @NgModule({
     declarations: [AppComponent],
@@ -69,12 +71,14 @@ import {StatistiekenModule} from './statistieken/statistieken.module';
         AuthService,
         UiService,
         DeelnemerService,
+        SocialSharing,
         {provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
         {
             provide: HTTP_INTERCEPTORS,
             useClass: TokenInterceptor,
             multi: true
         },
+        OneSignal
     ],
     bootstrap: [AppComponent]
 })

@@ -9,10 +9,10 @@ import {getActies} from '../store/acties/acties.reducer';
 import {VoorspellenService} from '../services/api/voorspellen.service';
 import {IKandidaat} from '../interface/IKandidaat';
 import {getDeelnemerId} from '../store/poules/poules.reducer';
-import {NavController} from '@ionic/angular';
+import {NavController, Platform} from '@ionic/angular';
 import {navigation} from '../constants/navigation.constants';
 import {KandidatenService} from '../services/api/kandidaten.service';
-import {environment} from '../../environments/environment';
+import {OneSignal} from '@ionic-native/onesignal/ngx';
 
 
 export interface VoorspellingsBody {
@@ -53,6 +53,8 @@ export class VoorspellenComponent implements OnInit, OnDestroy {
                 private store: Store<IAppState>,
                 private voorspellenService: VoorspellenService,
                 private kandidatenService: KandidatenService,
+                private platform: Platform,
+                private oneSignal: OneSignal,
                 private navCtrl: NavController) {
     }
 
@@ -149,8 +151,8 @@ export class VoorspellenComponent implements OnInit, OnDestroy {
                 this.huidigeVoorspelling.afvaller &&
                 this.huidigeVoorspelling.winnaar) {
                 this.uiService.voorspellingAfgerond$.next(true);
-                if (environment.production) {
-                    window['plugins'].OneSignal.sendTag('laatsteVoorspelling', this.huidigeVoorspelling.aflevering);
+                if (this.platform.is('cordova')) {
+                    this.oneSignal.sendTag('laatsteVoorspelling', this.huidigeVoorspelling.aflevering.toString());
                 }
             }
             this.uiService.presentToast('Opslaan is gelukt');

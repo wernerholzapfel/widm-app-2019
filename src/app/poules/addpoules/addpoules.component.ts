@@ -42,11 +42,10 @@ export class AddpoulesComponent implements OnInit, OnDestroy {
             deelnemers: [currentUser],
             admins: [currentUser]
         }).subscribe(response => {
-                // todo add to redux store
-                this.uiService.presentToast(`Poule ${this.createPouleForm.value.name} aangemaakt`);
+            this.uiService.presentToast(`Poule ${this.createPouleForm.value.name} aangemaakt`, 'tertiary', 4000);
                 this.isLoading = false;
             this.store.dispatch(new AddPouleSuccess(response));
-                this.router.navigate([`${navigation.poules}/${navigation.poule}`]);
+            this.router.navigate([`${navigation.poules}/${navigation.adddeelnemer}`]);
             }, error1 => {
                 this.isLoading = false;
                 this.uiService.presentToast(`Er is iets misgegaan bij het aanmaken van de poule`);
