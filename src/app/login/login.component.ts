@@ -11,6 +11,7 @@ import {FetchActiesInProgress, FetchActiesSuccess} from '../store/acties/acties.
 import {Platform} from '@ionic/angular';
 import {Storage} from '@ionic/storage';
 import {OneSignal} from '@ionic-native/onesignal/ngx';
+import {take} from 'rxjs/operators';
 
 @Component({
     selector: 'app-login',
@@ -47,7 +48,7 @@ export class LoginComponent implements OnInit {
                 delete this.user.password;
                 this.deelnemerService.postDeelnemer({
                     email: this.loginForm.value.email
-                }).subscribe(response => {
+                }).pipe(take(1)).subscribe(response => {
                     // set acties to null so data is reloaded on app.component when acties are succesfully fetched
                     this.store.dispatch(new FetchActiesSuccess(null));
                     this.store.dispatch(new FetchActiesInProgress());
@@ -82,7 +83,7 @@ export class LoginComponent implements OnInit {
                         this.deelnemerService.postDeelnemer({
                             display_name: this.signupForm.value.displayName,
                             email: this.signupForm.value.email
-                        }).subscribe(response => {
+                        }).pipe(take(1)).subscribe(response => {
                             // set acties to null so data is reloaded on app.component when acties are succesfully fetched
                             this.store.dispatch(new FetchActiesSuccess(null));
                             this.store.dispatch(new FetchActiesInProgress());

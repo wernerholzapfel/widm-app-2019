@@ -62,9 +62,13 @@
                                         class="item-avatar">
                                 <img [src]="voorspelling?.kandidaat.image_url">
                             </ion-avatar>
-                            <ion-avatar *ngIf="voorspelling.kandidaat && voorspelling.selected" slot="start"
+                            <ion-avatar *ngIf="!voorspelling.kandidaat && !voorspelling.selected" slot="start"
                                         class="item-avatar">
                                 <ion-icon class="icon-avatar" name="person"></ion-icon>
+                            </ion-avatar>
+                            <ion-avatar *ngIf="voorspelling.selected" slot="start"
+                                        class="item-avatar">
+                                <img [src]="activeKandidaat?.image_url">
                             </ion-avatar>
                             <ion-label class="ion-text-wrap">
                                 <ion-text color="secondary"
@@ -74,13 +78,19 @@
                                     <h3>{{voorspelling.kandidaat?.display_name}}</h3>
                                 </ion-text>
                                 <ion-text color="secondary"
-                                          *ngIf="voorspelling.selected || !voorspelling.kandidaat">
+                                          *ngIf="!voorspelling.selected && !voorspelling.kandidaat">
                                     <h3>{{voorspelling.type | titlecase}}</h3>
                                     <ion-skeleton-text></ion-skeleton-text>
                                     <ion-skeleton-text></ion-skeleton-text>
                                 </ion-text>
+                                <ion-text color="secondary"
+                                          *ngIf="voorspelling.selected">
+                                    <h3>{{voorspelling.type | titlecase}}</h3>
+                                    <h3>{{activeKandidaat?.display_name}}</h3>
+                                </ion-text>
                             </ion-label>
-                            <ion-button class="ion-no-padding" fill="clear" [disabled]="isBusy || deadlineVerstreken"
+                            <ion-button class="ion-no-padding" fill="clear"
+                                        [disabled]="isBusy || deadlineVerstreken || selectKandidaat"
                                         *ngIf="!voorspelling.selected"
                                         (click)="editKandidaat(voorspelling.type)" size="small">
                                 <ion-icon color="secondary" slot="icon-only" name="md-create"></ion-icon>

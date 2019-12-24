@@ -55,7 +55,7 @@ export class AppComponent implements OnInit, OnDestroy {
         this.store.dispatch(new FetchActiesInProgress());
 
         this.store.pipe(select(getActies)).pipe(takeUntil(this.unsubscribe)).subscribe(response => {
-            if (response && JSON.stringify(response) !== JSON.stringify(this.acties)) {
+            if (response && Object.entries(response).length > 0 && JSON.stringify(response) !== JSON.stringify(this.acties)) {
                 console.log('nieuwe acties beschikbaar');
                 this.aflevering = response.voorspellingaflevering ? response.voorspellingaflevering : 1;
 
