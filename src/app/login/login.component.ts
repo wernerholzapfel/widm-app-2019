@@ -69,6 +69,8 @@ export class LoginComponent implements OnInit {
     sendPasswordResetEmail() {
         this.authService.sendPasswordResetEmail(this.user.email)
             .then((res) => {
+                this.uiService.presentToast('Er is een wachtwoordreset mail gestuurd naar ' + this.user.email, 'success', 4000);
+                this.wachtwoordvergeten = false;
             })
             .catch((err) => {
                 console.log('error: ' + err);
