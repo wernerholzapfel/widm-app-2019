@@ -21,12 +21,12 @@ export class UiService {
     testAfgerond$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(undefined);
     voorspellingAfgerond$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(undefined);
 
-    async presentToast(message: string, color: string = 'tertiary', duration: number = 2000) {
+    async presentToast(message: string, color: string = 'tertiary', duration: number = 2000, showCloseButton = true) {
         const toast = await this.toastCtrl.create({
             message: message,
             duration: duration,
             position: 'top',
-            showCloseButton: true,
+            showCloseButton: showCloseButton,
             closeButtonText: 'OK',
             color: color,
             cssClass: 'toast-position'

@@ -15,7 +15,7 @@
                         </ion-row>
                     </ion-col>
                     <ion-col class="justify-content-center">
-                        <ion-avatar class="header-avatar-img" (click)="saveKandidaat(voorspellingsType)"
+                        <ion-avatar class="header-avatar-img" (click)="submitVoorspellingen(false)"
                                     *ngIf="activeKandidaat && selectKandidaat">
                             <img [src]="activeKandidaat?.image_url">
                         </ion-avatar>
@@ -102,15 +102,15 @@
                             </ion-button>
                             <ion-button class="ion-no-padding" fill="clear" [disabled]="isBusy || deadlineVerstreken"
                                         *ngIf="voorspelling.selected"
-                                        (click)="saveKandidaat(voorspelling.type)" size="small">
+                                        (click)="submitVoorspellingen(false)" size="small">
                                 <ion-icon color="secondary" slot="icon-only" name="ios-save"></ion-icon>
                             </ion-button>
                         </ion-item>
                     </div>
                 </div>
                 <ion-button [disabled]="isBusy || deadlineVerstreken" color="primary" expand="full"
-                            (click)="submitVoorspellingen(true, null)">
-                    Opslaan
+                            (click)="submitVoorspellingen(true)">
+                    Opslaan & Terug
                 </ion-button>
             </ion-card-content>
         </ion-card>

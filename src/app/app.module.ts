@@ -37,6 +37,8 @@ import {IonicStorageModule} from '@ionic/storage';
 import {StatistiekenModule} from './statistieken/statistieken.module';
 import {SocialSharing} from '@ionic-native/social-sharing/ngx';
 import {OneSignal} from '@ionic-native/onesignal/ngx';
+import {CodePush} from '@ionic-native/code-push/ngx';
+
 
 @NgModule({
     declarations: [AppComponent],
@@ -72,6 +74,7 @@ import {OneSignal} from '@ionic-native/onesignal/ngx';
         UiService,
         DeelnemerService,
         SocialSharing,
+        CodePush,
         {provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
         {
             provide: HTTP_INTERCEPTORS,

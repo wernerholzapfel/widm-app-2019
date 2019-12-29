@@ -21,6 +21,7 @@ import {Storage} from '@ionic/storage';
 import {FetchPoulesInProgress, ResetPoules} from './store/poules/poules.actions';
 import {PoulesService} from './services/api/poules.service';
 import {OneSignal} from '@ionic-native/onesignal/ngx';
+import {CodePush, InstallMode} from '@ionic-native/code-push/ngx';
 
 @Component({
     selector: 'app-root',
@@ -46,6 +47,7 @@ export class AppComponent implements OnInit, OnDestroy {
         private oneSignal: OneSignal,
         private storage: Storage,
         private testService: TestService,
+        private codePush: CodePush,
     ) {
         this.initializeApp();
 
@@ -68,6 +70,9 @@ export class AppComponent implements OnInit, OnDestroy {
 
         this.platform.resume.subscribe(() => {
             this.store.dispatch(new FetchActiesInProgress());
+            if (this.platform.is('cordova')) {
+                this.checkCodePush();
+            }
         });
 
         this.storage.get('seizoen').then(seizoen => {
@@ -78,7 +83,6 @@ export class AppComponent implements OnInit, OnDestroy {
             }
         });
     }
-
 
     fetchUitnodigingen() {
         this.authService.user$.pipe(
@@ -165,10 +169,36 @@ export class AppComponent implements OnInit, OnDestroy {
         this.platform.ready().then(() => {
             if (this.platform.is('cordova')) {
                 this.setupPush();
+                this.checkCodePush();
             }
             this.statusBar.styleLightContent();
             this.splashScreen.hide();
         });
+
+    }
+
+    checkCodePush() {
+        const downloadProgress = (progress) => {
+            this.uiService.isLoading$.next(progress.receivedBytes !== progress.totalBytes);
+            console.log(`Bezig met update, ${progress.receivedBytes} van ${progress.totalBytes} gedownload`);
+        };
+
+        this.codePush.sync({
+            updateDialog: {
+                appendReleaseDescription: false,
+                updateTitle: 'Molloot update',
+                mandatoryUpdateMessage: 'Er is een nieuwe update beschikbaar',
+                mandatoryContinueButtonLabel: 'Installeer update'
+            },
+            deploymentKey: environment.iOSCodePush,
+            installMode: InstallMode.IMMEDIATE
+        }, downloadProgress).pipe(take(1)).subscribe(
+            (syncStatus) => {
+                console.log('CODE PUSH SYNCSTATUS: ' + syncStatus);
+            },
+            (error) => {
+                console.error('CODE PUSH ERROR: ' + error);
+            });
 
     }
 

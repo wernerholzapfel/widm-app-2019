@@ -9,7 +9,7 @@ Go to ~/Library/Android/sdk/build-tools/29.0.2/
 cd ~/Library/Android/sdk/build-tools/29.0.2/
 and run:
 jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore supereleven-key.jks app-release-unsigned.apk supereleven
-./zipalign -v 4 app-release-unsigned.apk molloot_2.9.4.apk
+./zipalign -v 4 app-release-unsigned.apk molloot_3.1.0.apk
 
 surf naar:
 https://play.google.com/apps/publish/?account=6886303713469501217#AppDashboardPlace:p=com.wernerholzapfel.mollotenapp

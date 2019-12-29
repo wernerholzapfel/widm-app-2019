@@ -118,11 +118,11 @@ export class VoorspellenComponent implements OnInit, OnDestroy {
         this.activeKandidaat = this.kandidaten[newIndex];
     }
 
-    saveKandidaat(voorspellingsType: string) {
-        this.voorspellingsLijst.find(vp => vp.type === voorspellingsType).kandidaat = this.activeKandidaat;
-        this.huidigeVoorspelling[voorspellingsType] = this.activeKandidaat;
-        this.submitVoorspellingen(false, voorspellingsType);
-    }
+    // saveKandidaat(voorspellingsType: string) {
+    //     this.voorspellingsLijst.find(vp => vp.type === voorspellingsType).kandidaat = this.activeKandidaat;
+    //     this.huidigeVoorspelling[voorspellingsType] = this.activeKandidaat;
+    // this.submitVoorspellingen(false, voorspellingsType);
+    // }
 
     editKandidaat(voorspellingsType: string) {
         this.voorspellingsType = voorspellingsType;
@@ -140,9 +140,14 @@ export class VoorspellenComponent implements OnInit, OnDestroy {
         this.huidigeVoorspelling[voorspellingsType] = kandidaat;
     }
 
-    submitVoorspellingen(final: boolean, voorspellingsType) {
+    submitVoorspellingen(final: boolean) {
         this.isBusy = true;
-        console.log(this.huidigeVoorspelling);
+
+        if (this.voorspellingsType) {
+            this.voorspellingsLijst.find(vp => vp.type === this.voorspellingsType).kandidaat = this.activeKandidaat;
+            this.huidigeVoorspelling[this.voorspellingsType] = this.activeKandidaat;
+        }
+
         this.voorspellenService.saveVoorspelling(Object.assign({}, this.huidigeVoorspelling)).subscribe(response => {
             this.uiService.huidigeVoorspelling$.next(Object.assign({}, response));
             this.huidigeVoorspelling.id = response.id;
@@ -155,9 +160,9 @@ export class VoorspellenComponent implements OnInit, OnDestroy {
                     this.oneSignal.sendTag('laatsteVoorspelling', this.huidigeVoorspelling.aflevering.toString());
                 }
             }
-            this.uiService.presentToast('Opslaan is gelukt');
-            if (voorspellingsType) {
-                this.setSelectedState(voorspellingsType, false);
+            this.uiService.presentToast('Opslaan is gelukt', 'tertiary', 2000, false);
+            if (this.voorspellingsType) {
+                this.setSelectedState(this.voorspellingsType, false);
             }
             if (final) {
                 this.navCtrl.navigateForward(`${navigation.home}`);
