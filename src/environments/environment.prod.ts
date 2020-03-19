@@ -9,5 +9,12 @@ export const environment = {
         messagingSenderId: '663216627263'
     },
     api: 'https://molapi-2019.herokuapp.com/api/v1',
-    api_domain: 'molapi-2019.herokuapp.com'
+    api_domain: 'molapi-2019.herokuapp.com',
+    oneSignal: {
+        appId: 'c9e91d07-f6c6-480b-a9ac-8322418085f8',
+        // tslint:disable-next-line:max-line-length
+        googleProjectNumber: 'molloot-8de9b'
+    },
+    iOSCodePush: 'GBJngFuMq_jPnhpmhMlHrDwMqFXbVCXESbDPO5',
+    androidCodePush: 'DULovLToO64PKECgTvxh5F7kFZoBftcmBgohCu'
 };

@@ -2,10 +2,10 @@
     <ion-header>
         <app-footer></app-footer>
         <ion-toolbar color="dark">
-            <ion-grid class="no-padding">
+            <ion-grid class="ion-no-padding">
                 <ion-row>
-                    <ion-col align-self-center>
-                        <ion-row justify-content-center>
+                    <ion-col class="ion-align-self-center">
+                        <ion-row class="ion-justify-content-center">
                             <ion-button fill="clear" [disabled]="isBusy || deadlineVerstreken"
                                         *ngIf="activeIndex > 0 && selectKandidaat"
                                         (click)="activateKandidaat(activeIndex - 1)">
@@ -15,7 +15,7 @@
                         </ion-row>
                     </ion-col>
                     <ion-col class="justify-content-center">
-                        <ion-avatar class="header-avatar-img" (click)="saveKandidaat(voorspellingsType)"
+                        <ion-avatar class="header-avatar-img" (click)="submitVoorspellingen(false)"
                                     *ngIf="activeKandidaat && selectKandidaat">
                             <img [src]="activeKandidaat?.image_url">
                         </ion-avatar>
@@ -23,8 +23,8 @@
                             <ion-icon class="header-avatar" name="person"></ion-icon>
                         </ion-avatar>
                     </ion-col>
-                    <ion-col align-self-center>
-                        <ion-row justify-content-center>
+                    <ion-col class="ion-align-self-center">
+                        <ion-row class="ion-justify-content-center">
                             <ion-button fill="clear" [disabled]="isBusy || deadlineVerstreken"
                                         *ngIf="activeIndex + 1 < numberOfKandidaten && selectKandidaat"
                                         (click)="activateKandidaat(activeIndex + 1)">
@@ -43,7 +43,7 @@
                 <ion-card-title>
                     Jouw voorspellingen
                 </ion-card-title>
-                <hr style="background-color: #25B973">
+                <hr class="primary_line">
             </ion-card-header>
             <ion-card-content>
                 <div>
@@ -53,7 +53,7 @@
                     </ion-text>
                     <div class="button-container">
                         <ion-item lines="full" color="primary">
-                            <ion-text text-wrap="">
+                            <ion-text class="ion-text-wrap">
                                 Aflevering {{huidigeVoorspelling.aflevering}}
                             </ion-text>
                         </ion-item>
@@ -62,11 +62,15 @@
                                         class="item-avatar">
                                 <img [src]="voorspelling?.kandidaat.image_url">
                             </ion-avatar>
-                            <ion-avatar *ngIf="voorspelling.kandidaat && voorspelling.selected" slot="start"
+                            <ion-avatar *ngIf="!voorspelling.kandidaat && !voorspelling.selected" slot="start"
                                         class="item-avatar">
                                 <ion-icon class="icon-avatar" name="person"></ion-icon>
                             </ion-avatar>
-                            <ion-label text-wrap>
+                            <ion-avatar *ngIf="voorspelling.selected" slot="start"
+                                        class="item-avatar">
+                                <img [src]="activeKandidaat?.image_url">
+                            </ion-avatar>
+                            <ion-label class="ion-text-wrap">
                                 <ion-text color="secondary"
                                           [ngClass]="{'afgevallen': voorspelling.kandidaat.afgevallen}"
                                           *ngIf="!voorspelling.selected && voorspelling.kandidaat">
@@ -74,25 +78,31 @@
                                     <h3>{{voorspelling.kandidaat?.display_name}}</h3>
                                 </ion-text>
                                 <ion-text color="secondary"
-                                          *ngIf="voorspelling.selected || !voorspelling.kandidaat">
+                                          *ngIf="!voorspelling.selected && !voorspelling.kandidaat">
                                     <h3>{{voorspelling.type | titlecase}}</h3>
                                     <ion-skeleton-text></ion-skeleton-text>
                                     <ion-skeleton-text></ion-skeleton-text>
                                 </ion-text>
+                                <ion-text color="secondary"
+                                          *ngIf="voorspelling.selected">
+                                    <h3>{{voorspelling.type | titlecase}}</h3>
+                                    <h3>{{activeKandidaat?.display_name}}</h3>
+                                </ion-text>
                             </ion-label>
-                            <ion-button no-padding fill="clear" [disabled]="isBusy || deadlineVerstreken"
+                            <ion-button class="ion-no-padding" fill="clear"
+                                        [disabled]="isBusy || deadlineVerstreken || selectKandidaat"
                                         *ngIf="!voorspelling.selected"
                                         (click)="editKandidaat(voorspelling.type)" size="small">
                                 <ion-icon color="secondary" slot="icon-only" name="md-create"></ion-icon>
                             </ion-button>
-                            <ion-button no-padding fill="clear" [disabled]="isBusy || deadlineVerstreken"
+                            <ion-button class="ion-no-padding" fill="clear" [disabled]="isBusy || deadlineVerstreken"
                                         *ngIf="voorspelling.selected"
                                         (click)="cancelEditKandidaat(voorspelling.type)" size="small">
                                 <ion-icon color="secondary" slot="icon-only" name="undo"></ion-icon>
                             </ion-button>
-                            <ion-button no-padding fill="clear" [disabled]="isBusy || deadlineVerstreken"
+                            <ion-button class="ion-no-padding" fill="clear" [disabled]="isBusy || deadlineVerstreken"
                                         *ngIf="voorspelling.selected"
-                                        (click)="saveKandidaat(voorspelling.type)" size="small">
+                                        (click)="submitVoorspellingen(false)" size="small">
                                 <ion-icon color="secondary" slot="icon-only" name="ios-save"></ion-icon>
                             </ion-button>
                         </ion-item>
@@ -100,7 +110,7 @@
                 </div>
                 <ion-button [disabled]="isBusy || deadlineVerstreken" color="primary" expand="full"
                             (click)="submitVoorspellingen(true)">
-                    Opslaan
+                    Opslaan & Terug
                 </ion-button>
             </ion-card-content>
         </ion-card>

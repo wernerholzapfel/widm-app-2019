@@ -2,12 +2,13 @@ import {map} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
 
 import {Observable} from 'rxjs';
-import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {IPoules} from '../../interface/IPoules';
+import {HttpClient} from '@angular/common/http';
 
 
 export interface ICreatePoule {
+    id?: string;
     poule_name: string;
     deelnemers: { id: string }[];
     admins: { id: string }[];

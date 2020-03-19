@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {navigation} from '../constants/navigation.constants';
 import {IAppState} from '../store/store';
 import {select, Store} from '@ngrx/store';
-import {getDeelnemerId} from '../store/poules/poules.reducer';
+import {getAllPoules, getDeelnemerId} from '../store/poules/poules.reducer';
 import {combineLatest, forkJoin, of, Subject} from 'rxjs';
 import {UiService} from '../services/app/ui.service';
 import {skipWhile, switchMap, take, takeUntil} from 'rxjs/operators';
@@ -38,14 +38,14 @@ export class PersonalHeaderComponent implements OnInit, OnDestroy {
     }
 
     goToScores() {
-        this.router.navigateByUrl(`${navigation.punten}`);
+        this.router.navigate(['punten']);
     }
 
     ngOnInit() {
 
         forkJoin(
             this.store.pipe(select(getDeelnemerId)).pipe(skipWhile(response => response === undefined), take(1)),
-            this.uiService.poules$.pipe(skipWhile(response => response.length === 0), take(1)))
+            this.store.pipe(select(getAllPoules)).pipe(skipWhile(response => response && response.length === 0), take(1)))
             .pipe(takeUntil(this.unsubscribe))
             .subscribe(([deelnemerId, poules]) => {
                 if (deelnemerId && poules) {

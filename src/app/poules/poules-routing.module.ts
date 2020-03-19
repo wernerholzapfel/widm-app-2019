@@ -14,7 +14,7 @@ const routes: Routes = [
             {path: '', component: PouleComponent},
             {path: navigation.overview, component: OverviewComponent},
             {path: `${navigation.poule}`, component: PouleComponent},
-            {path: `${navigation.adddeelnemer}/:pouleid`, component: AdddeelnemerComponent},
+            {path: `${navigation.adddeelnemer}`, component: AdddeelnemerComponent},
             {path: navigation.addpoule, component: AddpoulesComponent},
             {path: navigation.acceptinvite, component: AcceptInviteComponent}]
     }];

@@ -8,6 +8,19 @@ import {PuntenItemModule} from './punten-item/punten-item.module';
 import {PersonalHeaderModule} from '../personal-header/personal-header.module';
 import {AvatarModule} from 'ng2-avatar';
 import {VoorspellingsscoreModule} from '../voorspellingsscore/voorspellingsscore.module';
+import {RouterModule, Routes} from '@angular/router';
+
+
+const routes: Routes = [
+    {
+        path: 'punten',
+        component: PuntenComponent,
+    }, {
+        path: '',
+        redirectTo: 'punten',
+        pathMatch: 'full'
+    }
+];
 
 @NgModule({
     declarations: [PuntenComponent],
@@ -21,6 +34,7 @@ import {VoorspellingsscoreModule} from '../voorspellingsscore/voorspellingsscore
         IonicModule,
         AvatarModule,
         VoorspellingsscoreModule,
+        RouterModule.forChild(routes)
     ],
     exports: [PuntenComponent]
 })

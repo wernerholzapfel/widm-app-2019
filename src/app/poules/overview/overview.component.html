@@ -2,21 +2,21 @@
     <ion-card color="secondary">
         <ion-card-header>
             <ion-card-title>
-                Poule overzicht
+                Jouw poules
             </ion-card-title>
-            <hr style="background-color: #25B973">
+            <hr class="primary_line">
         </ion-card-header>
         <ng-container>
             <ion-card-content>
-                <div *ngIf="poules.length > 0">
+                <div *ngIf="poules?.length > 0">
                     <ion-item lines="full" color="primary">Poules</ion-item>
                     <ng-container *ngFor="let poule of poules; let i = index">
                         <ion-item lines="full" color="tertiary" (click)="navigateToPoule(poule, i)">
                             <ion-avatar slot="start">
-                                <ngx-avatar size="40" bgColor="#000" borderColor="#25B973" fgColor="#25B973"
+                                <ngx-avatar size="40" bgColor="#25B973" borderColor="#25B973" fgColor="#1F2421"
                                             [value]="determinePositionFromUser(poule)"></ngx-avatar>
                             </ion-avatar>
-                            <ion-label text-wrap>
+                            <ion-label class="ion-text-wrap">
                                 <ion-text>
                                     <ion-row>
                                         <ion-col>
@@ -35,7 +35,7 @@
                         Start een poule en ga de strijd aan met je familie en vrienden.
                     </ion-text>
                 </div>
-                <ion-button class="sublink" expand="full" color="tertiary" fill="clear" (click)="goToAddPoule()">Start
+                <ion-button class="sublink" expand="full" color="primary" fill="solid" (click)="goToAddPoule()">Start
                     nieuwe poule
                 </ion-button>
             </ion-card-content>

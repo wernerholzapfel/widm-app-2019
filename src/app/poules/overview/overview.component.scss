@@ -8,8 +8,8 @@
 
   ion-card-content {
     display: grid;
-    align-content: space-between;
+    //align-content: space-between;
     padding-bottom: 16px;
-    min-height: calc(100vh - 128px - 44px - 30px - 84px - #{$safe-area-inset-top} - #{$safe-area-inset-bottom});
+    //min-height: calc(100vh - 128px - 44px - 30px - 84px - #{$safe-area-inset-top} - #{$safe-area-inset-bottom});
   }
 }

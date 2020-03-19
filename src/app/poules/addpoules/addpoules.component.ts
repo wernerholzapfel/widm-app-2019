@@ -7,7 +7,7 @@ import {Subject} from 'rxjs';
 import {select, Store} from '@ngrx/store';
 import {IAppState} from '../../store/store';
 import {getDeelnemerId} from '../../store/poules/poules.reducer';
-import {FetchPoulesInProgress} from '../../store/poules/poules.actions';
+import {AddPouleSuccess} from '../../store/poules/poules.actions';
 import {Router} from '@angular/router';
 import {takeUntil} from 'rxjs/operators';
 
@@ -17,7 +17,7 @@ import {takeUntil} from 'rxjs/operators';
     styleUrls: ['./addpoules.component.scss']
 })
 export class AddpoulesComponent implements OnInit, OnDestroy {
-    @ViewChild('createPouleForm') createPouleForm: NgForm;
+    @ViewChild('createPouleForm', {static: false}) createPouleForm: NgForm;
     unsubscribe: Subject<void> = new Subject<void>();
     deelnemerId: string;
     isLoading: boolean;
@@ -36,19 +36,16 @@ export class AddpoulesComponent implements OnInit, OnDestroy {
 
     createPoule() {
         this.isLoading = true;
-        console.log(this.createPouleForm);
         const currentUser = {id: this.deelnemerId};
-        console.log(currentUser);
         this.poulesService.createPoule({
             poule_name: this.createPouleForm.value.name,
             deelnemers: [currentUser],
             admins: [currentUser]
         }).subscribe(response => {
-                // todo add to redux store
-                this.uiService.presentToast(`Poule ${this.createPouleForm.value.name} aangemaakt`);
+            this.uiService.presentToast(`Poule ${this.createPouleForm.value.name} aangemaakt`, 'tertiary', 4000);
                 this.isLoading = false;
-                this.store.dispatch(new FetchPoulesInProgress());
-                this.router.navigate([`${navigation.poules}/${navigation.poule}`]);
+            this.store.dispatch(new AddPouleSuccess(response));
+            this.router.navigate([`${navigation.poules}/${navigation.adddeelnemer}`]);
             }, error1 => {
                 this.isLoading = false;
                 this.uiService.presentToast(`Er is iets misgegaan bij het aanmaken van de poule`);

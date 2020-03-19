@@ -12,7 +12,7 @@ import {HomePageModule} from './home/home.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AngularFireModule} from '@angular/fire';
 import {environment} from '../environments/environment';
-import {HTTP_INTERCEPTORS} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {TokenInterceptor} from './services/authentication/token.interceptor';
 import {ActiesEffects} from './store/acties/acties.effects';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
@@ -35,6 +35,10 @@ import {DeelnemerService} from './deelnemer.service';
 import {IntroModule} from './intro/intro.module';
 import {IonicStorageModule} from '@ionic/storage';
 import {StatistiekenModule} from './statistieken/statistieken.module';
+import {SocialSharing} from '@ionic-native/social-sharing/ngx';
+import {OneSignal} from '@ionic-native/onesignal/ngx';
+import {CodePush} from '@ionic-native/code-push/ngx';
+
 
 @NgModule({
     declarations: [AppComponent],
@@ -45,6 +49,7 @@ import {StatistiekenModule} from './statistieken/statistieken.module';
         AppRoutingModule,
         BrowserAnimationsModule,
         HomePageModule,
+        HttpClientModule,
         PoulesPageModule,
         DisclaimerModule,
         FooterModule,
@@ -68,12 +73,15 @@ import {StatistiekenModule} from './statistieken/statistieken.module';
         AuthService,
         UiService,
         DeelnemerService,
+        SocialSharing,
+        CodePush,
         {provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
         {
             provide: HTTP_INTERCEPTORS,
             useClass: TokenInterceptor,
             multi: true
         },
+        OneSignal
     ],
     bootstrap: [AppComponent]
 })
