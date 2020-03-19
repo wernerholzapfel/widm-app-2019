@@ -9,10 +9,10 @@ import {getActies} from '../store/acties/acties.reducer';
 import {VoorspellenService} from '../services/api/voorspellen.service';
 import {IKandidaat} from '../interface/IKandidaat';
 import {getDeelnemerId} from '../store/poules/poules.reducer';
-import {NavController} from '@ionic/angular';
+import {NavController, Platform} from '@ionic/angular';
 import {navigation} from '../constants/navigation.constants';
 import {KandidatenService} from '../services/api/kandidaten.service';
-import {environment} from '../../environments/environment';
+import {OneSignal} from '@ionic-native/onesignal/ngx';
 
 
 export interface VoorspellingsBody {
@@ -53,6 +53,8 @@ export class VoorspellenComponent implements OnInit, OnDestroy {
                 private store: Store<IAppState>,
                 private voorspellenService: VoorspellenService,
                 private kandidatenService: KandidatenService,
+                private platform: Platform,
+                private oneSignal: OneSignal,
                 private navCtrl: NavController) {
     }
 
@@ -116,11 +118,11 @@ export class VoorspellenComponent implements OnInit, OnDestroy {
         this.activeKandidaat = this.kandidaten[newIndex];
     }
 
-    saveKandidaat(voorspellingsType: string) {
-        this.voorspellingsLijst.find(vp => vp.type === voorspellingsType).kandidaat = this.activeKandidaat;
-        this.huidigeVoorspelling[voorspellingsType] = this.activeKandidaat;
-        this.submitVoorspellingen(false, voorspellingsType);
-    }
+    // saveKandidaat(voorspellingsType: string) {
+    //     this.voorspellingsLijst.find(vp => vp.type === voorspellingsType).kandidaat = this.activeKandidaat;
+    //     this.huidigeVoorspelling[voorspellingsType] = this.activeKandidaat;
+    // this.submitVoorspellingen(false, voorspellingsType);
+    // }
 
     editKandidaat(voorspellingsType: string) {
         this.voorspellingsType = voorspellingsType;
@@ -138,9 +140,14 @@ export class VoorspellenComponent implements OnInit, OnDestroy {
         this.huidigeVoorspelling[voorspellingsType] = kandidaat;
     }
 
-    submitVoorspellingen(final: boolean, voorspellingsType) {
+    submitVoorspellingen(final: boolean) {
         this.isBusy = true;
-        console.log(this.huidigeVoorspelling);
+
+        if (this.voorspellingsType) {
+            this.voorspellingsLijst.find(vp => vp.type === this.voorspellingsType).kandidaat = this.activeKandidaat;
+            this.huidigeVoorspelling[this.voorspellingsType] = this.activeKandidaat;
+        }
+
         this.voorspellenService.saveVoorspelling(Object.assign({}, this.huidigeVoorspelling)).subscribe(response => {
             this.uiService.huidigeVoorspelling$.next(Object.assign({}, response));
             this.huidigeVoorspelling.id = response.id;
@@ -149,13 +156,13 @@ export class VoorspellenComponent implements OnInit, OnDestroy {
                 this.huidigeVoorspelling.afvaller &&
                 this.huidigeVoorspelling.winnaar) {
                 this.uiService.voorspellingAfgerond$.next(true);
-                if (environment.production) {
-                    window['plugins'].OneSignal.sendTag('laatsteVoorspelling', this.huidigeVoorspelling.aflevering);
+                if (this.platform.is('cordova')) {
+                    this.oneSignal.sendTag('laatsteVoorspelling', this.huidigeVoorspelling.aflevering.toString());
                 }
             }
-            this.uiService.presentToast('Opslaan is gelukt');
-            if (voorspellingsType) {
-                this.setSelectedState(voorspellingsType, false);
+            this.uiService.presentToast('Opslaan is gelukt', 'tertiary', 2000, false);
+            if (this.voorspellingsType) {
+                this.setSelectedState(this.voorspellingsType, false);
             }
             if (final) {
                 this.navCtrl.navigateForward(`${navigation.home}`);

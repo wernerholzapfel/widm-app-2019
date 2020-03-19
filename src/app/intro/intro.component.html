@@ -1,21 +1,25 @@
+<ion-header>
+    <ion-toolbar color="dark"></ion-toolbar>
+</ion-header>
 <ion-content>
     <ion-slides pager="true">
         <ion-slide>
             <ion-card color="secondary">
                 <ion-card-header>
-                    <ion-card-title text-wrap>
+                    <ion-card-title class="ion-text-wrap">
                         Wie is de Molloot?
                     </ion-card-title>
-                    <hr style="background-color: #25B973">
+                    <hr class="primary_line">
                 </ion-card-header>
                 <ion-card-content>
                     <div class="logo">
-                        <ion-img text-center src="/assets/logo.png" style="height: 48px; width: 48px;"></ion-img>
+                        <ion-img class="ion-text-center" src="/assets/logo.png"
+                                 style="height: 48px; width: 48px;"></ion-img>
                     </div>
                     <div>
                         ‘Wie is de Molloot?’ is een spel voor de echte molloten. Niet alleen voorspel je wie de Mol is,
                         ook maak je elke aflevering De Test over jouw Mol. Wie weet de Mol te ontmaskeren en de meeste
-                        vragen goed te beantwoorden? Die mag zich De Molloot 2019 noemen!
+                        vragen goed te beantwoorden? Die mag zich De Molloot 2020 noemen!
                     </div>
                 </ion-card-content>
             </ion-card>
@@ -24,10 +28,10 @@
         <ion-slide>
             <ion-card color="secondary">
                 <ion-card-header>
-                    <ion-card-title text-wrap>
+                    <ion-card-title class="ion-text-wrap">
                         Voorspel de mol, winnaar en afvaller
                     </ion-card-title>
-                    <hr style="background-color: #25B973">
+                    <hr class="primary_line">
                 </ion-card-header>
                 <ion-card-content>
                     <ion-icon [color]="'tertiary'" name="finger-print"
@@ -47,10 +51,10 @@
         <ion-slide>
             <ion-card color="secondary">
                 <ion-card-header>
-                    <ion-card-title text-wrap>
+                    <ion-card-title class="ion-text-wrap">
                         De Test
                     </ion-card-title>
-                    <hr style="background-color: #25B973">
+                    <hr class="primary_line">
                 </ion-card-header>
                 <ion-card-content>
                     <ion-icon [color]="'tertiary'" name="clock"
@@ -73,10 +77,10 @@
         <ion-slide>
             <ion-card color="secondary">
                 <ion-card-header>
-                    <ion-card-title text-wrap>
+                    <ion-card-title class="ion-text-wrap">
                         Scores
                     </ion-card-title>
-                    <hr style="background-color: #25B973">
+                    <hr class="primary_line">
                 </ion-card-header>
                 <ion-card-content>
                     <ion-icon [color]="'tertiary'" name="podium"
@@ -94,10 +98,10 @@
         <ion-slide>
             <ion-card color="secondary">
                 <ion-card-header>
-                    <ion-card-title text-wrap>
+                    <ion-card-title class="ion-text-wrap">
                         Poules
                     </ion-card-title>
-                    <hr style="background-color: #25B973">
+                    <hr class="primary_line">
                 </ion-card-header>
                 <ion-card-content>
                     <ion-icon [color]="'tertiary'" name="trophy"
@@ -109,9 +113,9 @@
                         grootste molloot van allemaal?
                     </div>
                 </ion-card-content>
-                <ion-row no-padding justify-content-end>
+                <ion-row class="ion-no-padding ion-justify-content-end">
                     <ion-col>
-                        <ion-button expand="full" color="primary" (click)="goToHome()">Word de Molloot 2019
+                        <ion-button expand="full" color="primary" (click)="goToHome()">Word de Molloot 2020
                         </ion-button>
                     </ion-col>
                 </ion-row>

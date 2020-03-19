@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {combineLatest, Subject, Subscription, timer} from 'rxjs';
 import {take, takeUntil} from 'rxjs/operators';
 
-import {AlertController, NavController, ToastController} from '@ionic/angular';
+import {AlertController, NavController, Platform} from '@ionic/angular';
 import {UiService} from '../services/app/ui.service';
 import {TestService} from '../services/api/test.service';
 import {IActies} from '../interface/IActies';
@@ -10,7 +10,7 @@ import {getActies} from '../store/acties/acties.reducer';
 import {IAppState} from '../store/store';
 import {select, Store} from '@ngrx/store';
 import {getDeelnemerId} from '../store/poules/poules.reducer';
-import {environment} from '../../environments/environment';
+import {OneSignal} from '@ionic-native/onesignal/ngx';
 
 @Component({
     selector: 'app-test',
@@ -20,26 +20,20 @@ import {environment} from '../../environments/environment';
 
 export class TestComponent implements OnInit, OnDestroy {
 
-    @ViewChild('slides') slides: any;
+    @ViewChild('slides', {static: false}) slides: any;
     countdown = 20;
     timer: any;
-    score = 0;
     aflevering: number;
     question: any;
     testSub: Subscription;
     postTestSub: Subscription;
-    answer: any;
-    laatsteAfleveringSub: Subscription;
-    currentAfleveringSub: Subscription;
     testAntwoorden: any[];
-    laatsteaflevering = 0;
     showstartscherm = false;
     showeindeseizoenscherm = false;
     showtestscherm = false;
     showeindscherm = false;
     showgeentestscherm = false;
     isLoading: boolean;
-    actieSub: Subscription;
     acties: IActies;
     deadlineVerstreken: boolean;
     unsubscribe: Subject<void> = new Subject<void>();
@@ -50,8 +44,9 @@ export class TestComponent implements OnInit, OnDestroy {
                 public testService: TestService,
                 public alertCtrl: AlertController,
                 private uiService: UiService,
-                private store: Store<IAppState>,
-                public toastCtrl: ToastController) {
+                private oneSignal: OneSignal,
+                private platform: Platform,
+                private store: Store<IAppState>) {
 
     }
 
@@ -64,8 +59,8 @@ export class TestComponent implements OnInit, OnDestroy {
                 this.deelnemerId = response;
             });
 
-        combineLatest(this.store.pipe(select(getActies)),
-            this.testService.gettest())
+        combineLatest([this.store.pipe(select(getActies)),
+            this.testService.gettest()])
             .pipe(takeUntil(this.unsubscribe))
             .subscribe(([response, testvragen]) => {
                 if (response && testvragen) {
@@ -105,7 +100,7 @@ export class TestComponent implements OnInit, OnDestroy {
                     text: 'Terug',
                     handler: () => {
                         alert.dismiss().then(() => {
-                            this.navCtrl.goBack();
+                            this.navCtrl.back();
                         });
                     }
                 }
@@ -151,7 +146,7 @@ export class TestComponent implements OnInit, OnDestroy {
 
 
     goBack() {
-        this.navCtrl.goBack();
+        this.navCtrl.back();
     }
 
     selectAnswer(answer, question) {
@@ -233,9 +228,11 @@ export class TestComponent implements OnInit, OnDestroy {
                 this.showgeentestscherm = false;
                 this.showeindeseizoenscherm = false;
                 this.testAntwoorden = response;
-                this.aflevering = response[0].aflevering;
-                if (environment.production) {
-                    window['plugins'].OneSignal.sendTag('laatstIngevuldeTest', response[0].aflevering);
+                if (response.length > 0) {
+                    this.aflevering = response[0].aflevering;
+                    if (this.platform.is('cordova')) {
+                        this.oneSignal.sendTag('laatstIngevuldeTest', response[0].aflevering.toString());
+                    }
                 }
             });
     }

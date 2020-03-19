@@ -27,7 +27,6 @@ export class ActiesEffects {
                             new AddAlert({type: 'danger', message: 'Het updaten van de acties is mislukt.', err: err})
                         ])));
         }));
-
     constructor(private actions$: Actions,
                 private actiesService: ActiesService) {
     }

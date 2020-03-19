@@ -2,34 +2,50 @@
     <ion-card color="secondary">
         <ion-card-header>
             <ion-card-title>
-                Voeg deelnemers toe
+                {{poule?.poule_name}}
             </ion-card-title>
-            <hr style="background-color: #25B973">
+            <ion-card-subtitle>
+                Voeg deelnemers toe
+            </ion-card-subtitle>
+            <hr class="primary_line">
         </ion-card-header>
         <ion-card-content>
-            <form (ngSubmit)="addDeelnemer()" #form="ngForm">
-                <ion-item lines="full" color="tertiary">
-                    <ion-input required type="email" placeholder="email-adres" name="email" ngModel></ion-input>
-                </ion-item>
-                <div class="button-container">
-                    <ion-button [disabled]="!form.valid" [color]="form.valid ? 'primary' :'medium'" expand="full"
-                                type="submit">
-                        Voeg toe
-                    </ion-button>
+            <ion-text>
+                <div class="ion-margin-bottom">
+                    Voer emailadressen in om deelnemers uit te nodigen.
                 </div>
-            </form>
+            </ion-text>
+            <div>
+                <form (ngSubmit)="addDeelnemer()" #form="ngForm">
+                    <ion-item lines="full" color="tertiary">
+                        <ion-input required type="email" placeholder="email-adres" name="email" ngModel></ion-input>
+                    </ion-item>
+                    <div class="button-container">
+                        <ion-button [disabled]="!form.valid" [color]="form.valid ? 'primary' :'primary'" expand="full"
+                                    type="submit">
+                            Voeg toe
+                        </ion-button>
+                    </div>
+                </form>
+                <ion-text class="asterisk" (click)="shareInvite(false)">
+                    * Deelnemers ontvangen de uitnodiging in de app.
+                    Wil je je vrienden uitnodigen om de app te downloaden? Klik dan hier.
+                </ion-text>
+            </div>
             <div class="button-container">
                 <ion-item lines="full" color="primary" *ngIf="uitnodigingen?.length > 0">Uitgenodigd</ion-item>
                 <ion-item lines="full" color="tertiary" *ngFor="let uitnodiging of uitnodigingen">
                     {{uitnodiging.uniqueIdentifier}}
+                    <ion-icon *ngIf="!uitnodiging.isAccepted && !uitnodiging.isDeclined"
+                              color="medium"
+                              slot="end"
+                              name="ios-share"
+                              (click)="shareInvite(true)">
+                    </ion-icon>
                     <ion-icon *ngIf="uitnodiging.isAccepted" color="primary" slot="end" name="checkmark"></ion-icon>
                     <ion-icon *ngIf="uitnodiging.isDeclined" color="danger" slot="end" name="close"></ion-icon>
                 </ion-item>
             </div>
-
         </ion-card-content>
     </ion-card>
 </ion-content>
-
-
-<!--// todo lijst van uitgenodigde mensen toevoegen-->

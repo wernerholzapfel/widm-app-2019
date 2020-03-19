@@ -3,16 +3,20 @@ import {catchError, concatMap, map, take} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
 import {Actions, Effect, ofType} from '@ngrx/effects';
 import {
+    ADD_POULES_SUCCESS,
+    AddPouleSuccess,
     CALCULATE_POULES,
     CalculatePoules,
     FETCH_POULES_IN_PROGRESS,
     FetchPoulesFailure,
     FetchPoulesInProgress,
-    FetchPoulesSuccess
+    FetchPoulesSuccess,
+    SetPouleActive
 } from './poules.actions';
 import {AddAlert} from '../alerts/alerts.actions';
 import {PoulesService} from '../../services/api/poules.service';
 import {CalculatieService, vragenPunten} from '../../calculatie.service';
+import {PouleHelperService} from '../../poule-helper.service';
 
 @Injectable()
 export class PoulesEffects {
@@ -25,7 +29,19 @@ export class PoulesEffects {
                 .getPoules().pipe(take(1),
                     concatMap(response => {
                             if (response) {
-                                return observableOf(new CalculatePoules(response));
+                                const eigenKlassement = response.poules.filter(p => p.id !== '0').reduce((accumulator, currentValue) => {
+                                    return [...currentValue.deelnemers, ...accumulator];
+                                }, []);
+                                const poules = {
+                                    ...response,
+                                    poules: [{
+                                        id: 'persoonlijkestand',
+                                        admins: [],
+                                        poule_name: 'Persoonlijke stand',
+                                        deelnemers: this.pouleHelper.transformDeelnemers(eigenKlassement)
+                                    }, ...response.poules]
+                                };
+                                return observableOf(new CalculatePoules(poules));
                             }
                         }
                     ),
@@ -35,6 +51,21 @@ export class PoulesEffects {
                             new AddAlert({type: 'danger', message: 'Het ophalen van de poules is mislukt.', err: err})
                         ])));
         }));
+
+    @Effect()
+    addPouleSucces = this.actions$.pipe(
+        ofType<AddPouleSuccess>(ADD_POULES_SUCCESS),
+        concatMap(action => {
+                if (action) {
+                    return observableOf(new SetPouleActive(action.payload));
+                }
+            }
+        ),
+        catchError(err =>
+            observableFrom([
+                new FetchPoulesFailure(err),
+                new AddAlert({type: 'danger', message: 'Het ophalen van de poules is mislukt.', err: err})
+            ])));
 
     @Effect()
     calculatePoules$ = this.actions$.pipe(
@@ -99,7 +130,9 @@ export class PoulesEffects {
                         }))
                 }))
         })),
-        concatMap(response => observableOf(new FetchPoulesSuccess(response))),
+        concatMap(response => observableFrom([
+            new FetchPoulesSuccess(response),
+            new SetPouleActive(response.poules[0])])),
         catchError(err =>
             observableFrom([
                 new FetchPoulesFailure(err),
@@ -107,6 +140,7 @@ export class PoulesEffects {
             ])));
 
     constructor(private actions$: Actions,
-                private poulesService: PoulesService, private calculatieService: CalculatieService) {
+                private poulesService: PoulesService, private calculatieService: CalculatieService,
+                private pouleHelper: PouleHelperService) {
     }
 }

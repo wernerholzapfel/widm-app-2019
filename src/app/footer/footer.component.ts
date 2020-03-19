@@ -44,7 +44,7 @@ export class FooterComponent implements OnInit, OnDestroy {
     }
 
     goBack() {
-        this.navCtrl.goBack();
+        this.navCtrl.back();
     }
 
     ngOnDestroy() {

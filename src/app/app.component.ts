@@ -11,14 +11,17 @@ import {UiService} from './services/app/ui.service';
 import {KandidatenService} from './services/api/kandidaten.service';
 import {VoorspellenService} from './services/api/voorspellen.service';
 import {AuthService} from './services/authentication/auth.service';
-import {forkJoin, of, Subject} from 'rxjs';
+import {combineLatest, forkJoin, of, Subject} from 'rxjs';
 import {getActies} from './store/acties/acties.reducer';
 import {TestService} from './services/api/test.service';
 import {concatMap, distinctUntilChanged, take, takeUntil} from 'rxjs/operators';
 import {environment} from '../environments/environment';
 import {IActies} from './interface/IActies';
+import {Storage} from '@ionic/storage';
 import {FetchPoulesInProgress, ResetPoules} from './store/poules/poules.actions';
 import {PoulesService} from './services/api/poules.service';
+import {OneSignal} from '@ionic-native/onesignal/ngx';
+import {CodePush, InstallMode} from '@ionic-native/code-push/ngx';
 
 @Component({
     selector: 'app-root',
@@ -41,7 +44,10 @@ export class AppComponent implements OnInit, OnDestroy {
         private voorspellenService: VoorspellenService,
         private authService: AuthService,
         private pouleService: PoulesService,
-        private testService: TestService
+        private oneSignal: OneSignal,
+        private storage: Storage,
+        private testService: TestService,
+        private codePush: CodePush,
     ) {
         this.initializeApp();
 
@@ -51,7 +57,7 @@ export class AppComponent implements OnInit, OnDestroy {
         this.store.dispatch(new FetchActiesInProgress());
 
         this.store.pipe(select(getActies)).pipe(takeUntil(this.unsubscribe)).subscribe(response => {
-            if (response && JSON.stringify(response) !== JSON.stringify(this.acties)) {
+            if (response && Object.entries(response).length > 0 && JSON.stringify(response) !== JSON.stringify(this.acties)) {
                 console.log('nieuwe acties beschikbaar');
                 this.aflevering = response.voorspellingaflevering ? response.voorspellingaflevering : 1;
 
@@ -64,10 +70,19 @@ export class AppComponent implements OnInit, OnDestroy {
 
         this.platform.resume.subscribe(() => {
             this.store.dispatch(new FetchActiesInProgress());
+            if (this.platform.is('cordova')) {
+                this.checkCodePush();
+            }
         });
 
+        this.storage.get('seizoen').then(seizoen => {
+            if (seizoen !== '2020') {
+                this.authService.logout();
+            } else {
+                console.log('heeft account');
+            }
+        });
     }
-
 
     fetchUitnodigingen() {
         this.authService.user$.pipe(
@@ -102,13 +117,13 @@ export class AppComponent implements OnInit, OnDestroy {
             .pipe(
                 concatMap(user => {
                     if (user) {
-                        return forkJoin(
+                        return combineLatest([
                             this.voorspellenService.getLaatsteVoorspelling().pipe(take(1)),
                             this.testService.getaantalOnbeantwoordeVragen().pipe(take(1)),
                             this.testService.gettests().pipe(take(1)),
                             this.voorspellenService.getAllVoorspellingen().pipe(take(1)),
-                            this.pouleService.getKlassement().pipe(take(1)),
-                            this.uitnodigingenService.getUitnodigingen().pipe(take(1)));
+                            // this.pouleService.getKlassement().pipe(take(1)),
+                            this.uitnodigingenService.getUitnodigingen().pipe(take(1))]);
                     } else {
                         this.store.dispatch(new ResetPoules());
                         this.uiService.huidigeVoorspelling$.next(null);
@@ -122,8 +137,8 @@ export class AppComponent implements OnInit, OnDestroy {
                     }
                 }),
                 takeUntil(this.unsubscribe))
-            .subscribe(([laatsteVoorspelling, onbeantwoordenvragen, testvragen, voorspellingen, stand, uitnodigingen]) => {
-                if (onbeantwoordenvragen && testvragen && stand) { // todo andere kunnen null zijn indien 1e x.
+            .subscribe(([laatsteVoorspelling, onbeantwoordenvragen, testvragen, voorspellingen, uitnodigingen]) => {
+                if (onbeantwoordenvragen && testvragen) { // todo andere kunnen null zijn indien 1e x.
                     this.store.dispatch(new FetchPoulesInProgress());
 
                     this.uiService.voorspellingen$.next(Object.assign([], voorspellingen));
@@ -141,11 +156,6 @@ export class AppComponent implements OnInit, OnDestroy {
                     this.uiService.testAfgerond$.next(onbeantwoordenvragen.aantalOpenVragen === 0 || acties.isSeasonFinished);
 
                     this.uiService.isLoading$.next(false);
-                    if (stand.data.length > 0) {
-                        this.uiService.poules$.next([{id: 0, poule_name: 'Top 25', deelnemers: stand.data, admins: []},
-                            ...this.uiService.poules$.getValue()]);
-                        this.uiService.activePouleIndex$.next(0);
-                    }
                 }
                 if (uitnodigingen) {
                     this.uiService.uitnodigingen$.next(Object.assign([...uitnodigingen]));
@@ -157,31 +167,58 @@ export class AppComponent implements OnInit, OnDestroy {
 
     initializeApp() {
         this.platform.ready().then(() => {
+            if (this.platform.is('cordova')) {
+                this.setupPush();
+                this.checkCodePush();
+            }
             this.statusBar.styleLightContent();
             this.splashScreen.hide();
-
-            // OneSignal Code start:
-            // Enable to debug issues:
-            // window["plugins"].OneSignal.setLogLevel({logLevel: 4, visualLevel: 4});
-
-            const notificationOpenedCallback = function (jsonData) {
-                console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));
-            };
-
-            const handleNotificationReceived = function (jsonData) {
-                console.log('notificationReceived: ' + JSON.stringify(jsonData));
-                this.store.dispatch(new FetchActiesInProgress());
-            };
-
-            if (environment.production) {
-                window['plugins'].OneSignal
-                    .startInit('c9e91d07-f6c6-480b-a9ac-8322418085f8', 'molloot-8de9b')
-                    .handleNotificationOpened(notificationOpenedCallback)
-                    .handleNotificationReceived(handleNotificationReceived)
-                    .endInit();
-            }
         });
 
+    }
+
+    checkCodePush() {
+        const downloadProgress = (progress) => {
+            this.uiService.isLoading$.next(progress.receivedBytes !== progress.totalBytes);
+            console.log(`Bezig met update, ${progress.receivedBytes} van ${progress.totalBytes} gedownload`);
+        };
+
+        this.codePush.sync({
+            updateDialog: {
+                appendReleaseDescription: false,
+                updateTitle: 'Molloot update',
+                mandatoryUpdateMessage: 'Er is een nieuwe update beschikbaar',
+                mandatoryContinueButtonLabel: 'Installeer update'
+            },
+            deploymentKey: environment.iOSCodePush,
+            installMode: InstallMode.IMMEDIATE
+        }, downloadProgress).pipe(take(1)).subscribe(
+            (syncStatus) => {
+                console.log('CODE PUSH SYNCSTATUS: ' + syncStatus);
+            },
+            (error) => {
+                console.error('CODE PUSH ERROR: ' + error);
+            });
+
+    }
+
+    setupPush() {
+        // I recommend to put these into your environment.ts
+        this.oneSignal.startInit(environment.oneSignal.appId, environment.oneSignal.googleProjectNumber);
+
+        this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.None);
+
+        // Notifcation was received in general
+        this.oneSignal.handleNotificationReceived().subscribe(data => {
+            this.store.dispatch(new FetchActiesInProgress());
+        });
+
+        // Notification was really clicked/opened
+        this.oneSignal.handleNotificationOpened().subscribe(data => {
+            // Just a note that the data is a different place here!
+        });
+
+        this.oneSignal.endInit();
     }
 
     ngOnDestroy() {

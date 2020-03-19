@@ -6,7 +6,7 @@
                 <ion-icon *ngIf="isPouleAdmin" class="icon-in-title" color="tertiary" name="person-add"
                           (click)="goToAddDeelnemer()"></ion-icon>
             </ion-card-title>
-            <hr style="background-color: #25B973">
+            <hr class="primary_line">
         </ion-card-header>
         <ng-container *ngIf="activePoule">
             <ion-card-content>
@@ -16,16 +16,18 @@
                                   [color]="deelnemer.id !== deelnemerId && deelnemer.deelnemerId !== deelnemerId ? 'tertiary' : 'primary'"
                                   (click)="deelnemer.showDetails = !deelnemer.showDetails">
                             <ion-avatar slot="start">
-                                <ngx-avatar size="40" bgColor="#000" borderColor="#25B973" fgColor="#25B973"
+                                <ngx-avatar size="40" bgColor="#25B973"
+                                            [borderColor]="deelnemer.id !== deelnemerId && deelnemer.deelnemerId !== deelnemerId ? '#25B973' : '#222428'"
+                                            fgColor="#1F2421"
                                             [value]="deelnemer.positie"></ngx-avatar>
                             </ion-avatar>
-                            <ion-label text-wrap>
+                            <ion-label class="ion-text-wrap">
                                 <ion-text [color]="deelnemer.id !== deelnemerId ? 'dark' : 'dark'">
                                     <ion-row>
                                         <ion-col [size]="9">
                                             <h3>{{deelnemer.display_name}}</h3>
                                         </ion-col>
-                                        <ion-col text-right>
+                                        <ion-col class="ion-text-right">
                                             {{deelnemer.totaalpunten}}
                                         </ion-col>
                                     </ion-row>
@@ -53,7 +55,7 @@
             <ion-card-title>
                 Begin je eigen poule!
             </ion-card-title>
-            <hr style="background-color: #25B973">
+            <hr class="primary_line">
         </ion-card-header>
         <ng-container>
             <ion-card-content>

@@ -6,8 +6,9 @@ import {navigation} from '../../constants/navigation.constants';
 import {IPoule} from '../../interface/IPoules';
 import {Router} from '@angular/router';
 import {select, Store} from '@ngrx/store';
-import {getDeelnemerId} from '../../store/poules/poules.reducer';
+import {getAllPoules, getDeelnemerId} from '../../store/poules/poules.reducer';
 import {IAppState} from '../../store/store';
+import {SetPouleActive} from '../../store/poules/poules.actions';
 
 @Component({
     selector: 'app-overview',
@@ -30,14 +31,13 @@ export class OverviewComponent implements OnInit, OnDestroy {
                 this.deelnemerId = response;
             });
 
-        this.uiService.poules$.pipe(takeUntil(this.unsubscribe)).subscribe(response => {
+        this.store.pipe(select(getAllPoules)).pipe(takeUntil(this.unsubscribe)).subscribe(response => {
             this.poules = response;
         });
     }
 
     navigateToPoule(poule: IPoule, index: number) {
-        this.uiService.activePoule$.next(poule);
-        this.uiService.activePouleIndex$.next(index);
+        this.store.dispatch(new SetPouleActive(poule));
         this.router.navigate([`${navigation.poules}/${navigation.poule}`]);
     }
 

@@ -9,7 +9,7 @@
                 <ion-icon name="information-circle-outline"></ion-icon>
             </ion-button>
         </ion-buttons>
-        <ion-title text-center>{{displayName}}</ion-title>
+        <ion-title class="ion-text-center">{{displayName}}</ion-title>
         <ion-buttons slot="end">
             <ion-button *ngIf="!(authService.user$ | async)" (click)="goToLogin()">
                 <ion-icon name="log-in"></ion-icon>

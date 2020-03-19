@@ -1,7 +1,7 @@
 <ion-header>
     <app-footer></app-footer>
     <ion-toolbar color="dark">
-        <ion-grid class="no-padding">
+        <ion-grid class="ion-no-padding">
             <ion-row>
                 <ion-col class="justify-content-center">
                     <img class="icon_avatar"
@@ -17,11 +17,11 @@
             <ion-card-title>
                 Statistieken
             </ion-card-title>
-            <hr style="background-color: #25B973">
+            <hr class="primary_line">
         </ion-card-header>
         <ion-card-content>
             <ion-item lines="full" color="primary">
-                <ion-text text-wrap="">
+                <ion-text class="ion-text-wrap">
                     Mol verdenkingen
                 </ion-text>
             </ion-item>
@@ -30,7 +30,7 @@
                             class="item-avatar">
                     <img [src]="verdenking?.mol.image_url">
                 </ion-avatar>
-                <ion-label text-wrap>
+                <ion-label class="ion-text-wrap">
                     <ion-text color="secondary">
                         <h3>{{verdenking.mol.display_name}}</h3>
                         <h3>{{verdenking.percentage}} %</h3>
