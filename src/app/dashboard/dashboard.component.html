@@ -26,7 +26,7 @@
                     <hr class="primary_line">
                 </ion-card-header>
                 <ion-card-content>
-                    <ion-icon [color]="(uiService.testAfgerond$ | async) ? 'tertiary' : 'primary'" name="clock"
+                    <ion-icon [color]="(uiService.testAfgerond$ | async) ? 'tertiary' : 'primary'" name="timer-outline"
                               style="font-size: 48px;"></ion-icon>
                 </ion-card-content>
             </ion-card>
@@ -40,8 +40,8 @@
                     <hr class="primary_line">
                 </ion-card-header>
                 <ion-card-content>
-                    <ion-icon [color]="(uiService.uitnodigingen$ | async)?.length > 0 ? 'primary' : 'tertiary'"
-                              name="trophy" style="font-size: 48px;" (click)="goToPoules()"></ion-icon>
+                    <ion-icon [color]="(uiService.uitnodigingen$ | async) ? 'primary' : 'tertiary'"
+                              name="trophy-outline" style="font-size: 48px;" (click)="goToPoules()"></ion-icon>
                 </ion-card-content>
             </ion-card>
         </ion-col>
@@ -55,7 +55,7 @@
                 </ion-card-header>
                 <ion-card-content>
                     <ion-icon [color]="(uiService.voorspellingAfgerond$ | async) ? 'tertiary' : 'primary'"
-                              name="finger-print" style="font-size: 48px;"></ion-icon>
+                              name="finger-print-outline" style="font-size: 48px;"></ion-icon>
                 </ion-card-content>
             </ion-card>
         </ion-col>
@@ -68,7 +68,7 @@
                     <hr class="primary_line">
                 </ion-card-header>
                 <ion-card-content>
-                    <ion-icon name="podium" style="font-size: 48px;"></ion-icon>
+                    <ion-icon name="podium-outline" style="font-size: 48px;"></ion-icon>
                 </ion-card-content>
             </ion-card>
         </ion-col>

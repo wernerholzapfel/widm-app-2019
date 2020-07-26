@@ -26,8 +26,14 @@ export class UiService {
             message: message,
             duration: duration,
             position: 'top',
-            showCloseButton: showCloseButton,
-            closeButtonText: 'OK',
+            buttons: [
+               {
+                    text: 'OK',
+                    role: 'cancel',
+                    handler: () => {
+                    }
+                }
+            ],
             color: color,
             cssClass: 'toast-position'
         });

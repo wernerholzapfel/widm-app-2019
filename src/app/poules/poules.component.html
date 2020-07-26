@@ -7,7 +7,7 @@
                     <ion-row class="ion-justify-content-center">
                         <ion-icon class="large-icon"
                                   *ngIf="activePouleIndex > 0 && router.url.startsWith('/poules/poule')"
-                                  name="arrow-back"
+                                  name="arrow-back-outline"
                                   (click)="activatePoule(activePouleIndex - 1)"></ion-icon>
                     </ion-row>
                 </ion-col>
@@ -21,7 +21,7 @@
                         <ion-icon class="large-icon"
                                   *ngIf="activePouleIndex + 1 < numberOfPoules && router.url.startsWith('/poules/poule')"
                                   (click)="activatePoule(activePouleIndex + 1)"
-                                  name="arrow-forward"></ion-icon>
+                                  name="arrow-forward-outline"></ion-icon>
                     </ion-row>
                 </ion-col>
             </ion-row>

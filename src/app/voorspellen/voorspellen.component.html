@@ -10,7 +10,7 @@
                                         *ngIf="activeIndex > 0 && selectKandidaat"
                                         (click)="activateKandidaat(activeIndex - 1)">
                                 <ion-icon color="tertiary" slot="icon-only" class="large-icon"
-                                          name="arrow-back"></ion-icon>
+                                          name="arrow-back-outline"></ion-icon>
                             </ion-button>
                         </ion-row>
                     </ion-col>
@@ -20,7 +20,7 @@
                             <img [src]="activeKandidaat?.image_url">
                         </ion-avatar>
                         <ion-avatar class="header-icon-avatar" *ngIf="activeKandidaat && !selectKandidaat">
-                            <ion-icon class="header-avatar" name="person"></ion-icon>
+                            <ion-icon class="header-avatar" name="person-outline"></ion-icon>
                         </ion-avatar>
                     </ion-col>
                     <ion-col class="ion-align-self-center">
@@ -29,7 +29,7 @@
                                         *ngIf="activeIndex + 1 < numberOfKandidaten && selectKandidaat"
                                         (click)="activateKandidaat(activeIndex + 1)">
                                 <ion-icon color="tertiary" slot="icon-only" class="large-icon"
-                                          name="arrow-forward"></ion-icon>
+                                          name="arrow-forward-outline"></ion-icon>
                             </ion-button>
                         </ion-row>
                     </ion-col>
@@ -64,7 +64,7 @@
                             </ion-avatar>
                             <ion-avatar *ngIf="!voorspelling.kandidaat && !voorspelling.selected" slot="start"
                                         class="item-avatar">
-                                <ion-icon class="icon-avatar" name="person"></ion-icon>
+                                <ion-icon class="icon-avatar" name="person-circle-outline"></ion-icon>
                             </ion-avatar>
                             <ion-avatar *ngIf="voorspelling.selected" slot="start"
                                         class="item-avatar">
@@ -93,17 +93,17 @@
                                         [disabled]="isBusy || deadlineVerstreken || selectKandidaat"
                                         *ngIf="!voorspelling.selected"
                                         (click)="editKandidaat(voorspelling.type)" size="small">
-                                <ion-icon color="secondary" slot="icon-only" name="md-create"></ion-icon>
+                                <ion-icon color="secondary" slot="icon-only" name="create-outline"></ion-icon>
                             </ion-button>
                             <ion-button class="ion-no-padding" fill="clear" [disabled]="isBusy || deadlineVerstreken"
                                         *ngIf="voorspelling.selected"
                                         (click)="cancelEditKandidaat(voorspelling.type)" size="small">
-                                <ion-icon color="secondary" slot="icon-only" name="undo"></ion-icon>
+                                <ion-icon color="secondary" slot="icon-only" name="arrow-undo-outline"></ion-icon>
                             </ion-button>
                             <ion-button class="ion-no-padding" fill="clear" [disabled]="isBusy || deadlineVerstreken"
                                         *ngIf="voorspelling.selected"
                                         (click)="submitVoorspellingen(false)" size="small">
-                                <ion-icon color="secondary" slot="icon-only" name="ios-save"></ion-icon>
+                                <ion-icon color="secondary" slot="icon-only" name="save-outline"></ion-icon>
                             </ion-button>
                         </ion-item>
                     </div>

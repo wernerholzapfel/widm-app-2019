@@ -39,11 +39,11 @@
                     <ion-icon *ngIf="!uitnodiging.isAccepted && !uitnodiging.isDeclined"
                               color="medium"
                               slot="end"
-                              name="ios-share"
+                              name="share-outline"
                               (click)="shareInvite(true)">
                     </ion-icon>
-                    <ion-icon *ngIf="uitnodiging.isAccepted" color="primary" slot="end" name="checkmark"></ion-icon>
-                    <ion-icon *ngIf="uitnodiging.isDeclined" color="danger" slot="end" name="close"></ion-icon>
+                    <ion-icon *ngIf="uitnodiging.isAccepted" color="primary" slot="end" name="checkmark-outline"></ion-icon>
+                    <ion-icon *ngIf="uitnodiging.isDeclined" color="danger" slot="end" name="close-outline"></ion-icon>
                 </ion-item>
             </div>
         </ion-card-content>

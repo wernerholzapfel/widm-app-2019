@@ -3,7 +3,7 @@
         <ion-buttons slot="start">
             <ion-button *ngIf="router.url !== '/home'"
                         (click)="goBack()">
-                <ion-icon name="md-arrow-back"></ion-icon>
+                <ion-icon name="arrow-back-outline"></ion-icon>
             </ion-button>
             <ion-button *ngIf="router.url === '/home'" (click)="showIntro()">
                 <ion-icon name="information-circle-outline"></ion-icon>
@@ -12,10 +12,10 @@
         <ion-title class="ion-text-center">{{displayName}}</ion-title>
         <ion-buttons slot="end">
             <ion-button *ngIf="!(authService.user$ | async)" (click)="goToLogin()">
-                <ion-icon name="log-in"></ion-icon>
+                <ion-icon name="log-in-outline"></ion-icon>
             </ion-button>
             <ion-button *ngIf="(authService.user$ | async)" (click)="logout()">
-                <ion-icon name="log-out"></ion-icon>
+                <ion-icon name="log-out-outline"></ion-icon>
             </ion-button>
         </ion-buttons>
     </ion-toolbar>
