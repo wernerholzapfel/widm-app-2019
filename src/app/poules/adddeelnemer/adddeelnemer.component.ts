@@ -20,7 +20,7 @@ import {IPoule} from '../../interface/IPoules';
 })
 export class AdddeelnemerComponent implements OnInit, OnDestroy {
 
-    @ViewChild('form', {static: false}) form: NgForm;
+    @ViewChild('form') form: NgForm;
 
     unsubscribe = new Subject<void>();
     poule: IPoule;

@@ -19,8 +19,8 @@ import {take} from 'rxjs/operators';
     styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-    @ViewChild('loginForm', {static: false}) loginForm: NgForm;
-    @ViewChild('signupForm', {static: false}) signupForm: NgForm;
+    @ViewChild('loginForm') loginForm: NgForm;
+    @ViewChild('signupForm') signupForm: NgForm;
     user = {
         email: '',
         password: '',

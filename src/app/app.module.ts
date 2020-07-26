@@ -30,7 +30,6 @@ import {UiService} from './services/app/ui.service';
 import {FooterModule} from './footer/footer.module';
 import {PuntenModule} from './punten/punten.module';
 import {PuntenItemModule} from './punten/punten-item/punten-item.module';
-import {AvatarModule} from 'ng2-avatar';
 import {DeelnemerService} from './deelnemer.service';
 import {IntroModule} from './intro/intro.module';
 import {IonicStorageModule} from '@ionic/storage';
@@ -58,7 +57,6 @@ import {CodePush} from '@ionic-native/code-push/ngx';
         PuntenItemModule,
         IntroModule,
         StatistiekenModule,
-        AvatarModule.forRoot(),
         AngularFireModule.initializeApp(environment.firebase, 'angular-auth-firebase'),
         StoreModule.forRoot(reducers),
         IonicStorageModule.forRoot(),

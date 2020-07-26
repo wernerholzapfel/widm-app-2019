@@ -20,7 +20,7 @@ import {OneSignal} from '@ionic-native/onesignal/ngx';
 
 export class TestComponent implements OnInit, OnDestroy {
 
-    @ViewChild('slides', {static: false}) slides: any;
+    @ViewChild('slides') slides: any;
     countdown = 20;
     timer: any;
     aflevering: number;

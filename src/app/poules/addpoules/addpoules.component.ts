@@ -17,7 +17,7 @@ import {takeUntil} from 'rxjs/operators';
     styleUrls: ['./addpoules.component.scss']
 })
 export class AddpoulesComponent implements OnInit, OnDestroy {
-    @ViewChild('createPouleForm', {static: false}) createPouleForm: NgForm;
+    @ViewChild('createPouleForm') createPouleForm: NgForm;
     unsubscribe: Subject<void> = new Subject<void>();
     deelnemerId: string;
     isLoading: boolean;

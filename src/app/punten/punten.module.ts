@@ -6,7 +6,6 @@ import {FooterModule} from '../footer/footer.module';
 import {IonicModule} from '@ionic/angular';
 import {PuntenItemModule} from './punten-item/punten-item.module';
 import {PersonalHeaderModule} from '../personal-header/personal-header.module';
-import {AvatarModule} from 'ng2-avatar';
 import {VoorspellingsscoreModule} from '../voorspellingsscore/voorspellingsscore.module';
 import {RouterModule, Routes} from '@angular/router';
 
@@ -32,7 +31,6 @@ const routes: Routes = [
         FooterModule,
         PuntenItemModule,
         IonicModule,
-        AvatarModule,
         VoorspellingsscoreModule,
         RouterModule.forChild(routes)
     ],
