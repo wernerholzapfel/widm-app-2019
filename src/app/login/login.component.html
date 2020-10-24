@@ -1,10 +1,10 @@
 <ion-card color="secondary" *ngIf="!wachtwoordvergeten">
         <ion-card-header>
-            <ion-segment color="tertiary" (ionChange)="segmentChanged($event)">
-                <ion-segment-button value="inschrijven" [checked]="activeSegment === 'inschrijven'">
+            <ion-segment mode="md" color="tertiary" (ionChange)="segmentChanged($event)" value="inschrijven">
+                <ion-segment-button value="inschrijven">
                     Inschrijven
                 </ion-segment-button>
-                <ion-segment-button value="inloggen" [checked]="activeSegment === 'inloggen'">
+                <ion-segment-button value="inloggen">
                     Login
                 </ion-segment-button>
             </ion-segment>

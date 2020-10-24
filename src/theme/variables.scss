@@ -86,7 +86,7 @@ $tertiary: #E7E5DF;
 }
 
 ion-segment-button {
-  --indicator-color: rgba(255,255,255,0.1);
+  --indicator-color: var(--ion-color-primary);
   --indicator-color-checked: var(--ion-color-primary);
   --color-checked: var(--ion-color-light);
   --color: var(--ion-color-light);

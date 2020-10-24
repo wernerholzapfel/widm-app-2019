@@ -8,6 +8,7 @@ import {PuntenItemModule} from './punten-item/punten-item.module';
 import {PersonalHeaderModule} from '../personal-header/personal-header.module';
 import {VoorspellingsscoreModule} from '../voorspellingsscore/voorspellingsscore.module';
 import {RouterModule, Routes} from '@angular/router';
+import {AvatarModule} from 'ngx-avatar';
 
 
 const routes: Routes = [
@@ -32,7 +33,8 @@ const routes: Routes = [
         PuntenItemModule,
         IonicModule,
         VoorspellingsscoreModule,
-        RouterModule.forChild(routes)
+        RouterModule.forChild(routes),
+        AvatarModule
     ],
     exports: [PuntenComponent]
 })

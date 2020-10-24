@@ -1,12 +1,14 @@
-import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
+import {HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
 import {from as fromPromise, Observable} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {AuthService} from './auth.service';
-import {switchMap} from 'rxjs/operators';
+import {switchMap, tap} from 'rxjs/operators';
+import {Router} from '@angular/router';
+import {environment} from '../../../environments/environment';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
-    constructor(private authService: AuthService) {
+    constructor(private authService: AuthService, private router: Router) {
     }
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -26,7 +28,7 @@ export class TokenInterceptor implements HttpInterceptor {
                                         'Authorization': `Bearer ${token}`
                                     }
                                 });
-                                return next.handle(request);
+                                return this.handleUnAuthorized(next, request);
                             } else {
                                 return next.handle(request);
                             }
@@ -40,8 +42,27 @@ export class TokenInterceptor implements HttpInterceptor {
                             'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
                         }
                     });
-                    return next.handle(request);
+                    return this.handleUnAuthorized(next, request);
                 }
             }));
+    }
+
+    handleUnAuthorized(next: HttpHandler, request: HttpRequest<any>): Observable<HttpEvent<any>> {
+        if (request.url.startsWith(environment.api)) {
+            return next.handle(request).pipe(tap(() => {
+                },
+                (err: any) => {
+                    if (err instanceof HttpErrorResponse) {
+                        if (err.status !== 401) {
+                            return;
+                        }
+                        this.authService.logout();
+                        this.router.navigate(['home']);
+                    }
+                }));
+        } else {
+            return next.handle(request);
+        }
+
     }
 }

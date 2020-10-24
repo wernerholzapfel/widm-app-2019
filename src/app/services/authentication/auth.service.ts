@@ -7,6 +7,7 @@ import {UiService} from '../app/ui.service';
 import {IAppState} from '../../store/store';
 import {Store} from '@ngrx/store';
 import {ResetPoules, SetPouleActive} from '../../store/poules/poules.actions';
+import IdTokenResult = firebase.auth.IdTokenResult;
 
 @Injectable()
 export class AuthService {
@@ -14,23 +15,16 @@ export class AuthService {
     public isAdmin = false;
 
     constructor(private _firebaseAuth: AngularFireAuth, private uiService: UiService, private store: Store<IAppState>) {
-        this.user$ = _firebaseAuth.authState;
+        this.user$ = _firebaseAuth.user;
 
     }
 
     signInRegular(email, password) {
-        const credential = firebase.auth.EmailAuthProvider.credential(email, password);
-        return this._firebaseAuth.auth.signInWithEmailAndPassword(email, password);
-    }
-
-    updateProfile(displayName: string) {
-        this.getToken().then(response => {
-            response.updateProfile({displayName: displayName});
-        });
+        return this._firebaseAuth.signInWithEmailAndPassword(email, password);
     }
 
     signUpRegular(email, password, displayName) {
-        return this._firebaseAuth.auth.createUserWithEmailAndPassword(email, password);
+        return this._firebaseAuth.createUserWithEmailAndPassword(email, password);
     }
 
     isLoggedIn() {
@@ -38,7 +32,7 @@ export class AuthService {
     }
 
     logout() {
-        this._firebaseAuth.auth.signOut()
+        this._firebaseAuth.signOut()
             .then(response => {
                 this.store.dispatch(new ResetPoules());
                 this.uiService.huidigeVoorspelling$.next(null);
@@ -48,24 +42,16 @@ export class AuthService {
             });
     }
 
-    getToken(): Promise<any> {
-        if (this._firebaseAuth.auth.currentUser) {
-            return this._firebaseAuth.auth.currentUser.getIdToken(true);
-        } else {
-            return Promise.resolve(false);
-        }
+    getToken(): Observable<string> {
+        return this._firebaseAuth.idToken;
     }
 
-    getTokenResult(): Promise<any> {
-        if (this._firebaseAuth.auth.currentUser) {
-            return this._firebaseAuth.auth.currentUser.getIdTokenResult(true);
-        } else {
-            return Promise.resolve(false);
-        }
+    getTokenResult(): Observable<IdTokenResult> {
+        return this._firebaseAuth.idTokenResult;
     }
 
     sendPasswordResetEmail(email: string): Promise<any> {
-        return this._firebaseAuth.auth.sendPasswordResetEmail(email);
+        return this._firebaseAuth.sendPasswordResetEmail(email);
     }
 
 

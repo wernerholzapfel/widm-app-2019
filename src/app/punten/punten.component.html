@@ -7,15 +7,14 @@
 <ion-content>
     <ion-card color="secondary">
         <ion-card-header>
-            <ion-segment mode="md" (ionChange)="segmentChanged($event)">
-                <ion-segment-button mode="md" value="voorspellingen" [checked]="activeSegment === 'voorspellingen'">
+            <ion-segment mode="md" (ionChange)="segmentChanged($event)" value="voorspellingen">
+                <ion-segment-button mode="md" value="voorspellingen" >
                     Voorspellingen
                 </ion-segment-button>
-                <ion-segment-button mode="md" value="tests" [checked]="activeSegment === 'tests'">
+                <ion-segment-button mode="md" value="tests">
                     Tests
                 </ion-segment-button>
             </ion-segment>
-            <hr class="primary_line">
         </ion-card-header>
         <ion-card-content>
             <div *ngIf="activeSegment === 'voorspellingen'">
@@ -59,8 +58,11 @@
                                 </ion-text>
                             </ion-label>
                             <ion-avatar slot="start">
-                                <avatar size="40" background="#000" [letter]="test?.punten"
-                                        [displayType]="'circle'"></avatar>
+                                <ngx-avatar [value]="test?.punten.toString()"
+                                            [bgColor]="test?.punten === 0 ? '#393E41' : '#25B973'"
+                                            [fgColor]="test?.punten === 0 ? '#25B973' : '#393E41'"
+                                            size="40"
+                                            [round]="true"></ngx-avatar>
                             </ion-avatar>
                         </ion-item>
                     </div>

@@ -1,6 +1,9 @@
+@import '../../theme/variables';
+
 :host {
   ion-card {
-    height: 100%
+    height: calc(100vh - 108px - #{$safe-area-inset-top} - #{$safe-area-inset-bottom});
+    margin-bottom: 32px;
   }
   .logo {
     display: grid;

@@ -190,7 +190,7 @@ export class AppComponent implements OnInit, OnDestroy {
                 mandatoryUpdateMessage: 'Er is een nieuwe update beschikbaar',
                 mandatoryContinueButtonLabel: 'Installeer update'
             },
-            deploymentKey: environment.iOSCodePush,
+            deploymentKey: this.platform.is('ios') ? environment.iOSCodePush : environment.androidCodePush,
             installMode: InstallMode.IMMEDIATE
         }, downloadProgress).pipe(take(1)).subscribe(
             (syncStatus) => {
@@ -199,11 +199,9 @@ export class AppComponent implements OnInit, OnDestroy {
             (error) => {
                 console.error('CODE PUSH ERROR: ' + error);
             });
-
     }
 
     setupPush() {
-        // I recommend to put these into your environment.ts
         this.oneSignal.startInit(environment.oneSignal.appId, environment.oneSignal.googleProjectNumber);
 
         this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.None);

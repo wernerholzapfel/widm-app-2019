@@ -14,7 +14,7 @@
                         <ion-item lines="full" color="tertiary" (click)="navigateToPoule(poule, i)">
                             <ion-avatar slot="start">
                                 <ngx-avatar size="40" bgColor="#25B973" borderColor="#25B973" fgColor="#1F2421"
-                                            [value]="determinePositionFromUser(poule)"></ngx-avatar>
+                                            [value]="determinePositionFromUser(poule).toString()"></ngx-avatar>
                             </ion-avatar>
                             <ion-label class="ion-text-wrap">
                                 <ion-text>
@@ -30,7 +30,7 @@
                         </ion-item>
                     </ng-container>
                 </div>
-                <div *ngIf="poules.length === 0">
+                <div *ngIf="poules?.length === 0">
                     <ion-text>
                         Start een poule en ga de strijd aan met je familie en vrienden.
                     </ion-text>
