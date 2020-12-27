@@ -4,6 +4,7 @@ export interface IPoules {
     poules?: IPoule[];
     activePoule?: IPoule;
     stand?: IPoule;
+    totaalScoreDeelnemer: number;
 }
 
 export interface IPoule {

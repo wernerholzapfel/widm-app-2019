@@ -1,7 +1,7 @@
 <ion-grid class="ion-no-padding">
     <ion-row>
         <ion-col class="ion-align-self-center" (click)="goToScores()">
-            <ng-container *ngIf="deelnemerPunten > -1">
+            <ng-container *ngIf="(authService.user$ | async) && deelnemerPunten > -1">
                 <h1 class="ion-text-center">
                     {{deelnemerPunten}}
                 </h1>
