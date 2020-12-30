@@ -1,4 +1,17 @@
 <ion-content>
+    <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+        <ion-fab-button>
+            <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-list side="top">
+            <ion-button expand="full" color="secondary" (click)="goToAddPoule()">
+                Start nieuwe poule
+            </ion-button>
+            <ion-button expand="full" color="secondary" (click)="joinPoule()">
+                Doe mee met een poule
+            </ion-button>
+        </ion-fab-list>
+    </ion-fab>
     <ion-card color="secondary">
         <ion-card-header>
             <ion-card-title>
@@ -32,12 +45,16 @@
                 </div>
                 <div *ngIf="poules?.length === 0">
                     <ion-text>
-                        Start een poule en ga de strijd aan met je familie en vrienden.
+                        Start of doe mee aan een poule en ga de strijd aan met je familie en vrienden.
                     </ion-text>
+                    <ion-button class="sublink" expand="full" color="primary" fill="solid" (click)="goToAddPoule()">
+                        Start
+                        nieuwe poule
+                    </ion-button>
+                    <ion-button class="sublink" expand="full" color="primary" fill="solid" (click)="joinPoule()">
+                        Doe mee met een poule
+                    </ion-button>
                 </div>
-                <ion-button class="sublink" expand="full" color="primary" fill="solid" (click)="goToAddPoule()">Start
-                    nieuwe poule
-                </ion-button>
             </ion-card-content>
         </ng-container>
     </ion-card>

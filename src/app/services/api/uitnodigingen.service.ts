@@ -34,6 +34,10 @@ export class UitnodigingenService {
     constructor(private httpClient: HttpClient) {
     }
 
+    joinPoule(invitationId): Observable<IPoule> {
+        return this.httpClient.post<IPoule>(`${this.api}/poulesinvitation/accept`, {id: invitationId});
+    }
+
     getUitnodigingen(): Observable<any> {
         return this.httpClient.get(`${this.api}/uitnodigingen`).pipe(
             map(res => <any>res)

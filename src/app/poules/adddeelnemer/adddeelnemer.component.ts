@@ -9,7 +9,7 @@ import {getActivePoule} from '../../store/poules/poules.reducer';
 import {IAppState} from '../../store/store';
 import {Subject} from 'rxjs';
 import {select, Store} from '@ngrx/store';
-import {mergeMap, skipWhile, take} from 'rxjs/operators';
+import {mergeMap, skipWhile, take, takeUntil} from 'rxjs/operators';
 import {IPoule} from '../../interface/IPoules';
 
 
@@ -20,11 +20,8 @@ import {IPoule} from '../../interface/IPoules';
 })
 export class AdddeelnemerComponent implements OnInit, OnDestroy {
 
-    @ViewChild('form') form: NgForm;
-
     unsubscribe = new Subject<void>();
     poule: IPoule;
-    uitnodigingen: any[];
 
     constructor(private uitnodigingenService: UitnodigingenService,
                 private uiService: UiService,
@@ -35,35 +32,32 @@ export class AdddeelnemerComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.store.pipe(select(getActivePoule)).pipe(skipWhile(response => !response)).pipe(mergeMap(activePoule => {
-            this.poule = activePoule;
-            return this.uitnodigingenService.getUitnodigingenByPoule(activePoule.id).pipe(take(1));
-        })).subscribe(response => {
-            this.uitnodigingen = response.sort((a, b) => {
-                return a.isDeclined - b.isDeclined || a.isAccepted - b.isAccepted;
+        this.store.pipe(select(getActivePoule))
+            .pipe(skipWhile(response => !response))
+            .pipe(takeUntil(this.unsubscribe))
+            .subscribe(activePoule => {
+                this.poule = activePoule;
             });
-        });
     }
 
-
-    addDeelnemer() {
-        this.uitnodigingenService.addDeelnemer({
-            poule: {id: this.poule.id},
-            uniqueIdentifier: this.form.value.email
-        }).subscribe(() => {
-            this.uitnodigingen = [{uniqueIdentifier: this.form.value.email}, ...this.uitnodigingen];
-                this.form.reset();
-            }
-        );
-    }
 
     shareInvite(personal: boolean) {
-        this.socialSharing.share(
-            `Ik heb je uitgenodigd voor 'Wie is de Molloot'. Download het spel hier! App store: https://apps.apple.com/nl/app/molloot/id1314512869
-            Google play: https://play.google.com/store/apps/details?id=com.wernerholzapfel.mollotenapp`,
-            'Wie is de Molloot').then(item => {
-        });
+        const shareMessage = `Ik nodig je uit voor de poule ${this.poule.poule_name} voor 'Wie is de Molloot'.
+            Neem deel aan de poule met deze code: ${this.poule.pouleInvitations[0].id}
+
+            Download 'Wie is de Molloot' hier! App store: https://apps.apple.com/nl/app/molloot/id1314512869
+            Google play: https://play.google.com/store/apps/details?id=com.wernerholzapfel.mollotenapp`;
+        const shareSubject = 'Wie is de Molloot';
+        if (this.plt.is('cordova')) {
+            this.socialSharing.share(shareMessage, shareSubject
+            ).then(item => {
+            });
+        } else {
+            console.log(shareSubject);
+            console.log(shareMessage);
+        }
     }
+
 
     ngOnDestroy() {
         this.unsubscribe.next();
