@@ -1,0 +1,42 @@
+<ion-header>
+    <ion-toolbar color="secondary">
+        <ion-title>
+            Kies je bericht
+        </ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="dismissModal()">Sluit</ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+    <ion-card>
+        <ion-card-content>
+            <ion-text color="light">
+                Kies hieronder een tekst uit. Tip, deel ook de losse code met je vrienden in Whatsapp, zo kunnen ze de
+                code makkelijk knippen en plakken in de app.
+            </ion-text>
+        </ion-card-content>
+    </ion-card>
+    <ion-card color="secondary" *ngFor="let inviteMessage of inviteMessages">
+        <ion-card-header>
+            <ion-card-title color="light">
+                {{inviteMessage.title}}
+            </ion-card-title>
+            <hr class="primary_line">
+        </ion-card-header>
+        <ion-card-content>
+            <ion-text>
+                <div class="ion-margin-bottom">
+                    {{inviteMessage.message}}
+                </div>
+            </ion-text>
+            <div>
+                <div class="button-container">
+                    <ion-button expand="full" (click)="shareMessage(inviteMessage)" color="primary">
+                        Deel dit bericht
+                    </ion-button>
+                </div>
+            </div>
+        </ion-card-content>
+    </ion-card>
+</ion-content>

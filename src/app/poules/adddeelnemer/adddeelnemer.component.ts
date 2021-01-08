@@ -1,16 +1,16 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {NgForm} from '@angular/forms';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {UiService} from '../../services/app/ui.service';
 import {UitnodigingenService} from '../../services/api/uitnodigingen.service';
 import {ActivatedRoute} from '@angular/router';
 import {SocialSharing} from '@ionic-native/social-sharing/ngx';
-import {Platform} from '@ionic/angular';
+import {ModalController, Platform} from '@ionic/angular';
 import {getActivePoule} from '../../store/poules/poules.reducer';
 import {IAppState} from '../../store/store';
 import {Subject} from 'rxjs';
 import {select, Store} from '@ngrx/store';
-import {mergeMap, skipWhile, take, takeUntil} from 'rxjs/operators';
+import {skipWhile, takeUntil} from 'rxjs/operators';
 import {IPoule} from '../../interface/IPoules';
+import {InviteMessagesComponent} from '../invite-messages/invite-messages.component';
 
 
 @Component({
@@ -28,6 +28,7 @@ export class AdddeelnemerComponent implements OnInit, OnDestroy {
                 private route: ActivatedRoute,
                 private plt: Platform,
                 private socialSharing: SocialSharing,
+                private modalController: ModalController,
                 private store: Store<IAppState>) {
     }
 
@@ -41,21 +42,12 @@ export class AdddeelnemerComponent implements OnInit, OnDestroy {
     }
 
 
-    shareInvite(personal: boolean) {
-        const shareMessage = `Ik nodig je uit voor de poule ${this.poule.poule_name} voor 'Wie is de Molloot'.
-            Neem deel aan de poule met deze code: ${this.poule.pouleInvitations[0].id}
-
-            Download 'Wie is de Molloot' hier! App store: https://apps.apple.com/nl/app/molloot/id1314512869
-            Google play: https://play.google.com/store/apps/details?id=com.wernerholzapfel.mollotenapp`;
-        const shareSubject = 'Wie is de Molloot';
-        if (this.plt.is('cordova')) {
-            this.socialSharing.share(shareMessage, shareSubject
-            ).then(item => {
-            });
-        } else {
-            console.log(shareSubject);
-            console.log(shareMessage);
-        }
+    async shareInvite() {
+        const popover = await this.modalController.create({
+            component: InviteMessagesComponent,
+            componentProps: {poule: this.poule},
+        });
+        return await popover.present();
     }
 
 

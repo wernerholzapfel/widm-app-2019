@@ -2,7 +2,7 @@
     <ion-spinner color="secondary" name="crescent"></ion-spinner>
 </div>
 <ion-content class="dashboard-container grid-full"
-             *ngIf="(authService.user$ | async) && !(uiService.isLoading$ | async)">
+             *ngIf="(authService.dataBaseUser$ | async) && !(uiService.isLoading$ | async)">
     <ion-row>
         <ion-col class="cell-1 full">
             <ion-card color="secondary" (click)="fetchActies()">
@@ -74,7 +74,7 @@
         </ion-col>
     </ion-row>
 </ion-content>
-<ion-content *ngIf="!(authService.user$ | async) && !(uiService.isLoading$ | async)">
+<ion-content *ngIf="!(authService.dataBaseUser$ | async) && !(uiService.isLoading$ | async)">
     <ion-row>
         <ion-col class="cell-1 full">
             <ion-card color="secondary">

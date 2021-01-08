@@ -38,6 +38,7 @@ import {SocialSharing} from '@ionic-native/social-sharing/ngx';
 import {OneSignal} from '@ionic-native/onesignal/ngx';
 import {CodePush} from '@ionic-native/code-push/ngx';
 import {AuthInterceptor} from './interceptor/unauthorized/unauthorized.interceptor';
+import {LoaderInterceptor} from './services/authentication/loading.interceptor';
 
 
 @NgModule({
@@ -78,6 +79,11 @@ import {AuthInterceptor} from './interceptor/unauthorized/unauthorized.intercept
         {
             provide: HTTP_INTERCEPTORS,
             useClass: TokenInterceptor,
+            multi: true
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: LoaderInterceptor,
             multi: true
         },
         {
