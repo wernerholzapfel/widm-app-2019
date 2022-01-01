@@ -18,7 +18,7 @@ export class LoaderInterceptor implements HttpInterceptor {
         this.requests.push(req);
         this.loaderService.isLoading$.next(true);
         // We create a new observable which we return instead of the original
-        return Observable.create(observer => {
+        return new Observable(observer => {
             // And subscribe to the original observable to ensure the HttpRequest is made
             const subscription = next.handle(req)
                 .subscribe(
