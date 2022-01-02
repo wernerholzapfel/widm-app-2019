@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
 import { InviteMessagesComponent } from './invite-messages.component';
@@ -7,7 +7,7 @@ describe('InviteMessagesComponent', () => {
   let component: InviteMessagesComponent;
   let fixture: ComponentFixture<InviteMessagesComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ InviteMessagesComponent ],
       imports: [IonicModule.forRoot()]
