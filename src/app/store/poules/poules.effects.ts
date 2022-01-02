@@ -1,7 +1,7 @@
 import {from as observableFrom, of as observableOf} from 'rxjs';
 import {catchError, concatMap, map, take} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
-import {Actions, Effect, ofType} from '@ngrx/effects';
+import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {
     ADD_POULES_SUCCESS,
     AddPouleSuccess,
@@ -21,8 +21,8 @@ import {PouleHelperService} from '../../poule-helper.service';
 @Injectable()
 export class PoulesEffects {
 
-    @Effect()
-    fetchPoulesInProgress$ = this.actions$.pipe(
+
+    fetchPoulesInProgress$ = createEffect(() => this.actions$.pipe(
         ofType<FetchPoulesInProgress>(FETCH_POULES_IN_PROGRESS),
         concatMap((action) => {
             return this.poulesService
@@ -55,21 +55,20 @@ export class PoulesEffects {
                             new FetchPoulesFailure(err),
                             new AddAlert({type: 'danger', message: 'Het ophalen van de poules is mislukt.', err: err})
                         ])));
-        }));
+        })));
 
 
-    @Effect()
-    fetchPouleSucces = this.actions$.pipe(
+    fetchPouleSucces = createEffect(() => this.actions$.pipe(
         ofType<FetchPoulesSuccess>(FETCH_POULES_SUCCESS),
         concatMap(action => {
             if (action) {
                 return observableOf(new SetPouleActive(action.payload.activePoule));
             }
         })
-    );
+    ));
 
-    @Effect()
-    addPouleSucces = this.actions$.pipe(
+
+    addPouleSucces = createEffect(() => this.actions$.pipe(
         ofType<AddPouleSuccess>(ADD_POULES_SUCCESS),
         concatMap(action => {
                 if (action) {
@@ -81,10 +80,10 @@ export class PoulesEffects {
             observableFrom([
                 new FetchPoulesFailure(err),
                 new AddAlert({type: 'danger', message: 'Het ophalen van de poules is mislukt.', err: err})
-            ])));
+            ]))));
 
-    @Effect()
-    calculatePoules$ = this.actions$.pipe(
+
+    calculatePoules$ = createEffect(() => this.actions$.pipe(
         ofType<CalculatePoules>(CALCULATE_POULES),
         map(action => ({
             ...action.payload.poules,
@@ -167,7 +166,7 @@ export class PoulesEffects {
             observableFrom([
                 new FetchPoulesFailure(err),
                 new AddAlert({type: 'danger', message: 'Het bijwerken van de poules is mislukt.', err: err})
-            ])));
+            ]))));
 
     constructor(private actions$: Actions,
                 private poulesService: PoulesService, private calculatieService: CalculatieService,
