@@ -66,7 +66,7 @@
     "es6-promise-plugin": "^4.2.2",
     "firebase": "^7.17.1",
     "ionicons": "^5.1.2",
-    "ngx-avatar": "^4.0.0",
+    "ngx-avatar": "^4.1.0",
     "npm-check-updates": "^3.1.24",
     "onesignal-cordova-plugin": "^2.6.0",
     "rxjs": "6.5.3",
