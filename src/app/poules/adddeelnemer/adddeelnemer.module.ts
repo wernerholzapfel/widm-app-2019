@@ -3,6 +3,7 @@ import {CommonModule} from '@angular/common';
 import {AdddeelnemerComponent} from './adddeelnemer.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {IonicModule} from '@ionic/angular';
+import {InviteMessagesModule} from '../invite-messages/invite-messages.module';
 
 @NgModule({
     declarations: [AdddeelnemerComponent],
@@ -10,7 +11,8 @@ import {IonicModule} from '@ionic/angular';
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
-        IonicModule
+        IonicModule,
+        InviteMessagesModule
     ],
     exports: [AdddeelnemerComponent]
 })

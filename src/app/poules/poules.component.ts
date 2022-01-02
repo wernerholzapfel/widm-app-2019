@@ -52,9 +52,9 @@ export class PoulesComponent implements OnInit, OnDestroy {
             }
         });
 
-        this.uiService.uitnodigingen$.pipe(takeUntil(this.unsubscribe)).subscribe(response => {
-            this.uitnodigingen = response;
-        });
+        // this.uiService.uitnodigingen$.pipe(takeUntil(this.unsubscribe)).subscribe(response => {
+        //     this.uitnodigingen = response;
+        // });
 
         this.store.pipe(select(getPositionInActivePoule))
             .pipe(takeUntil(this.unsubscribe)).subscribe((positie) => {
@@ -100,9 +100,9 @@ export class PoulesComponent implements OnInit, OnDestroy {
         this.poule_name = this.poules[this.activePouleIndex].poule_name;
     }
 
-    goToAcceptInvite() {
-        this.router.navigateByUrl(`${navigation.poules}/${navigation.acceptinvite}`);
-    }
+    // goToAcceptInvite() {
+    //     this.router.navigateByUrl(`${navigation.poules}/${navigation.acceptinvite}`);
+    // }
 
     goToOverview() {
         this.router.navigateByUrl(`${navigation.poules}/${navigation.overview}`);

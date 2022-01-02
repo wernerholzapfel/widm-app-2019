@@ -14,7 +14,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
     private handleAuthError(err: HttpErrorResponse): Observable<any> {
         // handle your auth error or rethrow
-        if (err.status === 401 || err.status === 403) {
+        if (err.status === 401) {
             // navigate /delete cookies or whatever
             this.authService.logout();
             this.uiService.presentToast('Je sessie is verlopen, log opnieuw in.');

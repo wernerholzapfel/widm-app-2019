@@ -4,7 +4,7 @@ export interface IPoules {
     poules?: IPoule[];
     activePoule?: IPoule;
     stand?: IPoule;
-    totaalScoreDeelnemer: number;
+    totaalScoreDeelnemer?: number;
 }
 
 export interface IPoule {
@@ -12,4 +12,9 @@ export interface IPoule {
     poule_name: string;
     deelnemers: any[]; // todo
     admins: any[]; // todo
+    pouleInvitations?: PouleInvitations[];
+}
+
+export interface PouleInvitations {
+    id: string;
 }

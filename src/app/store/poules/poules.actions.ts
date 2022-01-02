@@ -13,51 +13,56 @@ export const SET_POULE_ACTIVE = 'SET_POULE_ACTIVE';
 export const ADD_STAND = 'ADD_STAND';
 
 export class FetchPoulesInProgress implements Action {
-  readonly type = FETCH_POULES_IN_PROGRESS;
+    readonly type = FETCH_POULES_IN_PROGRESS;
 
-  constructor() {}
+    constructor(public payload?: IPoule) {
+    }
 }
 
 export class FetchPoulesSuccess implements Action {
-  readonly type = FETCH_POULES_SUCCESS;
+    readonly type = FETCH_POULES_SUCCESS;
 
-  constructor(public payload: IPoules) {}
+    constructor(public payload: { poules: IPoules, activePoule: IPoule }) {
+    }
 }
 
 export class AddPouleSuccess implements Action {
-  readonly type = ADD_POULES_SUCCESS;
+    readonly type = ADD_POULES_SUCCESS;
 
-  constructor(public payload: IPoule) {
-  }
+    constructor(public payload: IPoule) {
+    }
 }
 
 export class AddStand implements Action {
-  readonly type = ADD_STAND;
+    readonly type = ADD_STAND;
 
-  constructor(public payload: IPoule) {
-  }
+    constructor(public payload: IPoule) {
+    }
 }
 
 export class SetPouleActive implements Action {
-  readonly type = SET_POULE_ACTIVE;
+    readonly type = SET_POULE_ACTIVE;
 
-  constructor(public payload: IPoule) {
-  }
+    constructor(public payload: IPoule) {
+    }
 }
 
 export class ResetPoules implements Action {
     readonly type = RESET_POULES;
 }
-export class CalculatePoules implements Action {
-  readonly type = CALCULATE_POULES;
 
-  constructor(public payload: IPoules) {}
+export class CalculatePoules implements Action {
+    readonly type = CALCULATE_POULES;
+
+    constructor(public payload: {poules: IPoules, activePoule: IPoule}) {
+    }
 }
 
 export class FetchPoulesFailure implements Action {
-  readonly type = FETCH_POULES_FAILURE;
+    readonly type = FETCH_POULES_FAILURE;
 
-  constructor(public payload: any) {}
+    constructor(public payload: any) {
+    }
 }
 
 
