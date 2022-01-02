@@ -59,7 +59,8 @@ export class TestComponent implements OnInit, OnDestroy {
                 this.deelnemerId = response;
             });
 
-        combineLatest([this.store.pipe(select(getActies)),
+        combineLatest([
+            this.store.pipe(select(getActies)),
             this.testService.gettest()])
             .pipe(takeUntil(this.unsubscribe))
             .subscribe(([response, testvragen]) => {
@@ -91,7 +92,6 @@ export class TestComponent implements OnInit, OnDestroy {
     }
 
     async showDeadlinePopup() {
-        console.log('showDeadlinePopup aangeroepen');
         const alert = await this.alertCtrl.create({
             header: 'Deadline is voorbij',
             message: 'Helaas de deadline voor de test is verstreken.',

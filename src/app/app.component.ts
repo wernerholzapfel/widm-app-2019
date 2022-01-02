@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 
-import {Platform} from '@ionic/angular';
+import {AlertController, Platform} from '@ionic/angular';
 import {SplashScreen} from '@ionic-native/splash-screen/ngx';
 import {StatusBar} from '@ionic-native/status-bar/ngx';
 import {FetchActiesInProgress} from './store/acties/acties.actions';
@@ -14,7 +14,7 @@ import {AuthService} from './services/authentication/auth.service';
 import {combineLatest, forkJoin, of, Subject} from 'rxjs';
 import {getActies} from './store/acties/acties.reducer';
 import {TestService} from './services/api/test.service';
-import {concatMap, distinctUntilChanged, take, takeUntil} from 'rxjs/operators';
+import {concatMap, distinctUntilChanged, switchMap, take, takeUntil} from 'rxjs/operators';
 import {environment} from '../environments/environment';
 import {IActies} from './interface/IActies';
 import {Storage} from '@ionic/storage';
@@ -22,6 +22,7 @@ import {FetchPoulesInProgress, ResetPoules} from './store/poules/poules.actions'
 import {PoulesService} from './services/api/poules.service';
 import {OneSignal} from '@ionic-native/onesignal/ngx';
 import {CodePush, InstallMode} from '@ionic-native/code-push/ngx';
+import {DeelnemerService} from './deelnemer.service';
 
 @Component({
     selector: 'app-root',
@@ -42,12 +43,14 @@ export class AppComponent implements OnInit, OnDestroy {
         private uiService: UiService,
         private kandidatenService: KandidatenService,
         private voorspellenService: VoorspellenService,
+        private deelnemerService: DeelnemerService,
         private authService: AuthService,
         private pouleService: PoulesService,
         private oneSignal: OneSignal,
         private storage: Storage,
         private testService: TestService,
         private codePush: CodePush,
+        private alertController: AlertController
     ) {
         this.initializeApp();
 
@@ -56,17 +59,53 @@ export class AppComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.store.dispatch(new FetchActiesInProgress());
 
-        this.store.pipe(select(getActies)).pipe(takeUntil(this.unsubscribe)).subscribe(response => {
-            if (response && Object.entries(response).length > 0 && JSON.stringify(response) !== JSON.stringify(this.acties)) {
-                console.log('nieuwe acties beschikbaar');
-                this.aflevering = response.voorspellingaflevering ? response.voorspellingaflevering : 1;
-
-                this.acties = response;
-                this.fetchNewData(response);
-            } else if (response && response.alwaysUpdate) {
-                this.fetchUitnodigingen();
+        this.authService.user$.pipe(switchMap(user => {
+            if (user) {
+                return this.deelnemerService.getDeelnemer().pipe(switchMap(dbuser => {
+                    if (dbuser) {
+                        return of(dbuser);
+                    } else {
+                        if (!user.providerData[0].displayName) {
+                            return this.presentAlertPrompt(user).then(res => {
+                                of(null);
+                            });
+                        } else {
+                            console.log(user.providerData);
+                            return this.deelnemerService.postDeelnemer({
+                                email: user.providerData[0].email,
+                                display_name: user.providerData[0].displayName
+                            });
+                        }
+                    }
+                }));
+            } else {
+                return of(null);
             }
-        });
+        }))
+            .subscribe(deelnemer => {
+                this.authService.dataBaseUser$.next(deelnemer);
+            });
+
+
+        combineLatest([
+            this.store.pipe(select(getActies)),
+            this.authService.dataBaseUser$])
+            .pipe(takeUntil(this.unsubscribe))
+            .subscribe(([acties, databaseUser]) => {
+                if (acties && Object.entries(acties).length > 0 && JSON.stringify(acties) !== JSON.stringify(this.acties)) {
+                    this.aflevering = acties.voorspellingaflevering ? acties.voorspellingaflevering : 1;
+
+                    this.acties = acties;
+                } else if (acties && acties.alwaysUpdate && databaseUser) {
+                    this.fetchUitnodigingen();
+                }
+                if (acties && databaseUser) {
+                    this.fetchNewData(acties);
+                    if (this.platform.is('cordova')) {
+                        this.oneSignal.sendTag('displayName', databaseUser.displayName);
+                    }
+                }
+            });
 
         this.platform.resume.subscribe(() => {
             this.store.dispatch(new FetchActiesInProgress());
@@ -74,35 +113,25 @@ export class AppComponent implements OnInit, OnDestroy {
                 this.checkCodePush();
             }
         });
-
-        this.storage.get('seizoen').then(seizoen => {
-            if (seizoen !== '2020') {
-                this.authService.logout();
-            } else {
-                console.log('heeft account');
-            }
-        });
     }
 
     fetchUitnodigingen() {
-        this.authService.user$.pipe(
+        this.authService.dataBaseUser$.pipe(
             distinctUntilChanged())
             .pipe(
                 concatMap(user => {
                     if (user) {
                         this.store.dispatch(new FetchPoulesInProgress());
-                        return forkJoin(this.uitnodigingenService.getUitnodigingen().pipe(take(1)),
-                            this.kandidatenService.getMolStatistieken().pipe(take(1)));
+                        return forkJoin([this.uitnodigingenService.getUitnodigingen().pipe(take(1)),
+                            this.kandidatenService.getMolStatistieken().pipe(take(1))]);
                     } else {
                         return of([null, null]);
                     }
                 }),
                 takeUntil(this.unsubscribe))
             .subscribe(([uitnodigingen, statistieken]) => {
-                if (uitnodigingen && statistieken) {
-                    this.uiService.uitnodigingen$.next(Object.assign([...uitnodigingen]));
-                    this.uiService.statistieken$.next(Object.assign({}, statistieken));
-                }
+                this.uiService.uitnodigingen$.next(Object.assign(uitnodigingen ? [...uitnodigingen] : []));
+                this.uiService.statistieken$.next(Object.assign({}, statistieken));
             });
     }
 
@@ -112,7 +141,7 @@ export class AppComponent implements OnInit, OnDestroy {
         this.uiService.isLoading$.next(true);
 
         // while there is a user try to fetch all of his data and add it to uiservice.
-        this.authService.user$.pipe(
+        this.authService.dataBaseUser$.pipe(
             distinctUntilChanged())
             .pipe(
                 concatMap(user => {
@@ -180,7 +209,6 @@ export class AppComponent implements OnInit, OnDestroy {
     checkCodePush() {
         const downloadProgress = (progress) => {
             this.uiService.isLoading$.next(progress.receivedBytes !== progress.totalBytes);
-            console.log(`Bezig met update, ${progress.receivedBytes} van ${progress.totalBytes} gedownload`);
         };
 
         this.codePush.sync({
@@ -194,7 +222,6 @@ export class AppComponent implements OnInit, OnDestroy {
             installMode: InstallMode.IMMEDIATE
         }, downloadProgress).pipe(take(1)).subscribe(
             (syncStatus) => {
-                console.log('CODE PUSH SYNCSTATUS: ' + syncStatus);
             },
             (error) => {
                 console.error('CODE PUSH ERROR: ' + error);
@@ -222,5 +249,44 @@ export class AppComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         this.unsubscribe.next();
         this.unsubscribe.complete();
+    }
+
+    async presentAlertPrompt(user) {
+        const alert = await this.alertController.create({
+            header: 'Wat is je naam?',
+            message: '',
+            inputs: [
+                {
+                    name: 'displayName',
+                    type: 'text',
+                    placeholder: 'Naam',
+                },
+            ],
+            buttons: [
+                {
+                    text: 'Opslaan',
+                    handler: (data) => {
+                        console.log(data);
+                        if (data.displayName.length <= 2) {
+                            alert.message = 'Zonder naam kan je niet verder';
+                            return false;
+                        } else {
+                            this.authService.setDisplayName(data.displayName);
+                            return this.deelnemerService.postDeelnemer(
+                                {
+                                    email: user.providerData[0].email,
+                                    display_name: data.displayName
+                                })
+                                .subscribe(deelnemer => {
+                                    this.authService.dataBaseUser$.next(deelnemer);
+                                });
+                        }
+                    }
+                }
+            ],
+            backdropDismiss: false
+        });
+
+        await alert.present();
     }
 }

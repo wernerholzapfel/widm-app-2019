@@ -32,3 +32,6 @@ ionic cordova build ios --prod
 appcenter codepush release -a werner.holzapfel-gmail.com/molloot-ios -c ./platforms/ios/www/ -t 4.0.0
 
 Android:
+appcenter login
+ionic cordova build android --prod --release
+appcenter codepush release -a werner.holzapfel-gmail.com/molloot-android -c ./platforms/android/app/src/main/assets/www/ -t 4.1.1

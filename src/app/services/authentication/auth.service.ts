@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
 import {AngularFireAuth} from '@angular/fire/auth';
@@ -8,10 +8,13 @@ import {IAppState} from '../../store/store';
 import {Store} from '@ngrx/store';
 import {ResetPoules, SetPouleActive} from '../../store/poules/poules.actions';
 import IdTokenResult = firebase.auth.IdTokenResult;
+import {User} from 'firebase';
+import {take} from 'rxjs/operators';
 
 @Injectable()
 export class AuthService {
     public user$: Observable<firebase.User>;
+    public dataBaseUser$: BehaviorSubject<any> = new BehaviorSubject(null);
     public isAdmin = false;
 
     constructor(private _firebaseAuth: AngularFireAuth, private uiService: UiService, private store: Store<IAppState>) {
@@ -23,12 +26,21 @@ export class AuthService {
         return this._firebaseAuth.signInWithEmailAndPassword(email, password);
     }
 
-    signUpRegular(email, password, displayName) {
-        return this._firebaseAuth.createUserWithEmailAndPassword(email, password);
+    async signUpRegular(email, password, displayName) {
+        return await this._firebaseAuth.createUserWithEmailAndPassword(email, password).then(async user => {
+            await user.user.updateProfile({displayName});
+            return user;
+        });
     }
 
     isLoggedIn() {
         return this._firebaseAuth.authState;
+    }
+
+    setDisplayName(displayName: string) {
+        this._firebaseAuth.user.pipe(take(1)).subscribe(user => {
+            user.updateProfile({displayName});
+        });
     }
 
     logout() {
@@ -53,6 +65,4 @@ export class AuthService {
     sendPasswordResetEmail(email: string): Promise<any> {
         return this._firebaseAuth.sendPasswordResetEmail(email);
     }
-
-
 }

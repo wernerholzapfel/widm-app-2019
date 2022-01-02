@@ -10,7 +10,7 @@ export class UiService {
     constructor(private store: Store<IAppState>, private toastCtrl: ToastController) {
     }
 
-    isLoading$: BehaviorSubject<boolean> = new BehaviorSubject(true);
+    isLoading$: BehaviorSubject<boolean> = new BehaviorSubject(false);
     isSeasonFinished$: BehaviorSubject<boolean> = new BehaviorSubject(false);
     tests$: BehaviorSubject<any[]> = new BehaviorSubject(null);
     statistieken$: BehaviorSubject<any> = new BehaviorSubject(null);

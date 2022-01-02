@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {navigation} from '../constants/navigation.constants';
 import {IAppState} from '../store/store';
 import {select, Store} from '@ngrx/store';
-import {getAllPoules, getDeelnemerId} from '../store/poules/poules.reducer';
+import {getAllPoules, getDeelnemerId, getDeelnemerScore, getDisplayname} from '../store/poules/poules.reducer';
 import {combineLatest, forkJoin, of, Subject} from 'rxjs';
 import {UiService} from '../services/app/ui.service';
 import {skipWhile, switchMap, take, takeUntil} from 'rxjs/operators';
@@ -24,7 +24,7 @@ export class PersonalHeaderComponent implements OnInit, OnDestroy {
     constructor(private router: Router,
                 private store: Store<IAppState>,
                 private uiService: UiService,
-                private authService: AuthService,
+                public authService: AuthService,
                 private kandidatenService: KandidatenService
     ) {
     }
@@ -43,22 +43,15 @@ export class PersonalHeaderComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
 
-        forkJoin(
-            this.store.pipe(select(getDeelnemerId)).pipe(skipWhile(response => response === undefined), take(1)),
-            this.store.pipe(select(getAllPoules)).pipe(skipWhile(response => response && response.length === 0), take(1)))
+        this.store.pipe(select(getDeelnemerScore))
             .pipe(takeUntil(this.unsubscribe))
-            .subscribe(([deelnemerId, poules]) => {
-                if (deelnemerId && poules) {
-                    if (poules[0] && poules[0].deelnemers && deelnemerId) {
-                        const deelnemerInList = poules[0].deelnemers.find(item => item.id === deelnemerId);
-                        this.deelnemerPunten = deelnemerInList ? deelnemerInList.totaalpunten : null;
-                    } else {
-                        return null;
-                    }
-                }
+            .subscribe(deelnemerPunten => {
+                this.deelnemerPunten = deelnemerPunten;
             });
 
-        this.uiService.huidigeVoorspelling$.pipe(takeUntil(this.unsubscribe), switchMap((huidigeVoorspelling) => {
+        this.uiService.huidigeVoorspelling$.pipe(
+            takeUntil(this.unsubscribe),
+            switchMap((huidigeVoorspelling) => {
             if (huidigeVoorspelling) {
                 return this.kandidatenService.getMolStatistieken().pipe(take(1));
             } else {

@@ -28,7 +28,7 @@ export class PoulesEffects {
             return this.poulesService
                 .getPoules().pipe(take(1),
                     concatMap(response => {
-                            if (response) {
+                            if (response && response.poules && response.poules.length > 0) {
                                 const eigenKlassement = response.poules.filter(p => p.id !== '0').reduce((accumulator, currentValue) => {
                                     return [...currentValue.deelnemers, ...accumulator];
                                 }, []);
@@ -42,6 +42,8 @@ export class PoulesEffects {
                                     }, ...response.poules]
                                 };
                                 return observableOf(new CalculatePoules(poules));
+                            } else {
+                                return observableOf(new FetchPoulesSuccess(response));
                             }
                         }
                     ),
