@@ -8,8 +8,9 @@ describe('AddpoulesComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddpoulesComponent ]
-    })
+    declarations: [AddpoulesComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

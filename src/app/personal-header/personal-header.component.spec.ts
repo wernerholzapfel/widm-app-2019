@@ -8,8 +8,9 @@ describe('PersonalHeaderComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ PersonalHeaderComponent ]
-    })
+    declarations: [PersonalHeaderComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

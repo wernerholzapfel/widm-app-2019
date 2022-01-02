@@ -5,8 +5,9 @@ import {IntroGuard} from './intro.guard';
 describe('IntroGuard', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
-            providers: [IntroGuard]
-        });
+    providers: [IntroGuard],
+    teardown: { destroyAfterEach: false }
+});
     });
 
     it('should ...', inject([IntroGuard], (guard: IntroGuard) => {

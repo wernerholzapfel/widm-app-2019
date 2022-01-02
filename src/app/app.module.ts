@@ -43,7 +43,6 @@ import {LoaderInterceptor} from './services/authentication/loading.interceptor';
 
 @NgModule({
     declarations: [AppComponent],
-    entryComponents: [],
     imports: [
         BrowserModule,
         IonicModule.forRoot(),
@@ -64,7 +63,8 @@ import {LoaderInterceptor} from './services/authentication/loading.interceptor';
         IonicStorageModule.forRoot(),
         StoreDevtoolsModule.instrument(),
         // StoreRouterConnectingModule,
-        EffectsModule.forRoot([ActiesEffects, PoulesEffects])],
+        EffectsModule.forRoot([ActiesEffects, PoulesEffects])
+    ],
     providers: [
         StatusBar,
         SplashScreen,
@@ -75,7 +75,7 @@ import {LoaderInterceptor} from './services/authentication/loading.interceptor';
         DeelnemerService,
         SocialSharing,
         CodePush,
-        {provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
+        { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
         {
             provide: HTTP_INTERCEPTORS,
             useClass: TokenInterceptor,

@@ -8,8 +8,9 @@ describe('PouleComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ PouleComponent ]
-    })
+    declarations: [PouleComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

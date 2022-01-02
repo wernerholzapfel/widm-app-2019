@@ -8,8 +8,9 @@ describe('PuntenComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ PuntenComponent ]
-    })
+    declarations: [PuntenComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

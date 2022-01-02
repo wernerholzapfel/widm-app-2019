@@ -8,8 +8,9 @@ describe('AcceptInviteComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ AcceptInviteComponent ]
-    })
+    declarations: [AcceptInviteComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

@@ -8,8 +8,9 @@ describe('VoorspellingsscoreComponent', () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            declarations: [VoorspellingsscoreComponent]
-        })
+    declarations: [VoorspellingsscoreComponent],
+    teardown: { destroyAfterEach: false }
+})
             .compileComponents();
     }));
 

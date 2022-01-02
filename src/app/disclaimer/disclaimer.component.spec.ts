@@ -8,8 +8,9 @@ describe('DisclaimerComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ DisclaimerComponent ]
-    })
+    declarations: [DisclaimerComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

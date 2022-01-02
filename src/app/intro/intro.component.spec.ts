@@ -8,8 +8,9 @@ describe('IntroComponent', () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            declarations: [IntroComponent]
-        })
+    declarations: [IntroComponent],
+    teardown: { destroyAfterEach: false }
+})
             .compileComponents();
     }));
 

@@ -8,8 +8,9 @@ describe('VoorspellingPuntenItemComponent', () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            declarations: [VoorspellingPuntenItemComponent]
-        })
+    declarations: [VoorspellingPuntenItemComponent],
+    teardown: { destroyAfterEach: false }
+})
             .compileComponents();
     }));
 

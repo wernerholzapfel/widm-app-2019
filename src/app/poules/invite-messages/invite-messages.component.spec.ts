@@ -9,9 +9,10 @@ describe('InviteMessagesComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ InviteMessagesComponent ],
-      imports: [IonicModule.forRoot()]
-    }).compileComponents();
+    declarations: [InviteMessagesComponent],
+    imports: [IonicModule.forRoot()],
+    teardown: { destroyAfterEach: false }
+}).compileComponents();
 
     fixture = TestBed.createComponent(InviteMessagesComponent);
     component = fixture.componentInstance;
