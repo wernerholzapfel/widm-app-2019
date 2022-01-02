@@ -12,16 +12,28 @@ import {createFeatureSelector, createSelector} from '@ngrx/store';
 
 const defaultState: IPoules = {
     poules: [],
+    totaalScoreDeelnemer: 0,
 };
 
 export function poulesReducer(state: IPoules = defaultState, action) {
+    console.log(action.type);
     switch (action.type) {
         case FETCH_POULES_SUCCESS:
-            return {...state, id: action.payload.id, display_name: action.payload.display, poules: action.payload.poules};
+            return {
+                ...state,
+                id: action.payload.poules.id,
+                display_name: action.payload.poules.display,
+                poules: action.payload.poules.poules
+            };
         case ADD_POULES_SUCCESS:
-            return {...state, poules: [...state.poules, ...action.payload]};
+            return {...state};
         case SET_POULE_ACTIVE:
-            return {...state, activePoule: action.payload};
+            return {
+                ...state,
+                activePoule: action.payload ?
+                    state.poules.find(p => p.id === action.payload.id) :
+                    state.poules.filter(p => p.id !== 'persoonlijkestand')[0],
+            };
         case FETCH_POULES_FAILURE:
             return {...state};
         case UPDATE_POULES_SUCCESS:
@@ -35,6 +47,7 @@ export function poulesReducer(state: IPoules = defaultState, action) {
     }
 }
 
+
 export const getDeelnemer = createFeatureSelector<IPoules>('poules');
 export const getAllPoules = createSelector(getDeelnemer, (deelnemer: IPoules) => deelnemer.poules);
 export const getActivePoule = createSelector(getDeelnemer, (deelnemer: IPoules) => deelnemer.activePoule);
@@ -47,7 +60,12 @@ export const getPositionInActivePoule = createSelector(getDeelnemer, (deelnemer:
 });
 export const getDeelnemerId = createSelector(getDeelnemer, (deelnemer: IPoules) => deelnemer.id);
 export const getDisplayname = createSelector(getDeelnemer, (deelnemer: IPoules) => deelnemer.display_name);
-export const getDeelnemerScore = createSelector(getDeelnemer,
-    (deelnemer: IPoules) => deelnemer && deelnemer.poules && deelnemer.poules.length > 0
-        ? deelnemer.poules[0].deelnemers.find(pouleDeelnemer => pouleDeelnemer.id === deelnemer.id)
-        : null);
+export const getDeelnemerScore = createSelector(getDeelnemer, (deelnemer: IPoules) => {
+    if (deelnemer && deelnemer.poules && deelnemer.poules.length > 0) {
+        return deelnemer.poules[0].deelnemers.length > 0
+            ? deelnemer.poules[0].deelnemers.find(pouleDeelnemer => pouleDeelnemer.id === deelnemer.id).totaalpunten
+            : 0;
+    } else {
+        return 0;
+    }
+});

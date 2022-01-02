@@ -53,8 +53,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     cardTextFunc(): string {
         if (this.acties && !this.acties.isSeasonFinished) {
             if (this.testAfgerond && this.voorspellingAfgerond) {
-                return 'Je bent helemaal bij. Je kunt je voorspellingen nog wijzigen tot ' +
-                    this.formatDate(this.acties.voorspellingDeadlineDatetime);
+                return 'Je bent helemaal bij.';
             }
             if (this.testAfgerond && !this.voorspellingAfgerond) {
                 return 'Vergeet niet je voorspellingen te doen. Dit kan nog tot ' +

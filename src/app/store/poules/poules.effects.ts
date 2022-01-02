@@ -7,7 +7,7 @@ import {
     AddPouleSuccess,
     CALCULATE_POULES,
     CalculatePoules,
-    FETCH_POULES_IN_PROGRESS,
+    FETCH_POULES_IN_PROGRESS, FETCH_POULES_SUCCESS,
     FetchPoulesFailure,
     FetchPoulesInProgress,
     FetchPoulesSuccess,
@@ -28,7 +28,7 @@ export class PoulesEffects {
             return this.poulesService
                 .getPoules().pipe(take(1),
                     concatMap(response => {
-                            if (response) {
+                            if (response && response.poules && response.poules.length > 0) {
                                 const eigenKlassement = response.poules.filter(p => p.id !== '0').reduce((accumulator, currentValue) => {
                                     return [...currentValue.deelnemers, ...accumulator];
                                 }, []);
@@ -41,7 +41,12 @@ export class PoulesEffects {
                                         deelnemers: this.pouleHelper.transformDeelnemers(eigenKlassement)
                                     }, ...response.poules]
                                 };
-                                return observableOf(new CalculatePoules(poules));
+                                return observableOf(new CalculatePoules({poules: poules, activePoule: action.payload}));
+                            } else {
+                                return observableOf(new FetchPoulesSuccess({
+                                    poules: response,
+                                    activePoule: action.payload ? action.payload : null
+                                }));
                             }
                         }
                     ),
@@ -52,12 +57,23 @@ export class PoulesEffects {
                         ])));
         }));
 
+
+    @Effect()
+    fetchPouleSucces = this.actions$.pipe(
+        ofType<FetchPoulesSuccess>(FETCH_POULES_SUCCESS),
+        concatMap(action => {
+            if (action) {
+                return observableOf(new SetPouleActive(action.payload.activePoule));
+            }
+        })
+    );
+
     @Effect()
     addPouleSucces = this.actions$.pipe(
         ofType<AddPouleSuccess>(ADD_POULES_SUCCESS),
         concatMap(action => {
                 if (action) {
-                    return observableOf(new SetPouleActive(action.payload));
+                    return observableOf(new FetchPoulesInProgress(action.payload));
                 }
             }
         ),
@@ -71,8 +87,9 @@ export class PoulesEffects {
     calculatePoules$ = this.actions$.pipe(
         ofType<CalculatePoules>(CALCULATE_POULES),
         map(action => ({
-            ...action.payload,
-            poules: action.payload.poules
+            ...action.payload.poules,
+            activePoule: action.payload.activePoule,
+            poules: action.payload.poules.poules
                 .map(poule => ({
                     ...poule,
                     deelnemers: poule.deelnemers
@@ -82,16 +99,21 @@ export class PoulesEffects {
                                 .map(voorspelling => ({
                                     ...voorspelling,
                                     mol: Object.assign({}, voorspelling.mol,
-                                        {punten: this.calculatieService.determineMolPunten(voorspelling.mol, voorspelling.aflevering)}),
+                                        {
+                                            punten: this.calculatieService.determineMolPunten(
+                                                voorspelling.mol, voorspelling.aflevering)
+                                        }),
                                     winnaar: Object.assign({}, voorspelling.winnaar,
                                         {
                                             punten:
-                                                this.calculatieService.determineWinnaarPunten(voorspelling.winnaar, voorspelling.aflevering)
+                                                this.calculatieService.determineWinnaarPunten(
+                                                    voorspelling.winnaar, voorspelling.aflevering)
                                         }),
                                     afvaller: Object.assign({}, voorspelling.afvaller,
                                         {
                                             punten:
-                                                this.calculatieService.determineAfvallerPunten(voorspelling.afvaller, voorspelling.aflevering)
+                                                this.calculatieService.determineAfvallerPunten(
+                                                    voorspelling.afvaller, voorspelling.aflevering)
                                         }),
                                 })),
                             tests: deelnemer.tests
@@ -130,9 +152,17 @@ export class PoulesEffects {
                         }))
                 }))
         })),
-        concatMap(response => observableFrom([
-            new FetchPoulesSuccess(response),
-            new SetPouleActive(response.poules[0])])),
+        concatMap(response => {
+            return observableFrom([
+                new FetchPoulesSuccess({
+                    poules: {
+                        id: response.id,
+                        display_name: response.display_name,
+                        poules: response.poules
+                    },
+                    activePoule: response.activePoule
+                })]);
+        }),
         catchError(err =>
             observableFrom([
                 new FetchPoulesFailure(err),

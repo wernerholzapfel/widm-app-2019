@@ -30,6 +30,8 @@ export class AddpoulesComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.store.pipe(select(getDeelnemerId)).pipe(takeUntil(this.unsubscribe)).subscribe(response => {
+            console.log('deelnemerId');
+            console.log(response);
             this.deelnemerId = response;
         });
     }
@@ -42,10 +44,10 @@ export class AddpoulesComponent implements OnInit, OnDestroy {
             deelnemers: [currentUser],
             admins: [currentUser]
         }).subscribe(response => {
-            this.uiService.presentToast(`Poule ${this.createPouleForm.value.name} aangemaakt`, 'tertiary', 4000);
+                this.uiService.presentToast(`Poule ${this.createPouleForm.value.name} aangemaakt`, 'tertiary', 4000);
                 this.isLoading = false;
-            this.store.dispatch(new AddPouleSuccess(response));
-            this.router.navigate([`${navigation.poules}/${navigation.adddeelnemer}`]);
+                this.store.dispatch(new AddPouleSuccess(response));
+                this.router.navigate([`${navigation.poules}/${navigation.adddeelnemer}`]);
             }, error1 => {
                 this.isLoading = false;
                 this.uiService.presentToast(`Er is iets misgegaan bij het aanmaken van de poule`);

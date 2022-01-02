@@ -7,11 +7,9 @@ import {UiService} from '../services/app/ui.service';
 import {DeelnemerService} from '../deelnemer.service';
 import {IAppState} from '../store/store';
 import {Store} from '@ngrx/store';
-import {FetchActiesInProgress, FetchActiesSuccess} from '../store/acties/acties.actions';
 import {Platform} from '@ionic/angular';
 import {Storage} from '@ionic/storage';
 import {OneSignal} from '@ionic-native/onesignal/ngx';
-import {take} from 'rxjs/operators';
 
 @Component({
     selector: 'app-login',
@@ -45,21 +43,7 @@ export class LoginComponent implements OnInit {
     signInWithEmail() {
         this.authService.signInRegular(this.loginForm.value.email, this.loginForm.value.password)
             .then((res) => {
-                delete this.user.password;
-                this.deelnemerService.postDeelnemer({
-                    email: this.loginForm.value.email
-                }).pipe(take(1)).subscribe(response => {
-                    // set acties to null so data is reloaded on app.component when acties are succesfully fetched
-                    this.store.dispatch(new FetchActiesSuccess(null));
-                    this.store.dispatch(new FetchActiesInProgress());
-                    if (this.platform.is('cordova')) {
-                        this.oneSignal.sendTag('displayName', response.display_name);
-                    }
-                    this.storage.set('seizoen', '2020').then(result => {
-                        console.log(result);
-                    });
-                    this.router.navigate([`${navigation.home}/${navigation.dashboard}`, {animated: true}]);
-                });
+                this.router.navigate([`${navigation.home}/${navigation.dashboard}`, {animated: true}]);
             })
             .catch((err) => {
                 this.uiService.presentToast(err.message);
@@ -81,22 +65,7 @@ export class LoginComponent implements OnInit {
         this.authService.signUpRegular(this.signupForm.value.email, this.signupForm.value.password, this.signupForm.value.displayName)
             .then((res) => {
                     if (res) {
-                        delete this.user.password;
-                        this.deelnemerService.postDeelnemer({
-                            display_name: this.signupForm.value.displayName,
-                            email: this.signupForm.value.email
-                        }).pipe(take(1)).subscribe(response => {
-                            // set acties to null so data is reloaded on app.component when acties are succesfully fetched
-                            this.store.dispatch(new FetchActiesSuccess(null));
-                            this.store.dispatch(new FetchActiesInProgress());
-                            this.storage.set('seizoen', '2020').then(result => {
-                                console.log(result);
-                            });
-                            if (this.platform.is('cordova')) {
-                                this.oneSignal.sendTag('displayName', this.signupForm.value.displayName);
-                            }
-                            this.router.navigate([`${navigation.home}/${navigation.dashboard}`, {animated: true}]);
-                        });
+                        this.router.navigate([`${navigation.home}/${navigation.dashboard}`, {animated: true}]);
                     }
                 }
             )
