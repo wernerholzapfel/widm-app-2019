@@ -3,13 +3,13 @@ For android:
 build project:
 ionic cordova build android --prod --release
 copy project and key to
-cp /Users/wernerholzapfel/Projects/Prive/widm/widm-app-2019/platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk ~/Library/Android/sdk/build-tools/30.0.1/
+cp /Users/wernerholzapfel/Projects/Prive/widm/widm-app-2019/platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk ~/Library/Android/sdk/build-tools/32.0.0/
 
-Go to ~/Library/Android/sdk/build-tools/30.0.1/
-cd ~/Library/Android/sdk/build-tools/30.0.1/
+Go to ~/Library/Android/sdk/build-tools/32.0.0/
+cd ~/Library/Android/sdk/build-tools/32.0.0/
 and run:
-jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore werner-holzapfel-key.jks app-release-unsigned.apk supereleven
-./zipalign -v 4 app-release-unsigned.apk molloot_3.1.0.apk
+./zipalign -v 4 app-release-unsigned.apk molloot_4.2.0.apk
+./apksigner sign -keystore werner-holzapfel-key.jks --v1-signing-enabled true --v2-signing-enabled true molloot_4.2.0.apk
 
 surf naar:
 https://play.google.com/apps/publish/?account=6886303713469501217#AppDashboardPlace:p=com.wernerholzapfel.mollotenapp
@@ -29,6 +29,9 @@ https://docs.microsoft.com/en-us/appcenter/distribution/codepush/cli
 IOS:
 appcenter login
 ionic cordova build ios --prod
-appcenter codepush release -a werner.holzapfel-gmail.com/molloot-ios -c ./platforms/ios/www/ -t 4.0.0
+appcenter codepush release -a werner.holzapfel-gmail.com/molloot-ios -c ./platforms/ios/www/ -t 4.0.0 -d Production -m
 
 Android:
+appcenter login
+ionic cordova build android --prod --release
+appcenter codepush release -a werner.holzapfel-gmail.com/molloot-android -c ./platforms/android/app/src/main/assets/www/ -t 4.1.1 -d Production -m
