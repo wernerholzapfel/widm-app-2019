@@ -1,13 +1,13 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {IonicModule} from '@ionic/angular';
-import {FormsModule} from '@angular/forms';
 
 import {DashboardComponent} from './dashboard.component';
-import {RouterModule} from '@angular/router';
 import {LoginComponentModule} from '../login/login.module';
-import {AngularFireAuthModule} from '@angular/fire/auth';
 import {PoulesPageModule} from '../poules/poules.module';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {IonicModule} from '@ionic/angular';
+import {AngularFireAuthModule} from '@angular/fire/compat/auth';
+import {RouterModule} from '@angular/router';
+import {NgModule} from '@angular/core';
 
 @NgModule({
     declarations: [DashboardComponent],

@@ -76,8 +76,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
 
     formatDate(dateString: string): string {
-        const options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric'};
-        return new Date(dateString).toLocaleDateString('nl-NL', options);
+        return new Date(dateString).toLocaleDateString('nl-NL', {});
 
     }
 
@@ -98,7 +97,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.unsubscribe.next();
+        this.unsubscribe.next(undefined);
         this.unsubscribe.complete();
     }
 

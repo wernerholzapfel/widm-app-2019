@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {UiService} from '../services/app/ui.service';
-import {delay, takeUntil, tap} from 'rxjs/operators';
-import {combineLatest, Subject} from 'rxjs';
+import {concatMap, delay, map, switchMap, take, takeUntil, tap} from 'rxjs/operators';
+import {combineLatest, from, of, Subject, timer} from 'rxjs';
 import {FormBuilder} from '@angular/forms';
 import {IAppState} from '../store/store';
 import {select, Store} from '@ngrx/store';
@@ -94,20 +94,17 @@ export class VoorspellenComponent implements OnInit, OnDestroy {
             this.numberOfKandidaten = this.kandidaten.length;
         });
 
-        let dt = 15000;
+        const myArray = new Date('2022-01-18T09:53:04.000Z');
 
-        this.store.pipe(select(getActies)).pipe(
-            tap(acties => {
-                if (acties) {
-                    this.deadlineVerstreken = acties.voorspellingDeadlineDatetime <= new Date().toISOString();
-                    dt = new Date(acties.voorspellingDeadlineDatetime).getTime();
-                }
-            }),
-            delay(dt - new Date().getTime()),
-            takeUntil(this.unsubscribe))
+        this.store
+            .pipe(select(getActies))
+            .pipe(switchMap(item => {
+                return of(item).pipe(delay(item ? new Date(myArray).getTime() - new Date().getTime() : 99999999));
+            }))
             .subscribe(acties => {
+                console.log('in subscribe');
                 if (acties) {
-                    this.deadlineVerstreken = acties.voorspellingDeadlineDatetime <= new Date().toISOString();
+                    console.log(acties);
                     this.uiService.presentToast(`De deadline voor aflevering ${acties.voorspellingaflevering} is verstreken`);
                 }
             });
@@ -196,7 +193,7 @@ export class VoorspellenComponent implements OnInit, OnDestroy {
 
 
     ngOnDestroy() {
-        this.unsubscribe.next();
+        this.unsubscribe.next(undefined);
         this.unsubscribe.complete();
     }
 }

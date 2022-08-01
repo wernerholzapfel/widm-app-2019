@@ -1,15 +1,14 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
-import * as firebase from 'firebase/app';
-import 'firebase/auth';
-import {AngularFireAuth} from '@angular/fire/auth';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
 import {UiService} from '../app/ui.service';
 import {IAppState} from '../../store/store';
 import {Store} from '@ngrx/store';
 import {ResetPoules, SetPouleActive} from '../../store/poules/poules.actions';
 import IdTokenResult = firebase.auth.IdTokenResult;
-import {User} from 'firebase';
 import {take} from 'rxjs/operators';
+import {AngularFireAuth} from '@angular/fire/compat/auth';
 
 @Injectable()
 export class AuthService {

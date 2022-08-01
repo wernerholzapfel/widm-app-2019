@@ -1,25 +1,11 @@
-import {NgModule} from '@angular/core';
-import {BrowserModule} from '@angular/platform-browser';
-import {RouteReuseStrategy} from '@angular/router';
-
-import {IonicModule, IonicRouteStrategy} from '@ionic/angular';
-import {SplashScreen} from '@ionic-native/splash-screen/ngx';
-import {StatusBar} from '@ionic-native/status-bar/ngx';
-
 import {AppComponent} from './app.component';
 import {AppRoutingModule} from './app-routing.module';
 import {HomePageModule} from './home/home.module';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {AngularFireModule} from '@angular/fire';
 import {environment} from '../environments/environment';
-import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {TokenInterceptor} from './services/authentication/token.interceptor';
 import {ActiesEffects} from './store/acties/acties.effects';
-import {StoreDevtoolsModule} from '@ngrx/store-devtools';
-import {StoreModule} from '@ngrx/store';
 import {reducers} from './store/store';
 import {ActiesService} from './services/api/acties.service';
-import {EffectsModule} from '@ngrx/effects';
 import {PoulesEffects} from './store/poules/poules.effects';
 import {PoulesService} from './services/api/poules.service';
 import {AuthService} from './services/authentication/auth.service';
@@ -32,13 +18,26 @@ import {PuntenModule} from './punten/punten.module';
 import {PuntenItemModule} from './punten/punten-item/punten-item.module';
 import {DeelnemerService} from './deelnemer.service';
 import {IntroModule} from './intro/intro.module';
-import {IonicStorageModule} from '@ionic/storage';
 import {StatistiekenModule} from './statistieken/statistieken.module';
-import {SocialSharing} from '@ionic-native/social-sharing/ngx';
-import {OneSignal} from '@ionic-native/onesignal/ngx';
-import {CodePush} from '@ionic-native/code-push/ngx';
 import {AuthInterceptor} from './interceptor/unauthorized/unauthorized.interceptor';
 import {LoaderInterceptor} from './services/authentication/loading.interceptor';
+import {AngularFireModule} from '@angular/fire/compat';
+import {BrowserModule} from '@angular/platform-browser';
+import {IonicModule, IonicRouteStrategy} from '@ionic/angular';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {StoreModule} from '@ngrx/store';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import {EffectsModule} from '@ngrx/effects';
+import {SplashScreen} from '@ionic-native/splash-screen/ngx';
+import {RouteReuseStrategy} from '@angular/router';
+import {CodePush} from '@ionic-native/code-push/ngx';
+import { SocialSharing } from '@ionic-native/social-sharing/ngx';
+import { StatusBar } from '@ionic-native/status-bar/ngx';
+import {OneSignal} from '@ionic-native/onesignal/ngx';
+import {IonicStorageModule} from '@ionic/storage-angular';
+import {NgModule} from '@angular/core';
+
 
 
 @NgModule({

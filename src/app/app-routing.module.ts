@@ -14,7 +14,7 @@ const routes: Routes = [
     {path: navigation.intro, component: IntroComponent},
     {path: navigation.statistieken, component: StatistiekenComponent},
     {path: navigation.home, component: HomePage, canActivate: [IntroGuard]},
-    {path: navigation.poules, loadChildren: './poules/poules.module#PoulesPageModule'},
+    {path: navigation.poules, loadChildren: () => import('./poules/poules.module').then(p => p.PoulesPageModule)},
     {path: navigation.punten, component: PuntenComponent},
     {path: navigation.test, component: TestComponent},
     {path: navigation.voorspellen, component: VoorspellenComponent},
@@ -26,3 +26,5 @@ const routes: Routes = [
 })
 export class AppRoutingModule {
 }
+
+// { path:/cart, loadChildren: () => import(./cart/cart.module).then(m => m.CartModule) }

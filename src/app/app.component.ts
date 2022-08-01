@@ -50,13 +50,15 @@ export class AppComponent implements OnInit, OnDestroy {
         private storage: Storage,
         private testService: TestService,
         private codePush: CodePush,
-        private alertController: AlertController
+        private alertController: AlertController,
     ) {
         this.initializeApp();
 
     }
 
-    ngOnInit() {
+    async ngOnInit() {
+        await this.storage.create();
+
         this.store.dispatch(new FetchActiesInProgress());
 
         this.authService.user$.pipe(switchMap(user => {
@@ -247,7 +249,7 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.unsubscribe.next();
+        this.unsubscribe.next(undefined);
         this.unsubscribe.complete();
     }
 

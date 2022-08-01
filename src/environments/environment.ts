@@ -12,8 +12,10 @@ export const environment = {
         storageBucket: 'molloot-8de9b.appspot.com',
         messagingSenderId: '663216627263'
     },
-    api: 'http://localhost:3000/api/v1',
-    api_domain: 'localhost:3000',
+    api: 'https://molapi-2019.herokuapp.com/api/v1',
+    api_domain: 'molapi-2019.herokuapp.com',
+    // api: 'http://localhost:3000/api/v1',
+    // api_domain: 'localhost:3000',
     oneSignal: {
         appId: 'c9e91d07-f6c6-480b-a9ac-8322418085f8',
         // tslint:disable-next-line:max-line-length
